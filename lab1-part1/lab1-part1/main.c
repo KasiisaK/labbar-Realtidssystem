@@ -107,10 +107,8 @@ void writeLong(long i) {
 
 bool isPrime(int number)
 {
-	if (number <= 1) // 0 and 1 are not prime numbers
-	{
-		return false;
-	}
+	if (number <= 1) return false; // 0 and 1 are not prime numbers
+
 	for (int i=2; i*i <= number; i++) //loop from 2 to sqrt(number)
 	{
 		if (number % i == 0) return false;	//divisible => not prime
