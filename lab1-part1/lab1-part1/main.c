@@ -1,10 +1,3 @@
-/*
- * GccApplication3.c
- *
- * Created: 26/01/2025 12:46:21
- * Author : AskFr
- */ 
-
 #include <avr/io.h>
 // LCD digit mapping for "0"
 const uint8_t digit_map[10] = {
@@ -26,34 +19,34 @@ void writeChar(uint8_t pos, uint8_t segment)
 	
 	switch (pos) {
 		case 0:
-			LCDDR0 = LCDDR0 | 0b00000001;
-			LCDDR5 = LCDDR5 | 0b00000101;
-			LCDDR10 = LCDDR10 | 0b00000101;
-			LCDDR15 = LCDDR15 | 0b00000001;
-			break;
+		LCDDR0 = LCDDR0 | 0b00000001;
+		LCDDR5 = LCDDR5 | 0b00000101;
+		LCDDR10 = LCDDR10 | 0b00000101;
+		LCDDR15 = LCDDR15 | 0b00000001;
+		break;
 		case 1:
-			LCDDR0 = LCDDR0 | 0b00010000;
-			LCDDR5 = LCDDR5 | 0b01010000;
-			LCDDR10 = LCDDR10 | 0b01010000;
-			LCDDR15 = LCDDR15 | 0b00010000;
-			break;
+		LCDDR0 = LCDDR0 | 0b00010000;
+		LCDDR5 = LCDDR5 | 0b01010000;
+		LCDDR10 = LCDDR10 | 0b01010000;
+		LCDDR15 = LCDDR15 | 0b00010000;
+		break;
 		case 2:
-			LCDDR1 = LCDDR1 | 0b00000001;
-			LCDDR6 = LCDDR6 | 0b00000101;
-			LCDDR11 = LCDDR11 | 0b00000101;
-			LCDDR16 = LCDDR16 | 0b00000001;
-			break;
+		LCDDR1 = LCDDR1 | 0b00000001;
+		LCDDR6 = LCDDR6 | 0b00000101;
+		LCDDR11 = LCDDR11 | 0b00000101;
+		LCDDR16 = LCDDR16 | 0b00000001;
+		break;
 		case 3:
-			LCDDR1 = LCDDR1 | 0b00010000;
-			LCDDR6 = LCDDR6 | 0b01010000;
-			LCDDR11 = LCDDR11 | 0b01010000;
-			LCDDR16 = LCDDR16 | 0b00010000;
+		LCDDR1 = LCDDR1 | 0b00010000;
+		LCDDR6 = LCDDR6 | 0b01010000;
+		LCDDR11 = LCDDR11 | 0b01010000;
+		LCDDR16 = LCDDR16 | 0b00010000;
 		case 4:
-			LCDDR2 = 0b0001;
-			LCDDR7 = 0b0101;
-			LCDDR12 = 0b0101;
-			LCDDR17 = 0b0001;
-			break;
+		LCDDR2 = 0b0001;
+		LCDDR7 = 0b0101;
+		LCDDR12 = 0b0101;
+		LCDDR17 = 0b0001;
+		break;
 	}
 }
 
@@ -69,7 +62,7 @@ void init(){
 
 int main(void)
 {
-    init();
+	init();
 	for (uint8_t i = 0; i < 5; i++) {
 		writeChar(i, 0);
 	}
