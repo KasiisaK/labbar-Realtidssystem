@@ -5,7 +5,7 @@
 #include <stdbool.h>
 #include <util/delay.h>
 
-
+//wall of data
 int zero[] = {0b0001, 0b0101, 0b0101, 0b0001};
 int one[] = {0b0000, 0b0001, 0b0001, 0b0000};
 int two[] = {0b0001, 0b0001, 0b1110, 0b0001};
@@ -18,6 +18,7 @@ int eight[] = {0b0001, 0b0101, 0b1111, 0b0001};
 int nine[] = {0b0001, 0b0101, 0b1011, 0b0001};
 int none[] = {0b0000, 0b0000, 0b0000, 0b0000};
 
+//returns wall of data based on char input ('0' = 48 (char))
 int* getSegmentForChar(char ch) {
 	switch (ch) {
 		case '0': return zero;
@@ -36,30 +37,41 @@ int* getSegmentForChar(char ch) {
 
 
 void init() {
-	CLKPR = 0x80;
-	CLKPR = 0x00;
+	//Clock Prescale Register "maximum speed"
+	CLKPR = 0b10000000; //Clock Prescaler Change Enable
+	CLKPR = 0b00000000; //set 0 for sysclock
+	//LCD(Contrast Control Register), LCD(Display Configuration)(000): 300 μs, LCD(Contrast Control)(1111): 3.35 V
+	LCDCCR = (0 << LCDDC0) | (0 << LCDDC1) | (0 << LCDDC2) | (1 << LCDCC0) | (1 << LCDCC1) | (1 << LCDCC2) | (1 << LCDCC3);
+	//LCDCS: asynchronous clock, LCDMUX(11): D=1/4, B=1/3, LCD(Port Mask): 25 segments
 	LCDCRB = (1 << LCDCS) | (1 << LCDMUX1) | (1 << LCDMUX0) | (1 << LCDPM2) | (1 << LCDPM1) | (1 << LCDPM0);
-	LCDFRR = (1 << LCDCD2) | (1 << LCDCD1) | (1 << LCDCD0);
-	LCDCCR = (1 << LCDDC1) | (1 << LCDCC3) | (1 << LCDCC2) | (1 << LCDCC1);
-	TCCR1A = (1 << WGM13) | (1 << WGM12) | (1 << COM1A1) | (1 << COM1A0);
+	//LCD(Clock Divide)(111): (D=8) 32Hz 
+	LCDFRR = (1 << LCDCD2) | (1 << LCDCD1) | (1 << LCDCD0);	
+	//LCD(Control and StatusRegister A), LCD(Enable): True, LCD(Low Power Waveform): True, (no frame interrupt, no blanking)
 	LCDCRA = (1 << LCDEN) | (1 << LCDAB);
+	//Timer/Counter Control Registers: (Compare Output Mode)(11): Set Compare high 
+	//TCCR1A = (1 << COM1A1) | (1 << COM1A0) | (1 << WGM13) | (1 << WGM12);
 }
 
-
+//write a char ch at position pos
 void writeChar(char ch, uint8_t pos) {
-	if (pos > 4 || pos < 0) return;
-	
+	//check if outside range
+	if (pos > 4 || pos < 0) return;	
 
+	//get correct char data
 	int* segment = getSegmentForChar(ch);
 	
+	//chose position
 	switch (pos) {
 		case 0:
+			//segment start att 0, 5, 10, 15, higher 4 bits.
+			//(LCDDR0 & 0xF0) clears the segment before writing 
 			LCDDR0 = (LCDDR0 & 0xF0) | segment[0];
 			LCDDR5 = (LCDDR5 & 0xF0) | segment[1];
 			LCDDR10 = (LCDDR10 & 0xF0) | segment[2];
 			LCDDR15 = (LCDDR15 & 0xF0) | segment[3];
 			break;
 		case 1:
+			//same segment just lower 4 bits
 			LCDDR0 = (LCDDR0 & 0x0F) | (segment[0] << 4);
 			LCDDR5 = (LCDDR5 & 0x0F) | (segment[1] << 4);
 			LCDDR10 = (LCDDR10 & 0x0F) | (segment[2] << 4);
@@ -86,30 +98,35 @@ void writeChar(char ch, uint8_t pos) {
 	}
 }
 
+//writes a number i to LCD
+void writeLong(long i) {	
+	int pos = 4; //start writing at the rightmost pos
 
-void writeLong(long i) {
-	
-	int pos = 4; // Start writing at the rightmost position on the LCD
-
-	// Loop until the number is reduced to 0 or all positions are filled
+	//loop 5 times
 	for (int count = 0; count < 5; count++) {
-		if (i != 0) {
-			int digit = i % 10; // Extract least significant digit
-			writeChar(digit + '0', pos); // Convert to char and write to LCD
-			i /= 10; // Remove the processed digit
+		//stop if number is 0.
+		if (i == 0) {
+			return;
+			//print LS number
 			} else {
-			writeChar(' ', pos); // Clear remaining positions if the number has fewer than 5 digits
+			//extract least significant digit and remove it from i
+			int digit = i % 10;
+			i /= 10;
+			//'0' is 48 in ASCI and digit ofsets to right ASCI char
+			writeChar(digit + '0', pos);
 		}
-		pos--; // Move to the next LCD position to the left
+		pos--; //next pos
 	}
 }
 
 
 bool isPrime(int number)
 {
-	if (number <= 1) return false; // 0 and 1 are not prime numbers
+	//0 and 1 are not prime numbers
+	if (number <= 1) return false; 
 
-	for (int i=2; i*i <= number; i++) //loop from 2 to sqrt(number)
+	//loop from 2 to sqrt(number)
+	for (int i=2; i*i <= number; i++) 
 	{
 		if (number % i == 0) return false;	//divisible => not prime
 	}
@@ -117,7 +134,7 @@ bool isPrime(int number)
 	return true;
 }
 
-
+//loop through numbers, and if it is prime print to LCD
 void primes() {
 	long i = 1;
 	while (true) {
@@ -133,17 +150,5 @@ void primes() {
 
 int main(void) {
 	init();
-	
-	/*
-	writeChar('8', 0);
-	writeChar('0', 1);
-	writeChar('0', 2);
-	writeChar('8', 3);
-	writeChar('5', 4);
-	*/
-
-	//writeLong(634517284);
-	//writeLong(42);  
-	
-	//primes();     
+	primes();    
 }
