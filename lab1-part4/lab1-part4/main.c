@@ -5,14 +5,17 @@
 #include <stdbool.h>
 #include <util/delay.h>
 
+// Part 2
 #define PRESCALER 256
 #define F_CPU 8000000UL // 8 MHz CPU clock
 #define TIMER_TICKS_PER_SECOND (F_CPU / PRESCALER)
 
+// Part 3
 #define LCD_SEGMENT1 0b00000001 //  segment 1
 #define LCD_SEGMENT2 0b00100000 //  segment 2
+uint8_t joystick_pressed = 0;
 
-//wall of data
+// Lookup table
 int zero[] = {0b0001, 0b0101, 0b0101, 0b0001};
 int one[] = {0b0000, 0b0001, 0b0001, 0b0000};
 int two[] = {0b0001, 0b0001, 0b1110, 0b0001};
@@ -75,7 +78,7 @@ void writeChar(char ch, uint8_t pos) {
 	//chose position
 	switch (pos) {
 		case 0:
-			//segment start att 0, 5, 10, 15, higher 4 bits.
+			//segment start at 0, 5, 10, 15, higher 4 bits.
 			//(LCDDR0 & 0xF0) clears the segment before writing 
 			LCDDR0 = (LCDDR0 & 0xF0) | segment[0];
 			LCDDR5 = (LCDDR5 & 0xF0) | segment[1];
@@ -83,7 +86,7 @@ void writeChar(char ch, uint8_t pos) {
 			LCDDR15 = (LCDDR15 & 0xF0) | segment[3];
 			break;
 		case 1:
-			//same segment just lower 4 bits
+			//same register different segments
 			LCDDR0 = (LCDDR0 & 0x0F) | (segment[0] << 4);
 			LCDDR5 = (LCDDR5 & 0x0F) | (segment[1] << 4);
 			LCDDR10 = (LCDDR10 & 0x0F) | (segment[2] << 4);
@@ -118,19 +121,18 @@ void writeLong(long i) {
 	for (int count = 0; count < 5; count++) {
 		//stop if number is 0.
 		if (i == 0) {
-			return;
-			//print LS number
+				return;
+				//print LS number
 			} else {
-			//extract least significant digit and remove it from i
-			int digit = i % 10;
-			i /= 10;
-			//'0' is 48 in ASCI and digit ofsets to right ASCI char
-			writeChar(digit + '0', pos);
+				//extract least significant digit and remove it from i
+				int digit = i % 10;
+				i /= 10;
+				//'0' is 48 in ASCI and digit offsets to right ASCI char
+				writeChar(digit + '0', pos);
 		}
 		pos--; //next pos
 	}
 }
-
 
 bool isPrime(int number)
 {
@@ -155,38 +157,32 @@ void prime(long i) {
     }
 }
 
-//
 //part 2
-//
 void busyWaitUntil(uint16_t target) {
-	while (1) {
-		uint16_t current = TCNT1;
-		if ((current >= target && target >= current) || // Normal case: target is ahead of current
-		(target < current && current < UINT16_MAX)) { // Wraparound case
-			break;
-		}
+	while (((int16_t)(TCNT1 - target)) < 0) {
 	}
 }
 
 void blink() {
 	uint16_t half_period = TIMER_TICKS_PER_SECOND / 2; // Half the period for 1 Hz blinking
-	uint16_t next_timer_value = TCNT1 + half_period;   // Set the initial target time
+	static uint16_t next_timer_value = 0;   // Set the initial target time
 
-	while (1) {
-		// Toggle the segment (replace LCDDR0 and bit as needed for the actual segment)
-		LCDDR0 ^= (1 << 1);
-
-		// Wait for the next half period
-		busyWaitUntil(next_timer_value);
-
-		// Update the next target time, accounting for wraparound
-		next_timer_value += half_period;
+	if (next_timer_value == 0) {
+		next_timer_value = TCNT1 + half_period;
 	}
+	
+	// Toggle the segment (replace LCDDR0 and bit as needed for the actual segment)
+	LCDDR0 ^= (1 << 1);
+
+	// Wait for the next half period
+	busyWaitUntil(next_timer_value);
+
+	// Update the next target time, accounting for wraparound
+	next_timer_value += half_period;
+
 }
 
-//
 //part 3
-//
 void toggle_lcd(uint8_t *current_segment) {
 	if (*current_segment == LCD_SEGMENT1) {
 		*current_segment = LCD_SEGMENT2;
@@ -204,22 +200,18 @@ void toggle_lcd(uint8_t *current_segment) {
 }
 
 void button() {
-	static uint8_t current_segment = LCD_SEGMENT1;
-	uint8_t joystick_pressed = 0;                 
+	static uint8_t current_segment = LCD_SEGMENT1;       
+	bool oldValue = joystick_pressed;          
 
-	while (true) {
-		// Check if joystick is pressed (active low, bit 7 of PINB == 0)
-		if (!(PINB & (1 << PB7))) {
-			if (!joystick_pressed) {
-				joystick_pressed = 1;
-
-				toggle_lcd(&current_segment);
-			}
-			} else {
-			joystick_pressed = 0;
+	// Check if joystick is pressed (active low, bit 7 of PINB == 0)
+	if (!(PINB & (1 << PB7))) {
+		if (!joystick_pressed) {
+			joystick_pressed = 1;
+			// Checks toggle
+			if (oldValue == 0 && joystick_pressed == 1) toggle_lcd(&current_segment);
 		}
-
-		_delay_ms(100);
+		} else {
+		joystick_pressed = 0;
 	}
 }
 
@@ -229,9 +221,9 @@ int main(void) {
     long primeNumber = 1;
     while(1){
         prime(primeNumber);
+		primeNumber++;
+		
         blink();
         button();
-        primeNumber++;
-    }
-	    
+	}
 }
