@@ -14,14 +14,18 @@
 #define LCD_SEGMENT2 0b00100000 //  segment 2
 
 void init() {
-	CLKPR = 0x80;
-	CLKPR = 0x00;
-
+	//Clock Prescale Register "maximum speed"
+	CLKPR = 0b10000000; //Clock Prescaler Change Enable
+	CLKPR = 0b00000000; //set 0 for sysclock
+	//LCD(Contrast Control Register), LCD(Display Configuration)(000): 300 μs, LCD(Contrast Control)(1111): 3.35 V
+	LCDCCR = (0 << LCDDC0) | (0 << LCDDC1) | (0 << LCDDC2) | (1 << LCDCC0) | (1 << LCDCC1) | (1 << LCDCC2) | (1 << LCDCC3);
+	//LCDCS: asynchronous clock, LCDMUX(11): D=1/4, B=1/3, LCD(Port Mask): 25 segments
 	LCDCRB = (1 << LCDCS) | (1 << LCDMUX1) | (1 << LCDMUX0) | (1 << LCDPM2) | (1 << LCDPM1) | (1 << LCDPM0);
-	LCDFRR = (1 << LCDCD2) | (1 << LCDCD1) | (1 << LCDCD0);
-	LCDCCR = (1 << LCDDC1) | (1 << LCDCC3) | (1 << LCDCC2) | (1 << LCDCC1);
+	//LCD(Clock Divide)(111): (D=8) 32Hz 
+	LCDFRR = (1 << LCDCD2) | (1 << LCDCD1) | (1 << LCDCD0);	
+	//LCD(Control and StatusRegister A), LCD(Enable): True, LCD(Low Power Waveform): True, (no frame interrupt, no blanking)
 	LCDCRA = (1 << LCDEN) | (1 << LCDAB);
-
+}
 	// Configure bit 7 of PORTB as input and enable pull-up resistor
 	DDRB &= ~(1 << PB7);
 	PORTB |= (1 << PB7);

@@ -48,8 +48,6 @@ void init() {
 	LCDFRR = (1 << LCDCD2) | (1 << LCDCD1) | (1 << LCDCD0);	
 	//LCD(Control and StatusRegister A), LCD(Enable): True, LCD(Low Power Waveform): True, (no frame interrupt, no blanking)
 	LCDCRA = (1 << LCDEN) | (1 << LCDAB);
-	//Timer/Counter Control Registers: (Compare Output Mode)(11): Set Compare high 
-	//TCCR1A = (1 << COM1A1) | (1 << COM1A0) | (1 << WGM13) | (1 << WGM12);
 }
 
 //write a char ch at position pos
