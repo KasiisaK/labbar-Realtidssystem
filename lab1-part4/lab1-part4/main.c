@@ -5,6 +5,13 @@
 #include <stdbool.h>
 #include <util/delay.h>
 
+#define PRESCALER 256
+#define F_CPU 8000000UL // 8 MHz CPU clock
+#define TIMER_TICKS_PER_SECOND (F_CPU / PRESCALER)
+
+#define LCD_SEGMENT1 0b00000001 //  segment 1
+#define LCD_SEGMENT2 0b00100000 //  segment 2
+
 //wall of data
 int zero[] = {0b0001, 0b0101, 0b0101, 0b0001};
 int one[] = {0b0000, 0b0001, 0b0001, 0b0000};
