@@ -19,20 +19,19 @@ void init() {
 }
 
 void busyWaitUntil(uint16_t target) {
-	while (1) {
-		uint16_t current = TCNT1;
-		if ((current >= target && target >= current) || // Normal case: target is ahead of current
-		(target < current && current < UINT16_MAX)) { // Wraparound case
-			break;
-		}
+	while (((int16_t)(TCNT1 - target)) < 0) {
 	}
 }
 
 void blink() {
 	uint16_t half_period = TIMER_TICKS_PER_SECOND / 2; // Half the period for 1 Hz blinking
-	uint16_t next_timer_value = TCNT1 + half_period;   // Set the initial target time
-
-	while (1) {
+	static uint16_t next_timer_value = 0;   // Set the initial target time
+	while (1)
+	{
+		if (next_timer_value == 0) {
+		next_timer_value = TCNT1 + half_period;
+		}
+	
 		// Toggle the segment (replace LCDDR0 and bit as needed for the actual segment)
 		LCDDR0 ^= (1 << 1);
 
@@ -42,6 +41,9 @@ void blink() {
 		// Update the next target time, accounting for wraparound
 		next_timer_value += half_period;
 	}
+	
+	
+
 }
 
 int main(void) {
