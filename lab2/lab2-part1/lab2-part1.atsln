@@ -5,6 +5,13 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "lab2-part1", "lab2-part1\lab2-part1.cproj", "{DCE6C7E3-EE26-4D79-826B-08594B9AD897}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8C09EC03-BA00-4DA5-BAFD-609034702D5C}"
+	ProjectSection(SolutionItems) = preProject
+		lab2-part1\mytest.c = lab2-part1\mytest.c
+		lab2-part1\tinythreads.c = lab2-part1\tinythreads.c
+		lab2-part1\tinythreads.h = lab2-part1\tinythreads.h
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|AVR = Debug|AVR
