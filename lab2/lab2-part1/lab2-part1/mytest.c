@@ -1,5 +1,10 @@
 #include "tinythreads.h"
+#include <avr/io.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 #include <stdbool.h>
+#include <util/delay.h>
 
 void init() {
 	//Clock Prescale Register "maximum speed"
@@ -108,6 +113,7 @@ bool is_prime(int number)
 }
 
 void printAt(long num, int pos) {
+	yield();
     int pp = pos;
     writeChar( (num % 100) / 10 + '0', pp);
     pp++;
@@ -120,13 +126,15 @@ void computePrimes(int pos) {
     for(n = 1; ; n++) {
         if (is_prime(n)) {
             printAt(n, pos);
+			_delay_ms(5000);
         }
     }
 }
 
 
-
 int main() {
+	init();
+	LCD_init();
     spawn(computePrimes, 0);
     computePrimes(3);
 }
