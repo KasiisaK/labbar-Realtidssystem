@@ -11,6 +11,18 @@
 #define SETSTACK(buf,a) *((unsigned int *)(buf)+8) = (unsigned int)(a) + STACKSIZE - 4; \
                         *((unsigned int *)(buf)+9) = (unsigned int)(a) + STACKSIZE - 4
 
+// System clock frequency (8 MHz)
+#define F_CPU 8000000UL
+
+// Desired interrupt period (50 ms)
+#define INTERRUPT_PERIOD_MS 50
+
+// Prescaler value (1024)
+#define PRESCALER 1024
+
+// Calculate the value for OCR1A
+#define OCR1A_VALUE (((INTERRUPT_PERIOD_MS / 1000.0) * F_CPU) / PRESCALER - 1)
+
 struct thread_block {
     void (*function)(int);   // code to run
     int arg;                 // argument to the above
@@ -42,11 +54,11 @@ static void initialize(void) {
 	
 	// Enable pin change interrupt for PCINT15 (PORTB pin 7)
 	PCMSK1 |= (1 << PCINT15); // Enable PCINT15 in Pin Change Mask Register 1
-	EIMSK |= (1 << PCIE1);    // Enable PCI1 in External Interrupt Mask Register
+	EIMSK |= (1 << PCIE1); // Enable PCI1 in External Interrupt Mask Register
 	
-	// Configure Timer/Counter1 for 50 ms interrupts
+	// Configure OCR1A (Output Compare Register A) for 50 ms interrupts
 	TCCR1B |= (1 << WGM12);  // Set CTC mode (Clear Timer on Compare)
-	OCR1A = 390;             // Set compare value for 50 ms (8 MHz / 1024 prescaler)
+	OCR1A = OCR1A_VALUE; // Set compare value for 50 ms (8 MHz / 1024 prescaler)
 	TCCR1B |= (1 << CS12) | (1 << CS10); // Set prescaler to 1024
 	TIMSK1 |= (1 << OCIE1A); // Enable Timer/Counter1 Compare Match A interrupt
 	
@@ -147,6 +159,7 @@ void unlock(mutex *m) {
 // 	}
 // }
 
+// Timer interupt
 ISR(TIMER1_COMPA_vect) {
 	yield(); // Call yield() to switch threads
 }
