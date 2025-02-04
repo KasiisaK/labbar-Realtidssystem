@@ -28,22 +28,31 @@ thread readyQ  = NULL;
 thread current = &initp;
 
 int initialized = 0;
+int isPressed = 0;
 
 static void initialize(void) {
-	initialized = 1;
-    int i;
-    for (i=0; i<NTHREADS-1; i++)
-        threads[i].next = &threads[i+1];
-    threads[NTHREADS-1].next = NULL;
+	int i;
+	for (i = 0; i < NTHREADS - 1; i++)
+	threads[i].next = &threads[i + 1];
+	threads[NTHREADS - 1].next = NULL;
 	
-	// Set PORTB pin 7 as input and enable pull-up resistor
-	DDRB &= ~(1 << DDB7);
-	PORTB |= (1 << PB7);
-	// Enable pin change interrupt for PCINT15
+	// Enable pull-up resistor on PORTB pin 7 (joystick downward)
+	DDRB &= ~(1 << DDB7);  // Set PORTB pin 7 as input
+	PORTB |= (1 << PB7); // Enable pull-up resistor
+	
+	// Enable pin change interrupt for PCINT15 (PORTB pin 7)
 	PCMSK1 |= (1 << PCINT15); // Enable PCINT15 in Pin Change Mask Register 1
 	EIMSK |= (1 << PCIE1);    // Enable PCI1 in External Interrupt Mask Register
+	
+	// Configure Timer/Counter1 for 50 ms interrupts
+	TCCR1B |= (1 << WGM12);  // Set CTC mode (Clear Timer on Compare)
+	OCR1A = 390;             // Set compare value for 50 ms (8 MHz / 1024 prescaler)
+	TCCR1B |= (1 << CS12) | (1 << CS10); // Set prescaler to 1024
+	TIMSK1 |= (1 << OCIE1A); // Enable Timer/Counter1 Compare Match A interrupt
+	
 	// Enable global interrupts
 	sei();
+	initialized = 1;
 }
 
 static void enqueue(thread p, thread *queue) {
@@ -107,18 +116,36 @@ void yield(void) {
 }
 
 void lock(mutex *m) {
-
+	DISABLE();
+	if (m->locked) {
+		enqueue(current, &(m->waitQ)); // Add current thread to the mutex wait queue
+		dispatch(dequeue(&readyQ));    // Dispatch the next thread
+		} else {
+		m->locked = 1; // Lock the mutex
+	}
+	ENABLE();
 }
 
 void unlock(mutex *m) {
-
-}
-
-ISR(PCINT1_vect) {
-	if (!(PINB & (1 << PINB7))) { // Check if PORTB pin 7 is low (joystick pressed)
-		yield(); // Call yield() to switch threads
+	DISABLE();
+	if (m->waitQ) {
+		enqueue(dequeue(&(m->waitQ)), &readyQ); // Move a thread from the wait queue to the ready queue
+		} else {
+		m->locked = 0; // Unlock the mutex
 	}
+	ENABLE();
 }
+
+// ISR(PCINT1_vect) {
+// 	if (!(PINB & (1 << PINB7))) { // Check if PORTB pin 7 is low (joystick pressed)
+// 		if (!isPressed) { // Only yield if the joystick was not already pressed
+// 			isPressed = 1; // Set the flag to indicate the joystick is pressed
+// 			yield(); // Call yield() to switch threads
+// 		}
+// 		} else {
+// 		isPressed = 0; // Reset the flag when the joystick is released
+// 	}
+// }
 
 ISR(TIMER1_COMPA_vect) {
 	yield(); // Call yield() to switch threads
