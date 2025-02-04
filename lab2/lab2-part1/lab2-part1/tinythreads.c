@@ -30,13 +30,20 @@ thread current = &initp;
 int initialized = 0;
 
 static void initialize(void) {
+	initialized = 1;
     int i;
     for (i=0; i<NTHREADS-1; i++)
         threads[i].next = &threads[i+1];
     threads[NTHREADS-1].next = NULL;
-
-
-    initialized = 1;
+	
+	// Set PORTB pin 7 as input and enable pull-up resistor
+	DDRB &= ~(1 << DDB7);
+	PORTB |= (1 << PB7);
+	// Enable pin change interrupt for PCINT15
+	PCMSK1 |= (1 << PCINT15); // Enable PCINT15 in Pin Change Mask Register 1
+	EIMSK |= (1 << PCIE1);    // Enable PCI1 in External Interrupt Mask Register
+	// Enable global interrupts
+	sei();
 }
 
 static void enqueue(thread p, thread *queue) {
@@ -93,8 +100,10 @@ void spawn(void (* function)(int), int arg) {
 }
 
 void yield(void) {
+	DISABLE();
 	enqueue(current, &readyQ);
 	dispatch(dequeue(&readyQ));
+	ENABLE();
 }
 
 void lock(mutex *m) {
@@ -103,4 +112,14 @@ void lock(mutex *m) {
 
 void unlock(mutex *m) {
 
+}
+
+ISR(PCINT1_vect) {
+	if (!(PINB & (1 << PINB7))) { // Check if PORTB pin 7 is low (joystick pressed)
+		yield(); // Call yield() to switch threads
+	}
+}
+
+ISR(TIMER1_COMPA_vect) {
+	yield(); // Call yield() to switch threads
 }
