@@ -12,7 +12,7 @@
                         *((unsigned int *)(buf)+9) = (unsigned int)(a) + STACKSIZE - 4
 
 // System clock frequency (8 MHz)
-#define F_CPU 8000000UL
+#define CPU 8000000UL
 
 // Desired interrupt period (50 ms)
 #define INTERRUPT_PERIOD_MS 50
@@ -21,7 +21,7 @@
 #define PRESCALER 1024
 
 // Calculate the value for OCR1A
-#define OCR1A_VALUE (((INTERRUPT_PERIOD_MS / 1000.0) * F_CPU) / PRESCALER - 1)
+#define OCR1A_VALUE (((INTERRUPT_PERIOD_MS / 1000.0) * CPU) / PRESCALER - 1)
 
 struct thread_block {
     void (*function)(int);   // code to run
@@ -49,20 +49,20 @@ static void initialize(void) {
 	threads[NTHREADS - 1].next = NULL;
 	
 	// Enable pull-up resistor on PORTB pin 7 (joystick downward)
-	DDRB &= ~(1 << DDB7);  // Set PORTB pin 7 as input
-	PORTB |= (1 << PB7); // Enable pull-up resistor
+	DDRB &= ~(1 << DDB7);
+	PORTB |= (1 << PB7);
 	
 	// Enable pin change interrupt for PCINT15 (PORTB pin 7)
-	PCMSK1 |= (1 << PCINT15); // Enable PCINT15 in Pin Change Mask Register 1
-	EIMSK |= (1 << PCIE1); // Enable PCI1 in External Interrupt Mask Register
+	PCMSK1 |= (1 << PCINT15);
+	EIMSK |= (1 << PCIE1);
 	
 	// Configure OCR1A (Output Compare Register A) for 50 ms interrupts
-	TCCR1B |= (1 << WGM12);  // Set CTC mode (Clear Timer on Compare)
-	OCR1A = OCR1A_VALUE; // Set compare value for 50 ms (8 MHz / 1024 prescaler)
-	TCCR1B |= (1 << CS12) | (1 << CS10); // Set prescaler to 1024
-	TIMSK1 |= (1 << OCIE1A); // Enable Timer/Counter1 Compare Match A interrupt
+	TCCR1B |= (1 << WGM12);  // CTC (Clear Timer on Compare)
+	OCR1A = OCR1A_VALUE; // 50 ms delay
+	TCCR1B |= (1 << CS12) | (1 << CS10);
+	TIMSK1 |= (1 << OCIE1A); // Compare Match A interrupt
 	
-	// Enable global interrupts
+	// Global interrupts
 	sei();
 	initialized = 1;
 }
@@ -85,7 +85,7 @@ static thread dequeue(thread *queue) {
         *queue = (*queue)->next;
     } else {
         // Empty queue, kernel panic!!!
-        while (1) ;  // not much else to do...
+        while (1) ;  // not much else to do....
     }
     return p;
 }
@@ -129,8 +129,9 @@ void yield(void) {
 
 void lock(mutex *m) {
 	DISABLE();
+    // If already locked
 	if (m->locked) {
-		enqueue(current, &(m->waitQ)); // Add current thread to the mutex wait queue
+		enqueue(current, &(m->waitQ)); // Add to mutex wait queue
 		dispatch(dequeue(&readyQ));    // Dispatch the next thread
 		} else {
 		m->locked = 1; // Lock the mutex
@@ -140,6 +141,7 @@ void lock(mutex *m) {
 
 void unlock(mutex *m) {
 	DISABLE();
+    // If already unlocked
 	if (m->waitQ) {
 		enqueue(dequeue(&(m->waitQ)), &readyQ); // Move a thread from the wait queue to the ready queue
 		} else {

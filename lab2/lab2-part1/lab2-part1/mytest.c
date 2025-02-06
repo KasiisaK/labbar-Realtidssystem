@@ -117,19 +117,19 @@ bool is_prime(int number) {
 }
 
 void printAt(long num, int pos) {
-	lock(&pp_mutex); // Lock the mutex to protect the critical section
+	lock(&pp_mutex);
 
-	// Use the global pp variable
+	// Global pp variable
 	pp = pos;
 	writeChar((num % 100) / 10 + '0', pp);
 	pp++;
 	writeChar(num % 10 + '0', pp);
 
-	// Optional: Add a delay loop to increase the chance of context switching
+	// Delay loop test
 	volatile int i;
-	for (i = 0; i < 1000; i++); // Delay loop
+	for (i = 0; i < 1000; i++);
 
-	unlock(&pp_mutex); // Unlock the mutex
+	unlock(&pp_mutex);
 }
 
 void computePrimes(int pos) {
