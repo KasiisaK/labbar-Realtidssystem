@@ -127,7 +127,7 @@ void printAt(long num, int pos) {
 
 	// Delay loop test
 	volatile int i;
-	for (i = 0; i < 1000; i++);
+	for (i = 0; i < 10000; i++);
 
 	unlock(&pp_mutex);
 }

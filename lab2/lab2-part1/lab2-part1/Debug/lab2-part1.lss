@@ -15,19 +15,19 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   5 .debug_aranges 000000a8  00000000  00000000  000009f0  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   0000126e  00000000  00000000  00000a98  2**0
+  6 .debug_info   00001287  00000000  00000000  00000a98  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00000b9c  00000000  00000000  00001d06  2**0
+  7 .debug_abbrev 00000b9c  00000000  00000000  00001d1f  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   0000073a  00000000  00000000  000028a2  2**0
+  8 .debug_line   0000073b  00000000  00000000  000028bb  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  000001cc  00000000  00000000  00002fdc  2**2
+  9 .debug_frame  000001cc  00000000  00000000  00002ff8  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000005ef  00000000  00000000  000031a8  2**0
+ 10 .debug_str    00000600  00000000  00000000  000031c4  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    000008b0  00000000  00000000  00003797  2**0
+ 11 .debug_loc    000008b0  00000000  00000000  000037c4  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 000000a8  00000000  00000000  00004047  2**0
+ 12 .debug_ranges 000000a8  00000000  00000000  00004074  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -607,12 +607,12 @@ void printAt(long num, int pos) {
  37c:	5c 01       	movw	r10, r24
  37e:	14 2f       	mov	r17, r20
  380:	05 2f       	mov	r16, r21
-	lock(&pp_mutex); // Lock the mutex to protect the critical section
+	lock(&pp_mutex);
  382:	8c e5       	ldi	r24, 0x5C	; 92
  384:	91 e0       	ldi	r25, 0x01	; 1
  386:	0e 94 38 03 	call	0x670	; 0x670 <lock>
 
-	// Use the global pp variable
+	// Global pp variable
 	pp = pos;
  38a:	10 93 60 01 	sts	0x0160, r17	; 0x800160 <pp>
  38e:	00 93 61 01 	sts	0x0161, r16	; 0x800161 <pp+0x1>
@@ -656,15 +656,15 @@ void printAt(long num, int pos) {
  3e6:	80 5d       	subi	r24, 0xD0	; 208
  3e8:	0e 94 95 00 	call	0x12a	; 0x12a <writeChar>
 
-	// Optional: Add a delay loop to increase the chance of context switching
+	// Delay loop test
 	volatile int i;
-	for (i = 0; i < 1000; i++); // Delay loop
+	for (i = 0; i < 10000; i++);
  3ec:	1a 82       	std	Y+2, r1	; 0x02
  3ee:	19 82       	std	Y+1, r1	; 0x01
  3f0:	89 81       	ldd	r24, Y+1	; 0x01
  3f2:	9a 81       	ldd	r25, Y+2	; 0x02
- 3f4:	88 3e       	cpi	r24, 0xE8	; 232
- 3f6:	93 40       	sbci	r25, 0x03	; 3
+ 3f4:	80 31       	cpi	r24, 0x10	; 16
+ 3f6:	97 42       	sbci	r25, 0x27	; 39
  3f8:	54 f4       	brge	.+20     	; 0x40e <__LOCK_REGION_LENGTH__+0xe>
  3fa:	89 81       	ldd	r24, Y+1	; 0x01
  3fc:	9a 81       	ldd	r25, Y+2	; 0x02
@@ -673,11 +673,11 @@ void printAt(long num, int pos) {
  402:	89 83       	std	Y+1, r24	; 0x01
  404:	89 81       	ldd	r24, Y+1	; 0x01
  406:	9a 81       	ldd	r25, Y+2	; 0x02
- 408:	88 3e       	cpi	r24, 0xE8	; 232
- 40a:	93 40       	sbci	r25, 0x03	; 3
+ 408:	80 31       	cpi	r24, 0x10	; 16
+ 40a:	97 42       	sbci	r25, 0x27	; 39
  40c:	b4 f3       	brlt	.-20     	; 0x3fa <printAt+0x9e>
 
-	unlock(&pp_mutex); // Unlock the mutex
+	unlock(&pp_mutex);
  40e:	8c e5       	ldi	r24, 0x5C	; 92
  410:	91 e0       	ldi	r25, 0x01	; 1
  412:	0e 94 5f 03 	call	0x6be	; 0x6be <unlock>
@@ -817,7 +817,7 @@ static void enqueue(thread p, thread *queue) {
  4b8:	08 95       	ret
 
 000004ba <dispatch>:
-        while (1) ;  // not much else to do...
+        while (1) ;  // not much else to do....
     }
     return p;
 }
@@ -895,45 +895,47 @@ static void initialize(void) {
  53a:	10 92 1e 03 	sts	0x031E, r1	; 0x80031e <threads+0x14b>
 	
 	// Enable pull-up resistor on PORTB pin 7 (joystick downward)
-	DDRB &= ~(1 << DDB7);  // Set PORTB pin 7 as input
+	DDRB &= ~(1 << DDB7);
  53e:	27 98       	cbi	0x04, 7	; 4
-	PORTB |= (1 << PB7); // Enable pull-up resistor
+	PORTB |= (1 << PB7);
  540:	2f 9a       	sbi	0x05, 7	; 5
 	
 	// Enable pin change interrupt for PCINT15 (PORTB pin 7)
-	PCMSK1 |= (1 << PCINT15); // Enable PCINT15 in Pin Change Mask Register 1
+	PCMSK1 |= (1 << PCINT15);
  542:	ec e6       	ldi	r30, 0x6C	; 108
  544:	f0 e0       	ldi	r31, 0x00	; 0
  546:	20 81       	ld	r18, Z
  548:	20 68       	ori	r18, 0x80	; 128
  54a:	20 83       	st	Z, r18
-	EIMSK |= (1 << PCIE1);    // Enable PCI1 in External Interrupt Mask Register
+	EIMSK |= (1 << PCIE1);
  54c:	ef 9a       	sbi	0x1d, 7	; 29
 	
-	// Configure Timer/Counter1 for 50 ms interrupts
-	TCCR1B |= (1 << WGM12);  // Set CTC mode (Clear Timer on Compare)
+	// Configure OCR1A (Output Compare Register A) for 50 ms interrupts
+	
+	TCCR1B |= (1 << WGM12);  // CTC (Clear Timer on Compare)
  54e:	e1 e8       	ldi	r30, 0x81	; 129
  550:	f0 e0       	ldi	r31, 0x00	; 0
  552:	20 81       	ld	r18, Z
  554:	28 60       	ori	r18, 0x08	; 8
  556:	20 83       	st	Z, r18
-	OCR1A = 390;             // Set compare value for 50 ms (8 MHz / 1024 prescaler)
- 558:	26 e8       	ldi	r18, 0x86	; 134
+	OCR1A = OCR1A_VALUE; // 50 ms delay
+ 558:	25 e8       	ldi	r18, 0x85	; 133
  55a:	31 e0       	ldi	r19, 0x01	; 1
  55c:	30 93 89 00 	sts	0x0089, r19	; 0x800089 <__DATA_REGION_ORIGIN__+0x29>
  560:	20 93 88 00 	sts	0x0088, r18	; 0x800088 <__DATA_REGION_ORIGIN__+0x28>
-	TCCR1B |= (1 << CS12) | (1 << CS10); // Set prescaler to 1024
+	TCCR1B |= (1 << CS12) | (1 << CS10);
  564:	20 81       	ld	r18, Z
  566:	25 60       	ori	r18, 0x05	; 5
  568:	20 83       	st	Z, r18
-	TIMSK1 |= (1 << OCIE1A); // Enable Timer/Counter1 Compare Match A interrupt
+	TIMSK1 |= (1 << OCIE1A); // Compare Match A interrupt
  56a:	ef e6       	ldi	r30, 0x6F	; 111
  56c:	f0 e0       	ldi	r31, 0x00	; 0
  56e:	20 81       	ld	r18, Z
  570:	22 60       	ori	r18, 0x02	; 2
  572:	20 83       	st	Z, r18
 	
-	// Enable global interrupts
+	
+	// Global interrupts
 	sei();
  574:	78 94       	sei
 	initialized = 1;
@@ -1105,13 +1107,14 @@ void yield(void) {
 void lock(mutex *m) {
 	DISABLE();
  670:	f8 94       	cli
+    // If already locked
 	if (m->locked) {
  672:	fc 01       	movw	r30, r24
  674:	20 81       	ld	r18, Z
  676:	31 81       	ldd	r19, Z+1	; 0x01
  678:	23 2b       	or	r18, r19
  67a:	d1 f0       	breq	.+52     	; 0x6b0 <lock+0x40>
-		enqueue(current, &(m->waitQ)); // Add current thread to the mutex wait queue
+		enqueue(current, &(m->waitQ)); // Add to mutex wait queue
  67c:	bc 01       	movw	r22, r24
  67e:	6e 5f       	subi	r22, 0xFE	; 254
  680:	7f 4f       	sbci	r23, 0xFF	; 255
@@ -1135,11 +1138,11 @@ static thread dequeue(thread *queue) {
  69e:	35 81       	ldd	r19, Z+5	; 0x05
  6a0:	30 93 65 01 	sts	0x0165, r19	; 0x800165 <readyQ+0x1>
  6a4:	20 93 64 01 	sts	0x0164, r18	; 0x800164 <readyQ>
-
 void lock(mutex *m) {
 	DISABLE();
+    // If already locked
 	if (m->locked) {
-		enqueue(current, &(m->waitQ)); // Add current thread to the mutex wait queue
+		enqueue(current, &(m->waitQ)); // Add to mutex wait queue
 		dispatch(dequeue(&readyQ));    // Dispatch the next thread
  6a8:	0e 94 5d 02 	call	0x4ba	; 0x4ba <dispatch>
  6ac:	06 c0       	rjmp	.+12     	; 0x6ba <lock+0x4a>
@@ -1163,6 +1166,7 @@ void unlock(mutex *m) {
  6be:	fc 01       	movw	r30, r24
 	DISABLE();
  6c0:	f8 94       	cli
+    // If already unlocked
 	if (m->waitQ) {
  6c2:	82 81       	ldd	r24, Z+2	; 0x02
  6c4:	93 81       	ldd	r25, Z+3	; 0x03
@@ -1181,10 +1185,10 @@ static thread dequeue(thread *queue) {
  6d2:	15 97       	sbiw	r26, 0x05	; 5
  6d4:	33 83       	std	Z+3, r19	; 0x03
  6d6:	22 83       	std	Z+2, r18	; 0x02
-}
 
 void unlock(mutex *m) {
 	DISABLE();
+    // If already unlocked
 	if (m->waitQ) {
 		enqueue(dequeue(&(m->waitQ)), &readyQ); // Move a thread from the wait queue to the ready queue
  6d8:	64 e6       	ldi	r22, 0x64	; 100
@@ -1201,10 +1205,10 @@ void unlock(mutex *m) {
  6e8:	08 95       	ret
 
 000006ea <__vector_7>:
-// 		} else {
-// 		isPressed = 0; // Reset the flag when the joystick is released
-// 	}
-// }
+}
+*/
+
+// Timer interupt
 
 ISR(TIMER1_COMPA_vect) {
  6ea:	1f 92       	push	r1
@@ -1226,6 +1230,7 @@ ISR(TIMER1_COMPA_vect) {
  70a:	ff 93       	push	r31
 	yield(); // Call yield() to switch threads
  70c:	0e 94 1d 03 	call	0x63a	; 0x63a <yield>
+}
  710:	ff 91       	pop	r31
  712:	ef 91       	pop	r30
  714:	bf 91       	pop	r27

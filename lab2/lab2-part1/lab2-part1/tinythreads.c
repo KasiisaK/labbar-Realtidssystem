@@ -2,6 +2,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "tinythreads.h"
+#include <stdbool.h>
 
 #define NULL            0
 #define DISABLE()       cli()
@@ -22,6 +23,8 @@
 
 // Calculate the value for OCR1A
 #define OCR1A_VALUE (((INTERRUPT_PERIOD_MS / 1000.0) * CPU) / PRESCALER - 1)
+
+bool joystick_pressed = 0;
 
 struct thread_block {
     void (*function)(int);   // code to run
@@ -57,10 +60,12 @@ static void initialize(void) {
 	EIMSK |= (1 << PCIE1);
 	
 	// Configure OCR1A (Output Compare Register A) for 50 ms interrupts
+	
 	TCCR1B |= (1 << WGM12);  // CTC (Clear Timer on Compare)
 	OCR1A = OCR1A_VALUE; // 50 ms delay
 	TCCR1B |= (1 << CS12) | (1 << CS10);
 	TIMSK1 |= (1 << OCIE1A); // Compare Match A interrupt
+	
 	
 	// Global interrupts
 	sei();
@@ -150,18 +155,25 @@ void unlock(mutex *m) {
 	ENABLE();
 }
 
-// ISR(PCINT1_vect) {
-// 	if (!(PINB & (1 << PINB7))) { // Check if PORTB pin 7 is low (joystick pressed)
-// 		if (!isPressed) { // Only yield if the joystick was not already pressed
-// 			isPressed = 1; // Set the flag to indicate the joystick is pressed
-// 			yield(); // Call yield() to switch threads
-// 		}
-// 		} else {
-// 		isPressed = 0; // Reset the flag when the joystick is released
-// 	}
-// }
+/*
+ISR(PCINT1_vect) {
+	bool oldValue = joystick_pressed;
+
+	// Check if joystick is pressed (active low, bit 7 of PINB == 0)
+	if (!(PINB & (1 << PB7))) {
+		if (!joystick_pressed) {
+			joystick_pressed = 1;
+			// Checks toggle
+			if (oldValue == 0 && joystick_pressed == 1) yield();
+		}
+		} else {
+		joystick_pressed = 0;
+	}
+}
+*/
 
 // Timer interupt
+
 ISR(TIMER1_COMPA_vect) {
 	yield(); // Call yield() to switch threads
 }
