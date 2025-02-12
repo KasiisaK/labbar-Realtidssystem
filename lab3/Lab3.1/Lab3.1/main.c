@@ -180,7 +180,7 @@ void primes() {
 		if (isPrime(i))
 		{
 			writeLong(i);
-			_delay_ms(100);
+			_delay_ms(500);
 		}
 		i++;
 		unlock(&regmutex);
