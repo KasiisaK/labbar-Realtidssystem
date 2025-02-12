@@ -30,9 +30,13 @@ thread freeQ   = threads;
 thread readyQ  = NULL;
 thread current = &initp;
 
+//mutexes
+mutex blink_mutex = MUTEX_INIT; 
+mutex button_mutex = MUTEX_INIT;
+
 int initialized = 0;
 int isPressed = 0;
-int interruptTimer = 0;
+bool joystick_pressed = 0;
 
 static void initialize(void) {
 	int i;
@@ -45,15 +49,9 @@ static void initialize(void) {
 }
 
 static void enqueue(thread p, thread *queue) {
-    p->next = NULL;
-    if (*queue == NULL) {
-        *queue = p;
-    } else {
-        thread q = *queue;
-        while (q->next)
-            q = q->next;
-        q->next = p;
-    }
+    // Insert at the front of the queue (FIFO -> LIFO)
+    p->next = *queue;
+    *queue = p;
 }
 
 static thread dequeue(thread *queue) {
@@ -94,6 +92,7 @@ void spawn(void (* function)(int), int arg) {
     SETSTACK(&newp->context, &newp->stack);
 
     enqueue(newp, &readyQ);
+    dispatch(newp); // Start thread
     ENABLE();
 }
 
@@ -119,25 +118,36 @@ void lock(mutex *m) {
 void unlock(mutex *m) {
 	DISABLE();
     // If already unlocked
-	if (m->waitQ) {
-		enqueue(dequeue(&(m->waitQ)), &readyQ); // Move a thread from the wait queue to the ready queue
-		} else {
-		m->locked = 0; // Unlock the mutex
-	}
+    if (m->waitQ) {
+        //take next thread
+        thread next = dequeue(&(m->waitQ)); 
+        enqueue(next, &readyQ); //put in the que
+        dispatch(next); //and run it
+    } else {
+        m->locked = 0; // Mark mutex as unlocked if no one is waiting
+    }
 	ENABLE();
-}
-
-int getTimer() {
-	return interruptTimer;
-}
-
-void setTimer0() {
-	interruptTimer = 0;
-	return;
 }
 
 // Timer interupt
 ISR(TIMER1_COMPA_vect) {
-	interruptTimer++;
-	yield(); // Call yield() to switch threads
+	unlock(&blink_mutex);
 }
+
+// Joystick interupt
+ISR(PCINT1_vect) {
+	bool oldValue = joystick_pressed;
+
+	// Check if joystick is pressed (active low, bit 7 of PINB == 0)
+	if (!(PINB & (1 << PB7))) {
+		if (!joystick_pressed) {
+			joystick_pressed = 1;
+			// Checks toggle
+			if (oldValue == 0 && joystick_pressed == 1) unlock(&button_mutex);
+		}
+		} else {
+		joystick_pressed = 0;
+	}
+}
+
+

@@ -6,8 +6,9 @@
 #include <stdbool.h>
 #include <util/delay.h>
 
-mutex blink_mutex = MUTEX_INIT;
-mutex button_mutex = MUTEX_INIT;
+extern mutex blink_mutex;
+extern mutex button_mutex;
+
 
 // Part 2
 // System clock frequency (8 MHz)

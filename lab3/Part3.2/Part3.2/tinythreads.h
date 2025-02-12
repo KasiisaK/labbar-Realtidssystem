@@ -12,10 +12,6 @@ typedef struct thread_block *thread;
 void spawn(void (*code)(int), int arg);
 void yield(void);
 
-//idk
-int getTimer(void);
-void setTimer0(void);
-
 struct mutex_block {
     int locked;
     thread waitQ;
