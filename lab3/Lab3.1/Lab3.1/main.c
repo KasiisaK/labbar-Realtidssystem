@@ -9,11 +9,21 @@ int pp = 0;
 #include <stdbool.h>
 #include <util/delay.h>
 
+mutex regmutex = MUTEX_INIT;
+
 // Part 2
-#define PRESCALER 256
-#define F_CPU 8000000UL // 8 MHz CPU clock
-#define TIMER_TICKS_PER_SECOND (F_CPU / PRESCALER)
-extern int interruptTimer;
+// System clock frequency (8 MHz)
+#define CPU 8000000UL
+
+// Desired interrupt period (50 ms)
+#define INTERRUPT_PERIOD_MS 50
+
+// Prescaler value (1024)
+#define PRESCALER 1024
+
+// Calculate the value for OCR1A
+#define OCR1A_VALUE (((INTERRUPT_PERIOD_MS / 1000.0) * CPU) / PRESCALER - 1)
+
 
 // Part 3
 #define LCD_SEGMENT1 0b00000001 //  segment 1
@@ -25,8 +35,16 @@ void init() {
 	CLKPR = 0b10000000; // Clock Prescaler Change Enable
 	CLKPR = 0b00000000; // Set 0 for sysclock
 	
-	// Configure Timer/Counter1
-	TCCR1B = (1 << CS12); // Set prescaler to 256
+	// Configure OCR1A (Output Compare Register A) for 50 ms interrupts
+		
+	TCCR1B |= (1 << WGM12);  // CTC (Clear Timer on Compare)
+	OCR1A = OCR1A_VALUE; // 50 ms delay
+	TCCR1B |= (1 << CS12) | (1 << CS10);
+	TIMSK1 |= (1 << OCIE1A); // Compare Match A interrupt
+		
+		
+	// Global interrupts
+	//sei();
 	
 	// Enable pull-up resistor on PORTB pin 7 (joystick downward)
 	DDRB &= ~(1 << DDB7);
@@ -158,23 +176,27 @@ bool isPrime(int number)
 void primes() {
 	long i = 1;
 	while (true) {
+		lock(&regmutex);
 		if (isPrime(i))
 		{
 			writeLong(i);
-			_delay_ms(500);
+			_delay_ms(100);
 		}
 		i++;
+		unlock(&regmutex);
 	}
 } 
 
 void blink() {
 	while (1)
 	{
-		if (getTimer() == 10) {
-			getTimer() = 0;
+		lock(&regmutex);
+		if (getTimer() >= 10) {
+			setTimer0();
 			// Toggle the segment
 			LCDDR0 ^= (1 << 1);
 		}
+		unlock(&regmutex);
 	}
 }
 

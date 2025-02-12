@@ -12,17 +12,7 @@
 #define SETSTACK(buf,a) *((unsigned int *)(buf)+8) = (unsigned int)(a) + STACKSIZE - 4; \
                         *((unsigned int *)(buf)+9) = (unsigned int)(a) + STACKSIZE - 4
 
-// System clock frequency (8 MHz)
-#define CPU 8000000UL
 
-// Desired interrupt period (50 ms)
-#define INTERRUPT_PERIOD_MS 50
-
-// Prescaler value (1024)
-#define PRESCALER 1024
-
-// Calculate the value for OCR1A
-#define OCR1A_VALUE (((INTERRUPT_PERIOD_MS / 1000.0) * CPU) / PRESCALER - 1)
 
 struct thread_block {
     void (*function)(int);   // code to run
@@ -50,16 +40,7 @@ static void initialize(void) {
 	threads[i].next = &threads[i + 1];
 	threads[NTHREADS - 1].next = NULL;
 	
-	// Configure OCR1A (Output Compare Register A) for 50 ms interrupts
-	
-	TCCR1B |= (1 << WGM12);  // CTC (Clear Timer on Compare)
-	OCR1A = OCR1A_VALUE; // 50 ms delay
-	TCCR1B |= (1 << CS12) | (1 << CS10);
-	TIMSK1 |= (1 << OCIE1A); // Compare Match A interrupt
-	
-	
-	// Global interrupts
-	sei();
+
 	initialized = 1;
 }
 
@@ -148,6 +129,11 @@ void unlock(mutex *m) {
 
 int getTimer() {
 	return interruptTimer;
+}
+
+void setTimer0() {
+	interruptTimer = 0;
+	return;
 }
 
 // Timer interupt
