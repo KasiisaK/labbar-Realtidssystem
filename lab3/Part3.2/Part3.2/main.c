@@ -5,9 +5,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <util/delay.h>
-
-extern mutex blink_mutex;
-extern mutex button_mutex;
+#include <avr/interrupt.h>
 
 
 // Part 2
@@ -25,6 +23,12 @@ extern mutex button_mutex;
 #define LCD_SEGMENT1 0b00000001 //  segment 1
 #define LCD_SEGMENT2 0b00100000 //  segment 2
 
+bool joystick_pressed = 0;
+
+//mutexes
+mutex blink_mutex;
+mutex button_mutex;
+
 void init() {
     // Clock Prescale Register "maximum speed"
     CLKPR = 0b10000000; // Clock Prescaler Change Enable
@@ -32,13 +36,15 @@ void init() {
 
     // Configure Timer/Counter1
     TCCR1B |= (1 << WGM12);
-    OCR1A = OCR1A_VALUE;
+    OCR1A = 3906;
     TCCR1B |= (1 << CS12) | (1 << CS10);
     TIMSK1 |= (1 << OCIE1A);
 
     // Enable pull-up resistor on PORTB pin 7 (joystick down)
     DDRB &= ~(1 << DDB7);
     PORTB |= (1 << PB7);
+	EIMSK = EIMSK | (1<<7);
+	PCMSK1 = PCMSK1 | (1<<7); 
 
     // Enable global interrupts
     //sei();
@@ -172,7 +178,7 @@ void primes() {
 		if (isPrime(i))
 		{
 			writeLong(i);
-			_delay_ms(10000);
+			_delay_ms(500);
 		}
 		i++;
 	}
@@ -212,11 +218,38 @@ void button() {
 	}
 }
 
+// Timer interupt
+ISR(TIMER1_COMPA_vect) {
+	unlock(&blink_mutex);
+}
+
+// Joystick interupt
+ISR(PCINT1_vect) {
+	bool oldValue = joystick_pressed;
+
+	// Check if joystick is pressed (active low, bit 7 of PINB == 0)
+	if (!(PINB & (1 << PB7))) {
+		if (!joystick_pressed) {
+			joystick_pressed = 1;
+			// Checks toggle
+			if (oldValue == 0 && joystick_pressed == 1) unlock(&button_mutex);
+		}
+		} else {
+		joystick_pressed = 0;
+	}
+}
+
 
 int main(void) {
+	cli();
 	init();
 	LCD_init();
-	spawn(button, 0);
-	spawn(blink, 0);
-	primes();
+	sei();
+	lock(&blink_mutex);
+	lock(&button_mutex);
+
+	//spawn(button, 0);
+	//spawn(blink, 0);
+	//primes();
+	button();
 }

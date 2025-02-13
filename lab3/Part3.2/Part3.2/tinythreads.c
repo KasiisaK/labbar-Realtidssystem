@@ -30,13 +30,10 @@ thread freeQ   = threads;
 thread readyQ  = NULL;
 thread current = &initp;
 
-//mutexes
-mutex blink_mutex = MUTEX_INIT; 
-mutex button_mutex = MUTEX_INIT;
+
 
 int initialized = 0;
 int isPressed = 0;
-bool joystick_pressed = 0;
 
 static void initialize(void) {
 	int i;
@@ -118,36 +115,15 @@ void lock(mutex *m) {
 void unlock(mutex *m) {
 	DISABLE();
     // If already unlocked
-    if (m->waitQ) {
-        //take next thread
-        thread next = dequeue(&(m->waitQ)); 
-        enqueue(next, &readyQ); //put in the que
-        dispatch(next); //and run it
+    if (m->waitQ == NULL) {
+        m->locked = 0;
     } else {
-        m->locked = 0; // Mark mutex as unlocked if no one is waiting
+        enqueue(current, &readyQ);
+		dispatch(dequeue(&(m->waitQ)));
     }
 	ENABLE();
 }
 
-// Timer interupt
-ISR(TIMER1_COMPA_vect) {
-	unlock(&blink_mutex);
-}
 
-// Joystick interupt
-ISR(PCINT1_vect) {
-	bool oldValue = joystick_pressed;
-
-	// Check if joystick is pressed (active low, bit 7 of PINB == 0)
-	if (!(PINB & (1 << PB7))) {
-		if (!joystick_pressed) {
-			joystick_pressed = 1;
-			// Checks toggle
-			if (oldValue == 0 && joystick_pressed == 1) unlock(&button_mutex);
-		}
-		} else {
-		joystick_pressed = 0;
-	}
-}
 
 
