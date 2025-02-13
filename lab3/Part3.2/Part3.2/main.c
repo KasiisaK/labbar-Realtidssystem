@@ -40,11 +40,13 @@ void init() {
     TCCR1B |= (1 << CS12) | (1 << CS10);
     TIMSK1 |= (1 << OCIE1A);
 
-    // Enable pull-up resistor on PORTB pin 7 (joystick down)
-    DDRB &= ~(1 << DDB7);
-    PORTB |= (1 << PB7);
-	EIMSK = EIMSK | (1<<7);
-	PCMSK1 = PCMSK1 | (1<<7); 
+	// Enable pull-up resistor on PORTB pin 7 (joystick downward)
+	DDRB &= ~(1 << DDB7);
+	PORTB |= (1 << PB7);
+	
+	// Enable pin change interrupt for PCINT15 (PORTB pin 7)
+	PCMSK1 |= (1 << PCINT15);
+	EIMSK |= (1 << PCIE1);
 
     // Enable global interrupts
     //sei();
@@ -248,8 +250,7 @@ int main(void) {
 	lock(&blink_mutex);
 	lock(&button_mutex);
 
-	//spawn(button, 0);
+	spawn(button, 0);
 	//spawn(blink, 0);
-	//primes();
-	button();
+	primes();
 }
