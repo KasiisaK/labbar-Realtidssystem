@@ -24,6 +24,7 @@
 #define LCD_SEGMENT2 0b00100000 //  segment 2
 
 bool joystick_pressed = 0;
+int keyPresses = 0;
 
 //mutexes
 mutex blink_mutex;
@@ -231,13 +232,9 @@ ISR(PCINT1_vect) {
 
 	// Check if joystick is pressed (active low, bit 7 of PINB == 0)
 	if (!(PINB & (1 << PB7))) {
-		if (!joystick_pressed) {
-			joystick_pressed = 1;
-			// Checks toggle
-			if (oldValue == 0 && joystick_pressed == 1) unlock(&button_mutex);
-		}
-		} else {
-		joystick_pressed = 0;
+		keyPresses++;
+		keyCounter();
+		unlock(&button_mutex);			
 	}
 }
 
