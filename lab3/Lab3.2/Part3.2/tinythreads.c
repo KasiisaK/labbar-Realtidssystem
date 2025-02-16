@@ -41,16 +41,6 @@ static void initialize(void) {
 static void enqueue(thread p, thread *queue) {
     p->next = *queue;
     *queue = p;
-    /*
-    p->next = NULL;
-    if (*queue == NULL) {
-        *queue = p;
-    } else {
-        thread q = *queue;
-        while (q->next)
-            q = q->next;
-        q->next = p;
-    }*/
 }
 
 static thread dequeue(thread *queue) {
@@ -91,9 +81,9 @@ void spawn(void (* function)(int), int arg) {
     }
     SETSTACK(&newp->context, &newp->stack);
 
-    enqueue(current, &readyQ);  //added
+
     enqueue(newp, &readyQ);
-    dispatch(dequeue(&readyQ)); //added
+    dispatch(dequeue(newp));
     ENABLE();
 }
 
@@ -106,6 +96,7 @@ void yield(void) {
 
 void lock(mutex *m) {
     DISABLE();
+    // If already locked
     if(m->locked){
         enqueue(current, &(m->waitQ));
         dispatch(dequeue(&readyQ));
@@ -117,8 +108,10 @@ void lock(mutex *m) {
 
 void unlock(mutex *m) {
     DISABLE();
+    //if not waiting
     if((m->waitQ) == NULL){
         m->locked = 0;
+    // If already unlocked
     } else {
         enqueue(current, &readyQ);
         dispatch(dequeue(&(m->waitQ)));

@@ -8,7 +8,6 @@
 #include <avr/interrupt.h>
 
 
-// Part 2
 // System clock frequency (8 MHz)
 #define CPU 8000000UL
 // Desired interrupt period (500 ms)
@@ -19,13 +18,11 @@
 #define OCR1A_VALUE (((INTERRUPT_PERIOD_MS / 1000.0) * CPU) / PRESCALER - 1)
 
 
-// Part 3
 #define LCD_SEGMENT1 0b00000001 //  segment 1
 #define LCD_SEGMENT2 0b00100000 //  segment 2
 
 bool joystick_pressed = 0;
 int keyPresses = 0;
-
 //mutexes
 mutex reg_mutex;
 mutex blink_mutex;
