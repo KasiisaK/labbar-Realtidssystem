@@ -81,8 +81,10 @@ void spawn(void (* function)(int), int arg) {
     }
     SETSTACK(&newp->context, &newp->stack);
 
+    //add and run the thread
+    enqueue(current, &readyQ);
     enqueue(newp, &readyQ);
-    dispatch(newp);
+    dispatch(dequeue(&readyQ));
     ENABLE();
 }
 

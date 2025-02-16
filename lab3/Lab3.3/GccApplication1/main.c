@@ -211,7 +211,6 @@ void toggle_lcd(uint8_t *current_segment) {
 
 void button() {
 	static uint8_t current_segment = LCD_SEGMENT1;
-
 	toggle_lcd(&current_segment);
 }
 
