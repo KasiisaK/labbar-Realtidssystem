@@ -1,7 +1,4 @@
 #include "tinythreads.h"
-mutex pp_mutex = MUTEX_INIT;
-int pp = 0;
-
 #include <avr/io.h>
 #include <stdlib.h>
 #include <string.h>
@@ -9,44 +6,35 @@ int pp = 0;
 #include <stdbool.h>
 #include <util/delay.h>
 
-int keyPresses = 0;
-
-mutex regmutex = MUTEX_INIT;
-
-// Part 2
 // System clock frequency (8 MHz)
 #define CPU 8000000UL
-
 // Desired interrupt period (50 ms)
 #define INTERRUPT_PERIOD_MS 50
-
 // Prescaler value (1024)
 #define PRESCALER 1024
-
 // Calculate the value for OCR1A
 #define OCR1A_VALUE (((INTERRUPT_PERIOD_MS / 1000.0) * CPU) / PRESCALER - 1)
 
 
-// Part 3
 #define LCD_SEGMENT1 0b00000001 //  segment 1
 #define LCD_SEGMENT2 0b00100000 //  segment 2
+
 uint8_t joystick_pressed = 0;
+int keyPresses = 0;
+int pp = 0;
+mutex regmutex;
+mutex pp_mutex;
 
 void init() {
 	// Clock Prescale Register "maximum speed"
 	CLKPR = 0b10000000; // Clock Prescaler Change Enable
 	CLKPR = 0b00000000; // Set 0 for sysclock
 	
-	// Configure OCR1A (Output Compare Register A) for 50 ms interrupts
-		
+	// Configure OCR1A (Output Compare Register A) for 50 ms interrupts		
 	TCCR1B |= (1 << WGM12);  // CTC (Clear Timer on Compare)
 	OCR1A = OCR1A_VALUE; // 50 ms delay
 	TCCR1B |= (1 << CS12) | (1 << CS10);
 	TIMSK1 |= (1 << OCIE1A); // Compare Match A interrupt
-		
-		
-	// Global interrupts
-	//sei();
 	
 	// Enable pull-up resistor on PORTB pin 7 (joystick downward)
 	DDRB &= ~(1 << DDB7);
@@ -211,10 +199,6 @@ void printAt(long num, int pos) {
 	pp++;
 	writeChar(num % 10 + '0', pp);
 
-	// Delay loop test
-	volatile int i;
-	for (i = 0; i < 10000; i++);
-
 	unlock(&pp_mutex);
 }
 
@@ -264,6 +248,7 @@ void button() {
 int main(void) {
 	init();
 	LCD_init();
+	
 	spawn(primes, 1);
 	spawn(blink, 0);
 	button();
