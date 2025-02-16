@@ -27,7 +27,7 @@ bool joystick_pressed = 0;
 int keyPresses = 0;
 
 //mutexes
-//mutex printAt_mutex;
+mutex reg_mutex;
 mutex blink_mutex;
 mutex button_mutex;
 
@@ -38,20 +38,17 @@ void init() {
 
     // Configure Timer/Counter1
     TCCR1B |= (1 << WGM12);
-    OCR1A = 3906;
+    OCR1A = OCR1A_VALUE;
     TCCR1B |= (1 << CS12) | (1 << CS10);
     TIMSK1 |= (1 << OCIE1A);
 
-	// Enable pull-up resistor on PORTB pin 7 (joystick downward)
-	DDRB &= ~(1 << DDB7);
-	PORTB |= (1 << PB7);
-	
-	// Enable pin change interrupt for PCINT15 (PORTB pin 7)
-	PCMSK1 |= (1 << PCINT15);
-	EIMSK |= (1 << PCIE1);
-
-    // Enable global interrupts
-    //sei();
+    // Enable pull-up resistor on PORTB pin 7 (joystick downward)
+    DDRB &= ~(1 << DDB7);
+    PORTB |= (1 << PB7);
+    
+    // Enable pin change interrupt for PCINT15 (PORTB pin 7)
+    PCMSK1 |= (1 << PCINT15);
+    EIMSK |= (1 << PCIE1);
 }
 
 void LCD_init() {
@@ -188,7 +185,7 @@ void primes() {
 		if (isPrime(i))
 		{
 			printAt(i, 0);
-			_delay_ms(5000);
+			_delay_ms(500);
 		}
 		i++;
 	}
@@ -198,7 +195,7 @@ void blink() {
 	while (1) {
 		lock(&blink_mutex);
 		// Toggle the segment
-		LCDDR0 ^= (1 << 1);
+		LCDDR16 ^= (1 << 1);
 	}
 }
 
@@ -235,6 +232,7 @@ void keyCounter() {
 // Timer interupt
 ISR(TIMER1_COMPA_vect) {
 	unlock(&blink_mutex);
+	TCNT1 = 0;
 }
 
 // Joystick interupt
@@ -257,7 +255,7 @@ int main(void) {
 	lock(&blink_mutex);
 	lock(&button_mutex);
 
-	spawn(button, 0);
+	//spawn(button, 0);
 	spawn(blink, 0);
-	primes();
+	//primes();
 }

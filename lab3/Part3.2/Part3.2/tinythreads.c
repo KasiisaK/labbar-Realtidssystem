@@ -34,16 +34,6 @@ static void initialize(void) {
     for (i=0; i<NTHREADS-1; i++)
         threads[i].next = &threads[i+1];
     threads[NTHREADS-1].next = NULL;
-
-    //sets precalser to 1024
-    TCCR1B = (1<<CS12) | (1<<CS10);
-	//activates downward press on joystick
-	PORTB = PORTB | 0b10000000;
-	EIMSK = EIMSK | (1<<PCINT15);
-	PCMSK1 = PCMSK1 | (1<<PCINT15);
-	TIMSK1 = (1<<OCIE1A);
-	TCNT1 = 0;
-	OCR1A = 8000000/(1024*2);
     
     initialized = 1;
 }
@@ -119,7 +109,7 @@ void lock(mutex *m) {
     if(m->locked){
         enqueue(current, &(m->waitQ));
         dispatch(dequeue(&readyQ));
-    }else{
+    } else {
         m->locked = 1;
     }
     ENABLE();
@@ -129,7 +119,7 @@ void unlock(mutex *m) {
     DISABLE();
     if((m->waitQ) == NULL){
         m->locked = 0;
-    }else{
+    } else {
         enqueue(current, &readyQ);
         dispatch(dequeue(&(m->waitQ)));
     }
