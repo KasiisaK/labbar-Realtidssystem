@@ -9,6 +9,8 @@ int pp = 0;
 #include <stdbool.h>
 #include <util/delay.h>
 
+int keyPresses = 0;
+
 mutex regmutex = MUTEX_INIT;
 
 // Part 2
@@ -179,7 +181,7 @@ void primes() {
 		lock(&regmutex);
 		if (isPrime(i))
 		{
-			writeLong(i);
+			printAt(i, 0);
 			_delay_ms(500);
 		}
 		i++;
@@ -233,6 +235,10 @@ void toggle_lcd(uint8_t *current_segment) {
 	}
 }
 
+void keyCounter() {
+	printAt(keyPresses, 3);
+}
+
 void button() {
 	static uint8_t current_segment = LCD_SEGMENT1;
 	uint8_t joystick_pressed = 0;
@@ -242,7 +248,8 @@ void button() {
 		if (!(PINB & (1 << PB7))) {
 			if (!joystick_pressed) {
 				joystick_pressed = 1;
-
+				keyPresses++;
+				keyCounter();
 				toggle_lcd(&current_segment);
 			}
 			} else {

@@ -3,31 +3,31 @@ Lab3.1.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000056  00800100  00000904  00000998  2**0
+  0 .data         00000056  00800100  00000988  00000a1c  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         00000904  00000000  00000000  00000094  2**1
+  1 .text         00000988  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          00000233  00800156  00800156  000009ee  2**0
+  2 .bss          0000023b  00800156  00800156  00000a72  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  000009ee  2**0
+  3 .comment      00000030  00000000  00000000  00000a72  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000a20  2**2
+  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000aa4  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 000000d8  00000000  00000000  00000a60  2**0
+  5 .debug_aranges 000000e0  00000000  00000000  00000ae4  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   000014c4  00000000  00000000  00000b38  2**0
+  6 .debug_info   0000156d  00000000  00000000  00000bc4  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00000c12  00000000  00000000  00001ffc  2**0
+  7 .debug_abbrev 00000c63  00000000  00000000  00002131  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00000864  00000000  00000000  00002c0e  2**0
+  8 .debug_line   00000888  00000000  00000000  00002d94  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  0000025c  00000000  00000000  00003474  2**2
+  9 .debug_frame  0000026c  00000000  00000000  0000361c  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    0000064f  00000000  00000000  000036d0  2**0
+ 10 .debug_str    00000665  00000000  00000000  00003888  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000aab  00000000  00000000  00003d1f  2**0
+ 11 .debug_loc    00000aab  00000000  00000000  00003eed  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 000000f0  00000000  00000000  000047ca  2**0
+ 12 .debug_ranges 00000128  00000000  00000000  00004998  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -40,7 +40,7 @@ Disassembly of section .text:
   10:	0c 94 55 00 	jmp	0xaa	; 0xaa <__bad_interrupt>
   14:	0c 94 55 00 	jmp	0xaa	; 0xaa <__bad_interrupt>
   18:	0c 94 55 00 	jmp	0xaa	; 0xaa <__bad_interrupt>
-  1c:	0c 94 a3 03 	jmp	0x746	; 0x746 <__vector_7>
+  1c:	0c 94 e5 03 	jmp	0x7ca	; 0x7ca <__vector_7>
   20:	0c 94 55 00 	jmp	0xaa	; 0xaa <__bad_interrupt>
   24:	0c 94 55 00 	jmp	0xaa	; 0xaa <__bad_interrupt>
   28:	0c 94 55 00 	jmp	0xaa	; 0xaa <__bad_interrupt>
@@ -79,7 +79,7 @@ Disassembly of section .text:
   7c:	11 e0       	ldi	r17, 0x01	; 1
   7e:	a0 e0       	ldi	r26, 0x00	; 0
   80:	b1 e0       	ldi	r27, 0x01	; 1
-  82:	e4 e0       	ldi	r30, 0x04	; 4
+  82:	e8 e8       	ldi	r30, 0x88	; 136
   84:	f9 e0       	ldi	r31, 0x09	; 9
   86:	02 c0       	rjmp	.+4      	; 0x8c <__do_copy_data+0x10>
   88:	05 90       	lpm	r0, Z+
@@ -98,38 +98,38 @@ Disassembly of section .text:
   9a:	1d 92       	st	X+, r1
 
 0000009c <.do_clear_bss_start>:
-  9c:	a9 38       	cpi	r26, 0x89	; 137
+  9c:	a1 39       	cpi	r26, 0x91	; 145
   9e:	b2 07       	cpc	r27, r18
   a0:	e1 f7       	brne	.-8      	; 0x9a <.do_clear_bss_loop>
-  a2:	0e 94 74 02 	call	0x4e8	; 0x4e8 <main>
-  a6:	0c 94 80 04 	jmp	0x900	; 0x900 <_exit>
+  a2:	0e 94 b6 02 	call	0x56c	; 0x56c <main>
+  a6:	0c 94 c2 04 	jmp	0x984	; 0x984 <_exit>
 
 000000aa <__bad_interrupt>:
   aa:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
 
 000000ae <blink>:
-	// Delay loop test
-	volatile int i;
-	for (i = 0; i < 10000; i++);
-
-	unlock(&pp_mutex);
+			//'0' is 48 in ASCI and digit offsets to right ASCI char
+			writeChar(digit + '0', pos);
+		}
+		pos--; //next pos
+	}
 }
   ae:	cc ee       	ldi	r28, 0xEC	; 236
   b0:	d0 e0       	ldi	r29, 0x00	; 0
   b2:	12 e0       	ldi	r17, 0x02	; 2
   b4:	8e e5       	ldi	r24, 0x5E	; 94
   b6:	91 e0       	ldi	r25, 0x01	; 1
-  b8:	0e 94 5c 03 	call	0x6b8	; 0x6b8 <lock>
-  bc:	0e 94 99 03 	call	0x732	; 0x732 <getTimer>
+  b8:	0e 94 9e 03 	call	0x73c	; 0x73c <lock>
+  bc:	0e 94 db 03 	call	0x7b6	; 0x7b6 <getTimer>
   c0:	0a 97       	sbiw	r24, 0x0a	; 10
   c2:	2c f0       	brlt	.+10     	; 0xce <blink+0x20>
-  c4:	0e 94 9e 03 	call	0x73c	; 0x73c <setTimer0>
+  c4:	0e 94 e0 03 	call	0x7c0	; 0x7c0 <setTimer0>
   c8:	88 81       	ld	r24, Y
   ca:	81 27       	eor	r24, r17
   cc:	88 83       	st	Y, r24
   ce:	8e e5       	ldi	r24, 0x5E	; 94
   d0:	91 e0       	ldi	r25, 0x01	; 1
-  d2:	0e 94 83 03 	call	0x706	; 0x706 <unlock>
+  d2:	0e 94 c5 03 	call	0x78a	; 0x78a <unlock>
   d6:	ee cf       	rjmp	.-36     	; 0xb4 <blink+0x6>
 
 000000d8 <init>:
@@ -179,7 +179,7 @@ Disassembly of section .text:
  132:	f8 f4       	brcc	.+62     	; 0x172 <getSegmentForChar+0x4a>
  134:	e2 5d       	subi	r30, 0xD2	; 210
  136:	ff 4f       	sbci	r31, 0xFF	; 255
- 138:	0c 94 03 04 	jmp	0x806	; 0x806 <__tablejump2__>
+ 138:	0c 94 45 04 	jmp	0x88a	; 0x88a <__tablejump2__>
  13c:	81 e4       	ldi	r24, 0x41	; 65
  13e:	91 e0       	ldi	r25, 0x01	; 1
  140:	08 95       	ret
@@ -449,960 +449,1097 @@ Disassembly of section .text:
  34e:	cf 91       	pop	r28
  350:	08 95       	ret
 
-00000352 <writeLong>:
- 352:	8f 92       	push	r8
- 354:	9f 92       	push	r9
- 356:	af 92       	push	r10
- 358:	bf 92       	push	r11
- 35a:	cf 92       	push	r12
- 35c:	df 92       	push	r13
- 35e:	ef 92       	push	r14
- 360:	ff 92       	push	r15
- 362:	cf 93       	push	r28
- 364:	61 15       	cp	r22, r1
- 366:	71 05       	cpc	r23, r1
- 368:	81 05       	cpc	r24, r1
- 36a:	91 05       	cpc	r25, r1
- 36c:	b1 f4       	brne	.+44     	; 0x39a <writeLong+0x48>
- 36e:	2b c0       	rjmp	.+86     	; 0x3c6 <writeLong+0x74>
- 370:	c1 14       	cp	r12, r1
- 372:	d1 04       	cpc	r13, r1
- 374:	e1 04       	cpc	r14, r1
- 376:	f1 04       	cpc	r15, r1
- 378:	31 f1       	breq	.+76     	; 0x3c6 <writeLong+0x74>
- 37a:	c7 01       	movw	r24, r14
- 37c:	b6 01       	movw	r22, r12
- 37e:	a5 01       	movw	r20, r10
- 380:	94 01       	movw	r18, r8
- 382:	0e 94 e4 03 	call	0x7c8	; 0x7c8 <__divmodsi4>
- 386:	69 01       	movw	r12, r18
- 388:	7a 01       	movw	r14, r20
- 38a:	86 2f       	mov	r24, r22
- 38c:	6c 2f       	mov	r22, r28
- 38e:	80 5d       	subi	r24, 0xD0	; 208
- 390:	0e 94 bf 00 	call	0x17e	; 0x17e <writeChar>
- 394:	c1 50       	subi	r28, 0x01	; 1
- 396:	60 f7       	brcc	.-40     	; 0x370 <writeLong+0x1e>
- 398:	16 c0       	rjmp	.+44     	; 0x3c6 <writeLong+0x74>
- 39a:	2a e0       	ldi	r18, 0x0A	; 10
- 39c:	30 e0       	ldi	r19, 0x00	; 0
- 39e:	40 e0       	ldi	r20, 0x00	; 0
- 3a0:	50 e0       	ldi	r21, 0x00	; 0
- 3a2:	0e 94 e4 03 	call	0x7c8	; 0x7c8 <__divmodsi4>
- 3a6:	69 01       	movw	r12, r18
- 3a8:	7a 01       	movw	r14, r20
- 3aa:	86 2f       	mov	r24, r22
- 3ac:	64 e0       	ldi	r22, 0x04	; 4
- 3ae:	80 5d       	subi	r24, 0xD0	; 208
- 3b0:	0e 94 bf 00 	call	0x17e	; 0x17e <writeChar>
- 3b4:	c3 e0       	ldi	r28, 0x03	; 3
- 3b6:	0f 2e       	mov	r0, r31
- 3b8:	fa e0       	ldi	r31, 0x0A	; 10
- 3ba:	8f 2e       	mov	r8, r31
- 3bc:	91 2c       	mov	r9, r1
- 3be:	a1 2c       	mov	r10, r1
- 3c0:	b1 2c       	mov	r11, r1
- 3c2:	f0 2d       	mov	r31, r0
- 3c4:	d5 cf       	rjmp	.-86     	; 0x370 <writeLong+0x1e>
- 3c6:	cf 91       	pop	r28
- 3c8:	ff 90       	pop	r15
- 3ca:	ef 90       	pop	r14
- 3cc:	df 90       	pop	r13
- 3ce:	cf 90       	pop	r12
- 3d0:	bf 90       	pop	r11
- 3d2:	af 90       	pop	r10
- 3d4:	9f 90       	pop	r9
- 3d6:	8f 90       	pop	r8
- 3d8:	08 95       	ret
+00000352 <isPrime>:
 
-000003da <isPrime>:
- 3da:	fc 01       	movw	r30, r24
- 3dc:	82 30       	cpi	r24, 0x02	; 2
- 3de:	91 05       	cpc	r25, r1
- 3e0:	1c f1       	brlt	.+70     	; 0x428 <__LOCK_REGION_LENGTH__+0x28>
- 3e2:	84 30       	cpi	r24, 0x04	; 4
- 3e4:	91 05       	cpc	r25, r1
- 3e6:	14 f1       	brlt	.+68     	; 0x42c <__LOCK_REGION_LENGTH__+0x2c>
- 3e8:	81 70       	andi	r24, 0x01	; 1
- 3ea:	90 78       	andi	r25, 0x80	; 128
- 3ec:	99 23       	and	r25, r25
- 3ee:	24 f4       	brge	.+8      	; 0x3f8 <isPrime+0x1e>
- 3f0:	01 97       	sbiw	r24, 0x01	; 1
- 3f2:	8e 6f       	ori	r24, 0xFE	; 254
- 3f4:	9f 6f       	ori	r25, 0xFF	; 255
- 3f6:	01 96       	adiw	r24, 0x01	; 1
- 3f8:	89 2b       	or	r24, r25
- 3fa:	d1 f0       	breq	.+52     	; 0x430 <__LOCK_REGION_LENGTH__+0x30>
- 3fc:	22 e0       	ldi	r18, 0x02	; 2
- 3fe:	30 e0       	ldi	r19, 0x00	; 0
- 400:	06 c0       	rjmp	.+12     	; 0x40e <__LOCK_REGION_LENGTH__+0xe>
- 402:	cf 01       	movw	r24, r30
- 404:	b9 01       	movw	r22, r18
- 406:	0e 94 d0 03 	call	0x7a0	; 0x7a0 <__divmodhi4>
- 40a:	89 2b       	or	r24, r25
- 40c:	99 f0       	breq	.+38     	; 0x434 <__LOCK_REGION_LENGTH__+0x34>
- 40e:	2f 5f       	subi	r18, 0xFF	; 255
- 410:	3f 4f       	sbci	r19, 0xFF	; 255
- 412:	22 9f       	mul	r18, r18
- 414:	c0 01       	movw	r24, r0
- 416:	23 9f       	mul	r18, r19
- 418:	90 0d       	add	r25, r0
- 41a:	90 0d       	add	r25, r0
- 41c:	11 24       	eor	r1, r1
- 41e:	e8 17       	cp	r30, r24
- 420:	f9 07       	cpc	r31, r25
- 422:	7c f7       	brge	.-34     	; 0x402 <__LOCK_REGION_LENGTH__+0x2>
- 424:	81 e0       	ldi	r24, 0x01	; 1
- 426:	08 95       	ret
- 428:	80 e0       	ldi	r24, 0x00	; 0
- 42a:	08 95       	ret
- 42c:	81 e0       	ldi	r24, 0x01	; 1
- 42e:	08 95       	ret
- 430:	80 e0       	ldi	r24, 0x00	; 0
- 432:	08 95       	ret
- 434:	80 e0       	ldi	r24, 0x00	; 0
- 436:	08 95       	ret
+bool isPrime(int number)
+{
+ 352:	fc 01       	movw	r30, r24
+	//0 and 1 are not prime numbers
+	if (number <= 1) return false;
+ 354:	82 30       	cpi	r24, 0x02	; 2
+ 356:	91 05       	cpc	r25, r1
+ 358:	1c f1       	brlt	.+70     	; 0x3a0 <isPrime+0x4e>
 
-00000438 <primes>:
- 438:	c1 2c       	mov	r12, r1
- 43a:	d1 2c       	mov	r13, r1
- 43c:	76 01       	movw	r14, r12
- 43e:	c3 94       	inc	r12
- 440:	8e e5       	ldi	r24, 0x5E	; 94
- 442:	91 e0       	ldi	r25, 0x01	; 1
- 444:	0e 94 5c 03 	call	0x6b8	; 0x6b8 <lock>
- 448:	c6 01       	movw	r24, r12
- 44a:	0e 94 ed 01 	call	0x3da	; 0x3da <isPrime>
- 44e:	88 23       	and	r24, r24
- 450:	69 f0       	breq	.+26     	; 0x46c <primes+0x34>
- 452:	c7 01       	movw	r24, r14
- 454:	b6 01       	movw	r22, r12
- 456:	0e 94 a9 01 	call	0x352	; 0x352 <writeLong>
- 45a:	2f e9       	ldi	r18, 0x9F	; 159
- 45c:	86 e8       	ldi	r24, 0x86	; 134
- 45e:	91 e0       	ldi	r25, 0x01	; 1
- 460:	21 50       	subi	r18, 0x01	; 1
- 462:	80 40       	sbci	r24, 0x00	; 0
- 464:	90 40       	sbci	r25, 0x00	; 0
- 466:	e1 f7       	brne	.-8      	; 0x460 <primes+0x28>
- 468:	00 c0       	rjmp	.+0      	; 0x46a <primes+0x32>
- 46a:	00 00       	nop
- 46c:	2f ef       	ldi	r18, 0xFF	; 255
- 46e:	c2 1a       	sub	r12, r18
- 470:	d2 0a       	sbc	r13, r18
- 472:	e2 0a       	sbc	r14, r18
- 474:	f2 0a       	sbc	r15, r18
- 476:	8e e5       	ldi	r24, 0x5E	; 94
- 478:	91 e0       	ldi	r25, 0x01	; 1
- 47a:	0e 94 83 03 	call	0x706	; 0x706 <unlock>
- 47e:	e0 cf       	rjmp	.-64     	; 0x440 <primes+0x8>
+	//loop from 2 to sqrt(number)
+	for (int i=2; i*i <= number; i++)
+ 35a:	84 30       	cpi	r24, 0x04	; 4
+ 35c:	91 05       	cpc	r25, r1
+ 35e:	14 f1       	brlt	.+68     	; 0x3a4 <isPrime+0x52>
+	{
+		if (number % i == 0) return false;	//divisible => not prime
+ 360:	81 70       	andi	r24, 0x01	; 1
+ 362:	90 78       	andi	r25, 0x80	; 128
+ 364:	99 23       	and	r25, r25
+ 366:	24 f4       	brge	.+8      	; 0x370 <isPrime+0x1e>
+ 368:	01 97       	sbiw	r24, 0x01	; 1
+ 36a:	8e 6f       	ori	r24, 0xFE	; 254
+ 36c:	9f 6f       	ori	r25, 0xFF	; 255
+ 36e:	01 96       	adiw	r24, 0x01	; 1
+ 370:	89 2b       	or	r24, r25
+ 372:	d1 f0       	breq	.+52     	; 0x3a8 <isPrime+0x56>
+ 374:	22 e0       	ldi	r18, 0x02	; 2
+ 376:	30 e0       	ldi	r19, 0x00	; 0
+ 378:	06 c0       	rjmp	.+12     	; 0x386 <isPrime+0x34>
+ 37a:	cf 01       	movw	r24, r30
+ 37c:	b9 01       	movw	r22, r18
+ 37e:	0e 94 12 04 	call	0x824	; 0x824 <__divmodhi4>
+ 382:	89 2b       	or	r24, r25
+ 384:	99 f0       	breq	.+38     	; 0x3ac <isPrime+0x5a>
+{
+	//0 and 1 are not prime numbers
+	if (number <= 1) return false;
 
-00000480 <toggle_lcd>:
+	//loop from 2 to sqrt(number)
+	for (int i=2; i*i <= number; i++)
+ 386:	2f 5f       	subi	r18, 0xFF	; 255
+ 388:	3f 4f       	sbci	r19, 0xFF	; 255
+ 38a:	22 9f       	mul	r18, r18
+ 38c:	c0 01       	movw	r24, r0
+ 38e:	23 9f       	mul	r18, r19
+ 390:	90 0d       	add	r25, r0
+ 392:	90 0d       	add	r25, r0
+ 394:	11 24       	eor	r1, r1
+ 396:	e8 17       	cp	r30, r24
+ 398:	f9 07       	cpc	r31, r25
+ 39a:	7c f7       	brge	.-34     	; 0x37a <isPrime+0x28>
+	{
+		if (number % i == 0) return false;	//divisible => not prime
+	}
+	//is prime if no factors
+	return true;
+ 39c:	81 e0       	ldi	r24, 0x01	; 1
+ 39e:	08 95       	ret
+}
 
-// Toggle between two LCD segments
-void toggle_lcd(uint8_t *current_segment) {
-	if (*current_segment == LCD_SEGMENT1) {
- 480:	fc 01       	movw	r30, r24
- 482:	20 81       	ld	r18, Z
- 484:	21 30       	cpi	r18, 0x01	; 1
- 486:	69 f4       	brne	.+26     	; 0x4a2 <toggle_lcd+0x22>
-		*current_segment = LCD_SEGMENT2;
- 488:	20 e2       	ldi	r18, 0x20	; 32
- 48a:	20 83       	st	Z, r18
-		// Clear LCD segment 1
-		LCDDR3 &= ~LCD_SEGMENT1;
- 48c:	ef ee       	ldi	r30, 0xEF	; 239
- 48e:	f0 e0       	ldi	r31, 0x00	; 0
- 490:	80 81       	ld	r24, Z
- 492:	8e 7f       	andi	r24, 0xFE	; 254
- 494:	80 83       	st	Z, r24
-		// Update to LCD segment 2
-		LCDDR2 = (LCDDR2 & 0xFF) | LCD_SEGMENT2;
- 496:	ee ee       	ldi	r30, 0xEE	; 238
- 498:	f0 e0       	ldi	r31, 0x00	; 0
- 49a:	80 81       	ld	r24, Z
- 49c:	80 62       	ori	r24, 0x20	; 32
- 49e:	80 83       	st	Z, r24
- 4a0:	08 95       	ret
-		} else {
-		*current_segment = LCD_SEGMENT1;
- 4a2:	21 e0       	ldi	r18, 0x01	; 1
- 4a4:	fc 01       	movw	r30, r24
- 4a6:	20 83       	st	Z, r18
-		// Clear LCD segment 2
-		LCDDR2 &= ~LCD_SEGMENT2;
- 4a8:	ee ee       	ldi	r30, 0xEE	; 238
- 4aa:	f0 e0       	ldi	r31, 0x00	; 0
- 4ac:	80 81       	ld	r24, Z
- 4ae:	8f 7d       	andi	r24, 0xDF	; 223
- 4b0:	80 83       	st	Z, r24
-		// Update to LCD segment 1
-		LCDDR3 = (LCDDR3 & 0xFF) | LCD_SEGMENT1;
- 4b2:	ef ee       	ldi	r30, 0xEF	; 239
- 4b4:	f0 e0       	ldi	r31, 0x00	; 0
- 4b6:	80 81       	ld	r24, Z
- 4b8:	81 60       	ori	r24, 0x01	; 1
- 4ba:	80 83       	st	Z, r24
- 4bc:	08 95       	ret
+bool isPrime(int number)
+{
+	//0 and 1 are not prime numbers
+	if (number <= 1) return false;
+ 3a0:	80 e0       	ldi	r24, 0x00	; 0
+ 3a2:	08 95       	ret
+	for (int i=2; i*i <= number; i++)
+	{
+		if (number % i == 0) return false;	//divisible => not prime
+	}
+	//is prime if no factors
+	return true;
+ 3a4:	81 e0       	ldi	r24, 0x01	; 1
+ 3a6:	08 95       	ret
+	if (number <= 1) return false;
 
-000004be <button>:
+	//loop from 2 to sqrt(number)
+	for (int i=2; i*i <= number; i++)
+	{
+		if (number % i == 0) return false;	//divisible => not prime
+ 3a8:	80 e0       	ldi	r24, 0x00	; 0
+ 3aa:	08 95       	ret
+ 3ac:	80 e0       	ldi	r24, 0x00	; 0
+	}
+	//is prime if no factors
+	return true;
+}
+ 3ae:	08 95       	ret
+
+000003b0 <printAt>:
+		}
+		unlock(&regmutex);
 	}
 }
 
-void button() {
-	static uint8_t current_segment = LCD_SEGMENT1;
-	uint8_t joystick_pressed = 0;
- 4be:	80 e0       	ldi	r24, 0x00	; 0
-				joystick_pressed = 1;
+void printAt(long num, int pos) {
+ 3b0:	8f 92       	push	r8
+ 3b2:	9f 92       	push	r9
+ 3b4:	af 92       	push	r10
+ 3b6:	bf 92       	push	r11
+ 3b8:	cf 92       	push	r12
+ 3ba:	df 92       	push	r13
+ 3bc:	ef 92       	push	r14
+ 3be:	ff 92       	push	r15
+ 3c0:	0f 93       	push	r16
+ 3c2:	1f 93       	push	r17
+ 3c4:	cf 93       	push	r28
+ 3c6:	df 93       	push	r29
+ 3c8:	00 d0       	rcall	.+0      	; 0x3ca <printAt+0x1a>
+ 3ca:	cd b7       	in	r28, 0x3d	; 61
+ 3cc:	de b7       	in	r29, 0x3e	; 62
+ 3ce:	4b 01       	movw	r8, r22
+ 3d0:	5c 01       	movw	r10, r24
+ 3d2:	14 2f       	mov	r17, r20
+ 3d4:	05 2f       	mov	r16, r21
+	lock(&pp_mutex);
+ 3d6:	86 e6       	ldi	r24, 0x66	; 102
+ 3d8:	91 e0       	ldi	r25, 0x01	; 1
+ 3da:	0e 94 9e 03 	call	0x73c	; 0x73c <lock>
 
-				toggle_lcd(&current_segment);
-			}
-			} else {
-			joystick_pressed = 0;
- 4c0:	c0 e0       	ldi	r28, 0x00	; 0
+	// Global pp variable
+	pp = pos;
+ 3de:	10 93 64 01 	sts	0x0164, r17	; 0x800164 <pp>
+ 3e2:	00 93 65 01 	sts	0x0165, r16	; 0x800165 <pp+0x1>
+	writeChar((num % 100) / 10 + '0', pp);
+ 3e6:	c5 01       	movw	r24, r10
+ 3e8:	b4 01       	movw	r22, r8
+ 3ea:	24 e6       	ldi	r18, 0x64	; 100
+ 3ec:	30 e0       	ldi	r19, 0x00	; 0
+ 3ee:	40 e0       	ldi	r20, 0x00	; 0
+ 3f0:	50 e0       	ldi	r21, 0x00	; 0
+ 3f2:	0e 94 26 04 	call	0x84c	; 0x84c <__divmodsi4>
+ 3f6:	0f 2e       	mov	r0, r31
+ 3f8:	fa e0       	ldi	r31, 0x0A	; 10
+ 3fa:	cf 2e       	mov	r12, r31
+ 3fc:	d1 2c       	mov	r13, r1
+ 3fe:	e1 2c       	mov	r14, r1
+ 400:	f1 2c       	mov	r15, r1
+ 402:	f0 2d       	mov	r31, r0
+ 404:	a7 01       	movw	r20, r14
+ 406:	96 01       	movw	r18, r12
+ 408:	0e 94 26 04 	call	0x84c	; 0x84c <__divmodsi4>
+ 40c:	61 2f       	mov	r22, r17
+ 40e:	80 e3       	ldi	r24, 0x30	; 48
+ 410:	82 0f       	add	r24, r18
+ 412:	0e 94 bf 00 	call	0x17e	; 0x17e <writeChar>
+	pp++;
+ 416:	00 91 64 01 	lds	r16, 0x0164	; 0x800164 <pp>
+ 41a:	10 91 65 01 	lds	r17, 0x0165	; 0x800165 <pp+0x1>
+ 41e:	0f 5f       	subi	r16, 0xFF	; 255
+ 420:	1f 4f       	sbci	r17, 0xFF	; 255
+ 422:	10 93 65 01 	sts	0x0165, r17	; 0x800165 <pp+0x1>
+ 426:	00 93 64 01 	sts	0x0164, r16	; 0x800164 <pp>
+	writeChar(num % 10 + '0', pp);
+ 42a:	c5 01       	movw	r24, r10
+ 42c:	b4 01       	movw	r22, r8
+ 42e:	a7 01       	movw	r20, r14
+ 430:	96 01       	movw	r18, r12
+ 432:	0e 94 26 04 	call	0x84c	; 0x84c <__divmodsi4>
+ 436:	86 2f       	mov	r24, r22
+ 438:	60 2f       	mov	r22, r16
+ 43a:	80 5d       	subi	r24, 0xD0	; 208
+ 43c:	0e 94 bf 00 	call	0x17e	; 0x17e <writeChar>
 
+	// Delay loop test
+	volatile int i;
+	for (i = 0; i < 10000; i++);
+ 440:	1a 82       	std	Y+2, r1	; 0x02
+ 442:	19 82       	std	Y+1, r1	; 0x01
+ 444:	89 81       	ldd	r24, Y+1	; 0x01
+ 446:	9a 81       	ldd	r25, Y+2	; 0x02
+ 448:	80 31       	cpi	r24, 0x10	; 16
+ 44a:	97 42       	sbci	r25, 0x27	; 39
+ 44c:	54 f4       	brge	.+20     	; 0x462 <__LOCK_REGION_LENGTH__+0x62>
+ 44e:	89 81       	ldd	r24, Y+1	; 0x01
+ 450:	9a 81       	ldd	r25, Y+2	; 0x02
+ 452:	01 96       	adiw	r24, 0x01	; 1
+ 454:	9a 83       	std	Y+2, r25	; 0x02
+ 456:	89 83       	std	Y+1, r24	; 0x01
+ 458:	89 81       	ldd	r24, Y+1	; 0x01
+ 45a:	9a 81       	ldd	r25, Y+2	; 0x02
+ 45c:	80 31       	cpi	r24, 0x10	; 16
+ 45e:	97 42       	sbci	r25, 0x27	; 39
+ 460:	b4 f3       	brlt	.-20     	; 0x44e <__LOCK_REGION_LENGTH__+0x4e>
+
+	unlock(&pp_mutex);
+ 462:	86 e6       	ldi	r24, 0x66	; 102
+ 464:	91 e0       	ldi	r25, 0x01	; 1
+ 466:	0e 94 c5 03 	call	0x78a	; 0x78a <unlock>
+}
+ 46a:	0f 90       	pop	r0
+ 46c:	0f 90       	pop	r0
+ 46e:	df 91       	pop	r29
+ 470:	cf 91       	pop	r28
+ 472:	1f 91       	pop	r17
+ 474:	0f 91       	pop	r16
+ 476:	ff 90       	pop	r15
+ 478:	ef 90       	pop	r14
+ 47a:	df 90       	pop	r13
+ 47c:	cf 90       	pop	r12
+ 47e:	bf 90       	pop	r11
+ 480:	af 90       	pop	r10
+ 482:	9f 90       	pop	r9
+ 484:	8f 90       	pop	r8
+ 486:	08 95       	ret
+
+00000488 <primes>:
+	//is prime if no factors
+	return true;
+}
+
+void primes() {
+	long i = 1;
+ 488:	c1 2c       	mov	r12, r1
+ 48a:	d1 2c       	mov	r13, r1
+ 48c:	76 01       	movw	r14, r12
+ 48e:	c3 94       	inc	r12
 	while (true) {
-		// Check if joystick is pressed (active low, bit 7 of PINB == 0)
-		if (!(PINB & (1 << PB7))) {
-			if (!joystick_pressed) {
-				joystick_pressed = 1;
- 4c2:	d1 e0       	ldi	r29, 0x01	; 1
-	static uint8_t current_segment = LCD_SEGMENT1;
-	uint8_t joystick_pressed = 0;
-
-	while (true) {
-		// Check if joystick is pressed (active low, bit 7 of PINB == 0)
-		if (!(PINB & (1 << PB7))) {
- 4c4:	1f 99       	sbic	0x03, 7	; 3
- 4c6:	08 c0       	rjmp	.+16     	; 0x4d8 <button+0x1a>
-			if (!joystick_pressed) {
- 4c8:	81 11       	cpse	r24, r1
- 4ca:	07 c0       	rjmp	.+14     	; 0x4da <button+0x1c>
-				joystick_pressed = 1;
-
-				toggle_lcd(&current_segment);
- 4cc:	80 e0       	ldi	r24, 0x00	; 0
- 4ce:	91 e0       	ldi	r25, 0x01	; 1
- 4d0:	0e 94 40 02 	call	0x480	; 0x480 <toggle_lcd>
-
-	while (true) {
-		// Check if joystick is pressed (active low, bit 7 of PINB == 0)
-		if (!(PINB & (1 << PB7))) {
-			if (!joystick_pressed) {
-				joystick_pressed = 1;
- 4d4:	8d 2f       	mov	r24, r29
- 4d6:	01 c0       	rjmp	.+2      	; 0x4da <button+0x1c>
-
-				toggle_lcd(&current_segment);
-			}
-			} else {
-			joystick_pressed = 0;
- 4d8:	8c 2f       	mov	r24, r28
+		lock(&regmutex);
+ 490:	8e e5       	ldi	r24, 0x5E	; 94
+ 492:	91 e0       	ldi	r25, 0x01	; 1
+ 494:	0e 94 9e 03 	call	0x73c	; 0x73c <lock>
+		if (isPrime(i))
+ 498:	c6 01       	movw	r24, r12
+ 49a:	0e 94 a9 01 	call	0x352	; 0x352 <isPrime>
+ 49e:	88 23       	and	r24, r24
+ 4a0:	79 f0       	breq	.+30     	; 0x4c0 <primes+0x38>
+		{
+			printAt(i, 0);
+ 4a2:	40 e0       	ldi	r20, 0x00	; 0
+ 4a4:	50 e0       	ldi	r21, 0x00	; 0
+ 4a6:	c7 01       	movw	r24, r14
+ 4a8:	b6 01       	movw	r22, r12
+ 4aa:	0e 94 d8 01 	call	0x3b0	; 0x3b0 <printAt>
 	#else
 		//round up by default
 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
 	#endif
 
 	__builtin_avr_delay_cycles(__ticks_dc);
- 4da:	e7 ea       	ldi	r30, 0xA7	; 167
- 4dc:	f1 e6       	ldi	r31, 0x61	; 97
- 4de:	31 97       	sbiw	r30, 0x01	; 1
- 4e0:	f1 f7       	brne	.-4      	; 0x4de <button+0x20>
- 4e2:	00 c0       	rjmp	.+0      	; 0x4e4 <button+0x26>
- 4e4:	00 00       	nop
- 4e6:	ee cf       	rjmp	.-36     	; 0x4c4 <button+0x6>
+ 4ae:	2f e9       	ldi	r18, 0x9F	; 159
+ 4b0:	86 e8       	ldi	r24, 0x86	; 134
+ 4b2:	91 e0       	ldi	r25, 0x01	; 1
+ 4b4:	21 50       	subi	r18, 0x01	; 1
+ 4b6:	80 40       	sbci	r24, 0x00	; 0
+ 4b8:	90 40       	sbci	r25, 0x00	; 0
+ 4ba:	e1 f7       	brne	.-8      	; 0x4b4 <primes+0x2c>
+ 4bc:	00 c0       	rjmp	.+0      	; 0x4be <primes+0x36>
+ 4be:	00 00       	nop
+			_delay_ms(500);
+		}
+		i++;
+ 4c0:	2f ef       	ldi	r18, 0xFF	; 255
+ 4c2:	c2 1a       	sub	r12, r18
+ 4c4:	d2 0a       	sbc	r13, r18
+ 4c6:	e2 0a       	sbc	r14, r18
+ 4c8:	f2 0a       	sbc	r15, r18
+		unlock(&regmutex);
+ 4ca:	8e e5       	ldi	r24, 0x5E	; 94
+ 4cc:	91 e0       	ldi	r25, 0x01	; 1
+ 4ce:	0e 94 c5 03 	call	0x78a	; 0x78a <unlock>
+	}
+ 4d2:	de cf       	rjmp	.-68     	; 0x490 <primes+0x8>
 
-000004e8 <main>:
+000004d4 <toggle_lcd>:
+	unlock(&pp_mutex);
+}
+
+// Toggle between two LCD segments
+void toggle_lcd(uint8_t *current_segment) {
+	if (*current_segment == LCD_SEGMENT1) {
+ 4d4:	fc 01       	movw	r30, r24
+ 4d6:	20 81       	ld	r18, Z
+ 4d8:	21 30       	cpi	r18, 0x01	; 1
+ 4da:	69 f4       	brne	.+26     	; 0x4f6 <toggle_lcd+0x22>
+		*current_segment = LCD_SEGMENT2;
+ 4dc:	20 e2       	ldi	r18, 0x20	; 32
+ 4de:	20 83       	st	Z, r18
+		// Clear LCD segment 1
+		LCDDR3 &= ~LCD_SEGMENT1;
+ 4e0:	ef ee       	ldi	r30, 0xEF	; 239
+ 4e2:	f0 e0       	ldi	r31, 0x00	; 0
+ 4e4:	80 81       	ld	r24, Z
+ 4e6:	8e 7f       	andi	r24, 0xFE	; 254
+ 4e8:	80 83       	st	Z, r24
+		// Update to LCD segment 2
+		LCDDR2 = (LCDDR2 & 0xFF) | LCD_SEGMENT2;
+ 4ea:	ee ee       	ldi	r30, 0xEE	; 238
+ 4ec:	f0 e0       	ldi	r31, 0x00	; 0
+ 4ee:	80 81       	ld	r24, Z
+ 4f0:	80 62       	ori	r24, 0x20	; 32
+ 4f2:	80 83       	st	Z, r24
+ 4f4:	08 95       	ret
+		} else {
+		*current_segment = LCD_SEGMENT1;
+ 4f6:	21 e0       	ldi	r18, 0x01	; 1
+ 4f8:	fc 01       	movw	r30, r24
+ 4fa:	20 83       	st	Z, r18
+		// Clear LCD segment 2
+		LCDDR2 &= ~LCD_SEGMENT2;
+ 4fc:	ee ee       	ldi	r30, 0xEE	; 238
+ 4fe:	f0 e0       	ldi	r31, 0x00	; 0
+ 500:	80 81       	ld	r24, Z
+ 502:	8f 7d       	andi	r24, 0xDF	; 223
+ 504:	80 83       	st	Z, r24
+		// Update to LCD segment 1
+		LCDDR3 = (LCDDR3 & 0xFF) | LCD_SEGMENT1;
+ 506:	ef ee       	ldi	r30, 0xEF	; 239
+ 508:	f0 e0       	ldi	r31, 0x00	; 0
+ 50a:	80 81       	ld	r24, Z
+ 50c:	81 60       	ori	r24, 0x01	; 1
+ 50e:	80 83       	st	Z, r24
+ 510:	08 95       	ret
+
+00000512 <keyCounter>:
+	}
+}
+
+void keyCounter() {
+	printAt(keyPresses, 3);
+ 512:	60 91 62 01 	lds	r22, 0x0162	; 0x800162 <keyPresses>
+ 516:	70 91 63 01 	lds	r23, 0x0163	; 0x800163 <keyPresses+0x1>
+ 51a:	07 2e       	mov	r0, r23
+ 51c:	00 0c       	add	r0, r0
+ 51e:	88 0b       	sbc	r24, r24
+ 520:	99 0b       	sbc	r25, r25
+ 522:	43 e0       	ldi	r20, 0x03	; 3
+ 524:	50 e0       	ldi	r21, 0x00	; 0
+ 526:	0e 94 d8 01 	call	0x3b0	; 0x3b0 <printAt>
+ 52a:	08 95       	ret
+
+0000052c <button>:
+}
+
+void button() {
+	static uint8_t current_segment = LCD_SEGMENT1;
+	uint8_t joystick_pressed = 0;
+ 52c:	80 e0       	ldi	r24, 0x00	; 0
+				keyPresses++;
+				keyCounter();
+				toggle_lcd(&current_segment);
+			}
+			} else {
+			joystick_pressed = 0;
+ 52e:	c0 e0       	ldi	r28, 0x00	; 0
+
+	while (true) {
+		// Check if joystick is pressed (active low, bit 7 of PINB == 0)
+		if (!(PINB & (1 << PB7))) {
+			if (!joystick_pressed) {
+				joystick_pressed = 1;
+ 530:	d1 e0       	ldi	r29, 0x01	; 1
+	static uint8_t current_segment = LCD_SEGMENT1;
+	uint8_t joystick_pressed = 0;
+
+	while (true) {
+		// Check if joystick is pressed (active low, bit 7 of PINB == 0)
+		if (!(PINB & (1 << PB7))) {
+ 532:	1f 99       	sbic	0x03, 7	; 3
+ 534:	13 c0       	rjmp	.+38     	; 0x55c <button+0x30>
+			if (!joystick_pressed) {
+ 536:	81 11       	cpse	r24, r1
+ 538:	12 c0       	rjmp	.+36     	; 0x55e <button+0x32>
+				joystick_pressed = 1;
+				keyPresses++;
+ 53a:	80 91 62 01 	lds	r24, 0x0162	; 0x800162 <keyPresses>
+ 53e:	90 91 63 01 	lds	r25, 0x0163	; 0x800163 <keyPresses+0x1>
+ 542:	01 96       	adiw	r24, 0x01	; 1
+ 544:	90 93 63 01 	sts	0x0163, r25	; 0x800163 <keyPresses+0x1>
+ 548:	80 93 62 01 	sts	0x0162, r24	; 0x800162 <keyPresses>
+				keyCounter();
+ 54c:	0e 94 89 02 	call	0x512	; 0x512 <keyCounter>
+				toggle_lcd(&current_segment);
+ 550:	80 e0       	ldi	r24, 0x00	; 0
+ 552:	91 e0       	ldi	r25, 0x01	; 1
+ 554:	0e 94 6a 02 	call	0x4d4	; 0x4d4 <toggle_lcd>
+
+	while (true) {
+		// Check if joystick is pressed (active low, bit 7 of PINB == 0)
+		if (!(PINB & (1 << PB7))) {
+			if (!joystick_pressed) {
+				joystick_pressed = 1;
+ 558:	8d 2f       	mov	r24, r29
+ 55a:	01 c0       	rjmp	.+2      	; 0x55e <button+0x32>
+				keyPresses++;
+				keyCounter();
+				toggle_lcd(&current_segment);
+			}
+			} else {
+			joystick_pressed = 0;
+ 55c:	8c 2f       	mov	r24, r28
+ 55e:	e7 ea       	ldi	r30, 0xA7	; 167
+ 560:	f1 e6       	ldi	r31, 0x61	; 97
+ 562:	31 97       	sbiw	r30, 0x01	; 1
+ 564:	f1 f7       	brne	.-4      	; 0x562 <button+0x36>
+ 566:	00 c0       	rjmp	.+0      	; 0x568 <button+0x3c>
+ 568:	00 00       	nop
+ 56a:	e3 cf       	rjmp	.-58     	; 0x532 <button+0x6>
+
+0000056c <main>:
 	}
 }
 
 
 int main(void) {
 	init();
- 4e8:	0e 94 6c 00 	call	0xd8	; 0xd8 <init>
+ 56c:	0e 94 6c 00 	call	0xd8	; 0xd8 <init>
 	LCD_init();
- 4ec:	0e 94 87 00 	call	0x10e	; 0x10e <LCD_init>
+ 570:	0e 94 87 00 	call	0x10e	; 0x10e <LCD_init>
 	spawn(primes, 1);
- 4f0:	61 e0       	ldi	r22, 0x01	; 1
- 4f2:	70 e0       	ldi	r23, 0x00	; 0
- 4f4:	8c e1       	ldi	r24, 0x1C	; 28
- 4f6:	92 e0       	ldi	r25, 0x02	; 2
- 4f8:	0e 94 bd 02 	call	0x57a	; 0x57a <spawn>
+ 574:	61 e0       	ldi	r22, 0x01	; 1
+ 576:	70 e0       	ldi	r23, 0x00	; 0
+ 578:	84 e4       	ldi	r24, 0x44	; 68
+ 57a:	92 e0       	ldi	r25, 0x02	; 2
+ 57c:	0e 94 ff 02 	call	0x5fe	; 0x5fe <spawn>
 	spawn(blink, 0);
- 4fc:	60 e0       	ldi	r22, 0x00	; 0
- 4fe:	70 e0       	ldi	r23, 0x00	; 0
- 500:	87 e5       	ldi	r24, 0x57	; 87
- 502:	90 e0       	ldi	r25, 0x00	; 0
- 504:	0e 94 bd 02 	call	0x57a	; 0x57a <spawn>
+ 580:	60 e0       	ldi	r22, 0x00	; 0
+ 582:	70 e0       	ldi	r23, 0x00	; 0
+ 584:	87 e5       	ldi	r24, 0x57	; 87
+ 586:	90 e0       	ldi	r25, 0x00	; 0
+ 588:	0e 94 ff 02 	call	0x5fe	; 0x5fe <spawn>
 	button();
- 508:	0e 94 5f 02 	call	0x4be	; 0x4be <button>
+ 58c:	0e 94 96 02 	call	0x52c	; 0x52c <button>
 
-0000050c <enqueue>:
+00000590 <enqueue>:
 
 	initialized = 1;
 }
 
 static void enqueue(thread p, thread *queue) {
-    p->next = NULL;
- 50c:	dc 01       	movw	r26, r24
- 50e:	15 96       	adiw	r26, 0x05	; 5
- 510:	1c 92       	st	X, r1
- 512:	1e 92       	st	-X, r1
- 514:	14 97       	sbiw	r26, 0x04	; 4
-    if (*queue == NULL) {
- 516:	db 01       	movw	r26, r22
- 518:	ed 91       	ld	r30, X+
- 51a:	fc 91       	ld	r31, X
- 51c:	11 97       	sbiw	r26, 0x01	; 1
- 51e:	30 97       	sbiw	r30, 0x00	; 0
- 520:	21 f4       	brne	.+8      	; 0x52a <enqueue+0x1e>
-        *queue = p;
- 522:	8d 93       	st	X+, r24
- 524:	9c 93       	st	X, r25
- 526:	08 95       	ret
-    } else {
-        thread q = *queue;
-        while (q->next)
-            q = q->next;
- 528:	f9 01       	movw	r30, r18
-    p->next = NULL;
-    if (*queue == NULL) {
-        *queue = p;
-    } else {
-        thread q = *queue;
-        while (q->next)
- 52a:	24 81       	ldd	r18, Z+4	; 0x04
- 52c:	35 81       	ldd	r19, Z+5	; 0x05
- 52e:	21 15       	cp	r18, r1
- 530:	31 05       	cpc	r19, r1
- 532:	d1 f7       	brne	.-12     	; 0x528 <enqueue+0x1c>
-            q = q->next;
-        q->next = p;
- 534:	95 83       	std	Z+5, r25	; 0x05
- 536:	84 83       	std	Z+4, r24	; 0x04
- 538:	08 95       	ret
+	p->next = NULL;
+ 590:	dc 01       	movw	r26, r24
+ 592:	15 96       	adiw	r26, 0x05	; 5
+ 594:	1c 92       	st	X, r1
+ 596:	1e 92       	st	-X, r1
+ 598:	14 97       	sbiw	r26, 0x04	; 4
+	if (*queue == NULL) {
+ 59a:	db 01       	movw	r26, r22
+ 59c:	ed 91       	ld	r30, X+
+ 59e:	fc 91       	ld	r31, X
+ 5a0:	11 97       	sbiw	r26, 0x01	; 1
+ 5a2:	30 97       	sbiw	r30, 0x00	; 0
+ 5a4:	21 f4       	brne	.+8      	; 0x5ae <enqueue+0x1e>
+		*queue = p;
+ 5a6:	8d 93       	st	X+, r24
+ 5a8:	9c 93       	st	X, r25
+ 5aa:	08 95       	ret
+		} else {
+		thread q = *queue;
+		while (q->next)
+		q = q->next;
+ 5ac:	f9 01       	movw	r30, r18
+	p->next = NULL;
+	if (*queue == NULL) {
+		*queue = p;
+		} else {
+		thread q = *queue;
+		while (q->next)
+ 5ae:	24 81       	ldd	r18, Z+4	; 0x04
+ 5b0:	35 81       	ldd	r19, Z+5	; 0x05
+ 5b2:	21 15       	cp	r18, r1
+ 5b4:	31 05       	cpc	r19, r1
+ 5b6:	d1 f7       	brne	.-12     	; 0x5ac <enqueue+0x1c>
+		q = q->next;
+		q->next = p;
+ 5b8:	95 83       	std	Z+5, r25	; 0x05
+ 5ba:	84 83       	std	Z+4, r24	; 0x04
+ 5bc:	08 95       	ret
 
-0000053a <dispatch>:
-        while (1) ;  // not much else to do....
-    }
-    return p;
+000005be <dispatch>:
+		while (1) ;  // not much else to do....
+	}
+	return p;
 }
 
 static void dispatch(thread next) {
- 53a:	cf 93       	push	r28
- 53c:	df 93       	push	r29
- 53e:	00 d0       	rcall	.+0      	; 0x540 <dispatch+0x6>
- 540:	cd b7       	in	r28, 0x3d	; 61
- 542:	de b7       	in	r29, 0x3e	; 62
- 544:	9a 83       	std	Y+2, r25	; 0x02
- 546:	89 83       	std	Y+1, r24	; 0x01
-    if (setjmp(current->context) == 0) {
- 548:	80 91 51 01 	lds	r24, 0x0151	; 0x800151 <current>
- 54c:	90 91 52 01 	lds	r25, 0x0152	; 0x800152 <current+0x1>
- 550:	06 96       	adiw	r24, 0x06	; 6
- 552:	0e 94 3f 04 	call	0x87e	; 0x87e <setjmp>
- 556:	89 2b       	or	r24, r25
- 558:	59 f4       	brne	.+22     	; 0x570 <dispatch+0x36>
-        current = next;
- 55a:	89 81       	ldd	r24, Y+1	; 0x01
- 55c:	9a 81       	ldd	r25, Y+2	; 0x02
- 55e:	90 93 52 01 	sts	0x0152, r25	; 0x800152 <current+0x1>
- 562:	80 93 51 01 	sts	0x0151, r24	; 0x800151 <current>
-        longjmp(next->context,1);
- 566:	61 e0       	ldi	r22, 0x01	; 1
- 568:	70 e0       	ldi	r23, 0x00	; 0
- 56a:	06 96       	adiw	r24, 0x06	; 6
- 56c:	0e 94 5f 04 	call	0x8be	; 0x8be <longjmp>
-    }
+ 5be:	cf 93       	push	r28
+ 5c0:	df 93       	push	r29
+ 5c2:	00 d0       	rcall	.+0      	; 0x5c4 <dispatch+0x6>
+ 5c4:	cd b7       	in	r28, 0x3d	; 61
+ 5c6:	de b7       	in	r29, 0x3e	; 62
+ 5c8:	9a 83       	std	Y+2, r25	; 0x02
+ 5ca:	89 83       	std	Y+1, r24	; 0x01
+	if (setjmp(current->context) == 0) {
+ 5cc:	80 91 51 01 	lds	r24, 0x0151	; 0x800151 <current>
+ 5d0:	90 91 52 01 	lds	r25, 0x0152	; 0x800152 <current+0x1>
+ 5d4:	06 96       	adiw	r24, 0x06	; 6
+ 5d6:	0e 94 81 04 	call	0x902	; 0x902 <setjmp>
+ 5da:	89 2b       	or	r24, r25
+ 5dc:	59 f4       	brne	.+22     	; 0x5f4 <dispatch+0x36>
+		current = next;
+ 5de:	89 81       	ldd	r24, Y+1	; 0x01
+ 5e0:	9a 81       	ldd	r25, Y+2	; 0x02
+ 5e2:	90 93 52 01 	sts	0x0152, r25	; 0x800152 <current+0x1>
+ 5e6:	80 93 51 01 	sts	0x0151, r24	; 0x800151 <current>
+		longjmp(next->context,1);
+ 5ea:	61 e0       	ldi	r22, 0x01	; 1
+ 5ec:	70 e0       	ldi	r23, 0x00	; 0
+ 5ee:	06 96       	adiw	r24, 0x06	; 6
+ 5f0:	0e 94 a1 04 	call	0x942	; 0x942 <longjmp>
+	}
 }
- 570:	0f 90       	pop	r0
- 572:	0f 90       	pop	r0
- 574:	df 91       	pop	r29
- 576:	cf 91       	pop	r28
- 578:	08 95       	ret
+ 5f4:	0f 90       	pop	r0
+ 5f6:	0f 90       	pop	r0
+ 5f8:	df 91       	pop	r29
+ 5fa:	cf 91       	pop	r28
+ 5fc:	08 95       	ret
 
-0000057a <spawn>:
+000005fe <spawn>:
 
 void spawn(void (* function)(int), int arg) {
- 57a:	cf 93       	push	r28
- 57c:	df 93       	push	r29
- 57e:	00 d0       	rcall	.+0      	; 0x580 <spawn+0x6>
- 580:	cd b7       	in	r28, 0x3d	; 61
- 582:	de b7       	in	r29, 0x3e	; 62
-    thread newp;
+ 5fe:	cf 93       	push	r28
+ 600:	df 93       	push	r29
+ 602:	00 d0       	rcall	.+0      	; 0x604 <spawn+0x6>
+ 604:	cd b7       	in	r28, 0x3d	; 61
+ 606:	de b7       	in	r29, 0x3e	; 62
+	thread newp;
 
-    DISABLE();
- 584:	f8 94       	cli
-    if (!initialized) initialize();
- 586:	20 91 64 01 	lds	r18, 0x0164	; 0x800164 <initialized>
- 58a:	30 91 65 01 	lds	r19, 0x0165	; 0x800165 <initialized+0x1>
- 58e:	23 2b       	or	r18, r19
- 590:	e1 f4       	brne	.+56     	; 0x5ca <spawn+0x50>
+	DISABLE();
+ 608:	f8 94       	cli
+	if (!initialized) initialize();
+ 60a:	20 91 6c 01 	lds	r18, 0x016C	; 0x80016c <initialized>
+ 60e:	30 91 6d 01 	lds	r19, 0x016D	; 0x80016d <initialized+0x1>
+ 612:	23 2b       	or	r18, r19
+ 614:	e1 f4       	brne	.+56     	; 0x64e <spawn+0x50>
 int interruptTimer = 0;
 
 static void initialize(void) {
 	int i;
 	for (i = 0; i < NTHREADS - 1; i++)
 	threads[i].next = &threads[i + 1];
- 592:	22 e4       	ldi	r18, 0x42	; 66
- 594:	32 e0       	ldi	r19, 0x02	; 2
- 596:	30 93 da 01 	sts	0x01DA, r19	; 0x8001da <threads+0x5>
- 59a:	20 93 d9 01 	sts	0x01D9, r18	; 0x8001d9 <threads+0x4>
- 59e:	2f ea       	ldi	r18, 0xAF	; 175
- 5a0:	32 e0       	ldi	r19, 0x02	; 2
- 5a2:	30 93 47 02 	sts	0x0247, r19	; 0x800247 <threads+0x72>
- 5a6:	20 93 46 02 	sts	0x0246, r18	; 0x800246 <threads+0x71>
- 5aa:	2c e1       	ldi	r18, 0x1C	; 28
- 5ac:	33 e0       	ldi	r19, 0x03	; 3
- 5ae:	30 93 b4 02 	sts	0x02B4, r19	; 0x8002b4 <threads+0xdf>
- 5b2:	20 93 b3 02 	sts	0x02B3, r18	; 0x8002b3 <threads+0xde>
+ 616:	2a e4       	ldi	r18, 0x4A	; 74
+ 618:	32 e0       	ldi	r19, 0x02	; 2
+ 61a:	30 93 e2 01 	sts	0x01E2, r19	; 0x8001e2 <threads+0x5>
+ 61e:	20 93 e1 01 	sts	0x01E1, r18	; 0x8001e1 <threads+0x4>
+ 622:	27 eb       	ldi	r18, 0xB7	; 183
+ 624:	32 e0       	ldi	r19, 0x02	; 2
+ 626:	30 93 4f 02 	sts	0x024F, r19	; 0x80024f <threads+0x72>
+ 62a:	20 93 4e 02 	sts	0x024E, r18	; 0x80024e <threads+0x71>
+ 62e:	24 e2       	ldi	r18, 0x24	; 36
+ 630:	33 e0       	ldi	r19, 0x03	; 3
+ 632:	30 93 bc 02 	sts	0x02BC, r19	; 0x8002bc <threads+0xdf>
+ 636:	20 93 bb 02 	sts	0x02BB, r18	; 0x8002bb <threads+0xde>
 	threads[NTHREADS - 1].next = NULL;
- 5b6:	10 92 21 03 	sts	0x0321, r1	; 0x800321 <threads+0x14c>
- 5ba:	10 92 20 03 	sts	0x0320, r1	; 0x800320 <threads+0x14b>
+ 63a:	10 92 29 03 	sts	0x0329, r1	; 0x800329 <threads+0x14c>
+ 63e:	10 92 28 03 	sts	0x0328, r1	; 0x800328 <threads+0x14b>
 	
 
 	initialized = 1;
- 5be:	21 e0       	ldi	r18, 0x01	; 1
- 5c0:	30 e0       	ldi	r19, 0x00	; 0
- 5c2:	30 93 65 01 	sts	0x0165, r19	; 0x800165 <initialized+0x1>
- 5c6:	20 93 64 01 	sts	0x0164, r18	; 0x800164 <initialized>
-        q->next = p;
-    }
+ 642:	21 e0       	ldi	r18, 0x01	; 1
+ 644:	30 e0       	ldi	r19, 0x00	; 0
+ 646:	30 93 6d 01 	sts	0x016D, r19	; 0x80016d <initialized+0x1>
+ 64a:	20 93 6c 01 	sts	0x016C, r18	; 0x80016c <initialized>
+		q->next = p;
+	}
 }
 
 static thread dequeue(thread *queue) {
-    thread p = *queue;
- 5ca:	20 91 53 01 	lds	r18, 0x0153	; 0x800153 <freeQ>
- 5ce:	30 91 54 01 	lds	r19, 0x0154	; 0x800154 <freeQ+0x1>
- 5d2:	3a 83       	std	Y+2, r19	; 0x02
- 5d4:	29 83       	std	Y+1, r18	; 0x01
-    if (*queue) {
- 5d6:	23 2b       	or	r18, r19
- 5d8:	a9 f0       	breq	.+42     	; 0x604 <spawn+0x8a>
-        *queue = (*queue)->next;
- 5da:	e9 81       	ldd	r30, Y+1	; 0x01
- 5dc:	fa 81       	ldd	r31, Y+2	; 0x02
- 5de:	44 81       	ldd	r20, Z+4	; 0x04
- 5e0:	55 81       	ldd	r21, Z+5	; 0x05
- 5e2:	50 93 54 01 	sts	0x0154, r21	; 0x800154 <freeQ+0x1>
- 5e6:	40 93 53 01 	sts	0x0153, r20	; 0x800153 <freeQ>
+	thread p = *queue;
+ 64e:	20 91 53 01 	lds	r18, 0x0153	; 0x800153 <freeQ>
+ 652:	30 91 54 01 	lds	r19, 0x0154	; 0x800154 <freeQ+0x1>
+ 656:	3a 83       	std	Y+2, r19	; 0x02
+ 658:	29 83       	std	Y+1, r18	; 0x01
+	if (*queue) {
+ 65a:	23 2b       	or	r18, r19
+ 65c:	a9 f0       	breq	.+42     	; 0x688 <spawn+0x8a>
+		*queue = (*queue)->next;
+ 65e:	e9 81       	ldd	r30, Y+1	; 0x01
+ 660:	fa 81       	ldd	r31, Y+2	; 0x02
+ 662:	44 81       	ldd	r20, Z+4	; 0x04
+ 664:	55 81       	ldd	r21, Z+5	; 0x05
+ 666:	50 93 54 01 	sts	0x0154, r21	; 0x800154 <freeQ+0x1>
+ 66a:	40 93 53 01 	sts	0x0153, r20	; 0x800153 <freeQ>
 
-    DISABLE();
-    if (!initialized) initialize();
+	DISABLE();
+	if (!initialized) initialize();
 
-    newp = dequeue(&freeQ);
-    newp->function = function;
- 5ea:	91 83       	std	Z+1, r25	; 0x01
- 5ec:	80 83       	st	Z, r24
-    newp->arg = arg;
- 5ee:	73 83       	std	Z+3, r23	; 0x03
- 5f0:	62 83       	std	Z+2, r22	; 0x02
-    newp->next = NULL;
- 5f2:	15 82       	std	Z+5, r1	; 0x05
- 5f4:	14 82       	std	Z+4, r1	; 0x04
-    if (setjmp(newp->context) == 1) {
- 5f6:	cf 01       	movw	r24, r30
- 5f8:	06 96       	adiw	r24, 0x06	; 6
- 5fa:	0e 94 3f 04 	call	0x87e	; 0x87e <setjmp>
- 5fe:	01 97       	sbiw	r24, 0x01	; 1
- 600:	49 f5       	brne	.+82     	; 0x654 <spawn+0xda>
- 602:	01 c0       	rjmp	.+2      	; 0x606 <spawn+0x8c>
- 604:	ff cf       	rjmp	.-2      	; 0x604 <spawn+0x8a>
-        ENABLE();
- 606:	78 94       	sei
-        current->function(current->arg);
- 608:	a0 91 51 01 	lds	r26, 0x0151	; 0x800151 <current>
- 60c:	b0 91 52 01 	lds	r27, 0x0152	; 0x800152 <current+0x1>
- 610:	ed 91       	ld	r30, X+
- 612:	fc 91       	ld	r31, X
- 614:	11 97       	sbiw	r26, 0x01	; 1
- 616:	12 96       	adiw	r26, 0x02	; 2
- 618:	8d 91       	ld	r24, X+
- 61a:	9c 91       	ld	r25, X
- 61c:	13 97       	sbiw	r26, 0x03	; 3
- 61e:	09 95       	icall
-        DISABLE();
- 620:	f8 94       	cli
-        enqueue(current, &freeQ);
- 622:	63 e5       	ldi	r22, 0x53	; 83
- 624:	71 e0       	ldi	r23, 0x01	; 1
- 626:	80 91 51 01 	lds	r24, 0x0151	; 0x800151 <current>
- 62a:	90 91 52 01 	lds	r25, 0x0152	; 0x800152 <current+0x1>
- 62e:	0e 94 86 02 	call	0x50c	; 0x50c <enqueue>
-        q->next = p;
-    }
+	newp = dequeue(&freeQ);
+	newp->function = function;
+ 66e:	91 83       	std	Z+1, r25	; 0x01
+ 670:	80 83       	st	Z, r24
+	newp->arg = arg;
+ 672:	73 83       	std	Z+3, r23	; 0x03
+ 674:	62 83       	std	Z+2, r22	; 0x02
+	newp->next = NULL;
+ 676:	15 82       	std	Z+5, r1	; 0x05
+ 678:	14 82       	std	Z+4, r1	; 0x04
+	if (setjmp(newp->context) == 1) {
+ 67a:	cf 01       	movw	r24, r30
+ 67c:	06 96       	adiw	r24, 0x06	; 6
+ 67e:	0e 94 81 04 	call	0x902	; 0x902 <setjmp>
+ 682:	01 97       	sbiw	r24, 0x01	; 1
+ 684:	49 f5       	brne	.+82     	; 0x6d8 <spawn+0xda>
+ 686:	01 c0       	rjmp	.+2      	; 0x68a <spawn+0x8c>
+ 688:	ff cf       	rjmp	.-2      	; 0x688 <spawn+0x8a>
+		ENABLE();
+ 68a:	78 94       	sei
+		current->function(current->arg);
+ 68c:	a0 91 51 01 	lds	r26, 0x0151	; 0x800151 <current>
+ 690:	b0 91 52 01 	lds	r27, 0x0152	; 0x800152 <current+0x1>
+ 694:	ed 91       	ld	r30, X+
+ 696:	fc 91       	ld	r31, X
+ 698:	11 97       	sbiw	r26, 0x01	; 1
+ 69a:	12 96       	adiw	r26, 0x02	; 2
+ 69c:	8d 91       	ld	r24, X+
+ 69e:	9c 91       	ld	r25, X
+ 6a0:	13 97       	sbiw	r26, 0x03	; 3
+ 6a2:	09 95       	icall
+		DISABLE();
+ 6a4:	f8 94       	cli
+		enqueue(current, &freeQ);
+ 6a6:	63 e5       	ldi	r22, 0x53	; 83
+ 6a8:	71 e0       	ldi	r23, 0x01	; 1
+ 6aa:	80 91 51 01 	lds	r24, 0x0151	; 0x800151 <current>
+ 6ae:	90 91 52 01 	lds	r25, 0x0152	; 0x800152 <current+0x1>
+ 6b2:	0e 94 c8 02 	call	0x590	; 0x590 <enqueue>
+		q->next = p;
+	}
 }
 
 static thread dequeue(thread *queue) {
-    thread p = *queue;
- 632:	80 91 66 01 	lds	r24, 0x0166	; 0x800166 <readyQ>
- 636:	90 91 67 01 	lds	r25, 0x0167	; 0x800167 <readyQ+0x1>
-    if (*queue) {
- 63a:	00 97       	sbiw	r24, 0x00	; 0
- 63c:	51 f0       	breq	.+20     	; 0x652 <spawn+0xd8>
-        *queue = (*queue)->next;
- 63e:	fc 01       	movw	r30, r24
- 640:	24 81       	ldd	r18, Z+4	; 0x04
- 642:	35 81       	ldd	r19, Z+5	; 0x05
- 644:	30 93 67 01 	sts	0x0167, r19	; 0x800167 <readyQ+0x1>
- 648:	20 93 66 01 	sts	0x0166, r18	; 0x800166 <readyQ>
-    if (setjmp(newp->context) == 1) {
-        ENABLE();
-        current->function(current->arg);
-        DISABLE();
-        enqueue(current, &freeQ);
-        dispatch(dequeue(&readyQ));
- 64c:	0e 94 9d 02 	call	0x53a	; 0x53a <dispatch>
- 650:	01 c0       	rjmp	.+2      	; 0x654 <spawn+0xda>
- 652:	ff cf       	rjmp	.-2      	; 0x652 <spawn+0xd8>
-    }
-    SETSTACK(&newp->context, &newp->stack);
- 654:	e9 81       	ldd	r30, Y+1	; 0x01
- 656:	fa 81       	ldd	r31, Y+2	; 0x02
- 658:	36 96       	adiw	r30, 0x06	; 6
- 65a:	89 81       	ldd	r24, Y+1	; 0x01
- 65c:	9a 81       	ldd	r25, Y+2	; 0x02
- 65e:	87 59       	subi	r24, 0x97	; 151
- 660:	9f 4f       	sbci	r25, 0xFF	; 255
- 662:	91 8b       	std	Z+17, r25	; 0x11
- 664:	80 8b       	std	Z+16, r24	; 0x10
- 666:	93 8b       	std	Z+19, r25	; 0x13
- 668:	82 8b       	std	Z+18, r24	; 0x12
+	thread p = *queue;
+ 6b6:	80 91 6e 01 	lds	r24, 0x016E	; 0x80016e <readyQ>
+ 6ba:	90 91 6f 01 	lds	r25, 0x016F	; 0x80016f <readyQ+0x1>
+	if (*queue) {
+ 6be:	00 97       	sbiw	r24, 0x00	; 0
+ 6c0:	51 f0       	breq	.+20     	; 0x6d6 <spawn+0xd8>
+		*queue = (*queue)->next;
+ 6c2:	fc 01       	movw	r30, r24
+ 6c4:	24 81       	ldd	r18, Z+4	; 0x04
+ 6c6:	35 81       	ldd	r19, Z+5	; 0x05
+ 6c8:	30 93 6f 01 	sts	0x016F, r19	; 0x80016f <readyQ+0x1>
+ 6cc:	20 93 6e 01 	sts	0x016E, r18	; 0x80016e <readyQ>
+	if (setjmp(newp->context) == 1) {
+		ENABLE();
+		current->function(current->arg);
+		DISABLE();
+		enqueue(current, &freeQ);
+		dispatch(dequeue(&readyQ));
+ 6d0:	0e 94 df 02 	call	0x5be	; 0x5be <dispatch>
+ 6d4:	01 c0       	rjmp	.+2      	; 0x6d8 <spawn+0xda>
+ 6d6:	ff cf       	rjmp	.-2      	; 0x6d6 <spawn+0xd8>
+	}
+	SETSTACK(&newp->context, &newp->stack);
+ 6d8:	e9 81       	ldd	r30, Y+1	; 0x01
+ 6da:	fa 81       	ldd	r31, Y+2	; 0x02
+ 6dc:	36 96       	adiw	r30, 0x06	; 6
+ 6de:	89 81       	ldd	r24, Y+1	; 0x01
+ 6e0:	9a 81       	ldd	r25, Y+2	; 0x02
+ 6e2:	87 59       	subi	r24, 0x97	; 151
+ 6e4:	9f 4f       	sbci	r25, 0xFF	; 255
+ 6e6:	91 8b       	std	Z+17, r25	; 0x11
+ 6e8:	80 8b       	std	Z+16, r24	; 0x10
+ 6ea:	93 8b       	std	Z+19, r25	; 0x13
+ 6ec:	82 8b       	std	Z+18, r24	; 0x12
 
-    enqueue(newp, &readyQ);
- 66a:	66 e6       	ldi	r22, 0x66	; 102
- 66c:	71 e0       	ldi	r23, 0x01	; 1
- 66e:	89 81       	ldd	r24, Y+1	; 0x01
- 670:	9a 81       	ldd	r25, Y+2	; 0x02
- 672:	0e 94 86 02 	call	0x50c	; 0x50c <enqueue>
-    ENABLE();
- 676:	78 94       	sei
+	enqueue(newp, &readyQ);
+ 6ee:	6e e6       	ldi	r22, 0x6E	; 110
+ 6f0:	71 e0       	ldi	r23, 0x01	; 1
+ 6f2:	89 81       	ldd	r24, Y+1	; 0x01
+ 6f4:	9a 81       	ldd	r25, Y+2	; 0x02
+ 6f6:	0e 94 c8 02 	call	0x590	; 0x590 <enqueue>
+	ENABLE();
+ 6fa:	78 94       	sei
 }
- 678:	0f 90       	pop	r0
- 67a:	0f 90       	pop	r0
- 67c:	df 91       	pop	r29
- 67e:	cf 91       	pop	r28
- 680:	08 95       	ret
+ 6fc:	0f 90       	pop	r0
+ 6fe:	0f 90       	pop	r0
+ 700:	df 91       	pop	r29
+ 702:	cf 91       	pop	r28
+ 704:	08 95       	ret
 
-00000682 <yield>:
+00000706 <yield>:
 
 void yield(void) {
 	DISABLE();
- 682:	f8 94       	cli
+ 706:	f8 94       	cli
 	enqueue(current, &readyQ);
- 684:	66 e6       	ldi	r22, 0x66	; 102
- 686:	71 e0       	ldi	r23, 0x01	; 1
- 688:	80 91 51 01 	lds	r24, 0x0151	; 0x800151 <current>
- 68c:	90 91 52 01 	lds	r25, 0x0152	; 0x800152 <current+0x1>
- 690:	0e 94 86 02 	call	0x50c	; 0x50c <enqueue>
-        q->next = p;
-    }
+ 708:	6e e6       	ldi	r22, 0x6E	; 110
+ 70a:	71 e0       	ldi	r23, 0x01	; 1
+ 70c:	80 91 51 01 	lds	r24, 0x0151	; 0x800151 <current>
+ 710:	90 91 52 01 	lds	r25, 0x0152	; 0x800152 <current+0x1>
+ 714:	0e 94 c8 02 	call	0x590	; 0x590 <enqueue>
+		q->next = p;
+	}
 }
 
 static thread dequeue(thread *queue) {
-    thread p = *queue;
- 694:	80 91 66 01 	lds	r24, 0x0166	; 0x800166 <readyQ>
- 698:	90 91 67 01 	lds	r25, 0x0167	; 0x800167 <readyQ+0x1>
-    if (*queue) {
- 69c:	00 97       	sbiw	r24, 0x00	; 0
- 69e:	59 f0       	breq	.+22     	; 0x6b6 <yield+0x34>
-        *queue = (*queue)->next;
- 6a0:	fc 01       	movw	r30, r24
- 6a2:	24 81       	ldd	r18, Z+4	; 0x04
- 6a4:	35 81       	ldd	r19, Z+5	; 0x05
- 6a6:	30 93 67 01 	sts	0x0167, r19	; 0x800167 <readyQ+0x1>
- 6aa:	20 93 66 01 	sts	0x0166, r18	; 0x800166 <readyQ>
+	thread p = *queue;
+ 718:	80 91 6e 01 	lds	r24, 0x016E	; 0x80016e <readyQ>
+ 71c:	90 91 6f 01 	lds	r25, 0x016F	; 0x80016f <readyQ+0x1>
+	if (*queue) {
+ 720:	00 97       	sbiw	r24, 0x00	; 0
+ 722:	59 f0       	breq	.+22     	; 0x73a <yield+0x34>
+		*queue = (*queue)->next;
+ 724:	fc 01       	movw	r30, r24
+ 726:	24 81       	ldd	r18, Z+4	; 0x04
+ 728:	35 81       	ldd	r19, Z+5	; 0x05
+ 72a:	30 93 6f 01 	sts	0x016F, r19	; 0x80016f <readyQ+0x1>
+ 72e:	20 93 6e 01 	sts	0x016E, r18	; 0x80016e <readyQ>
 }
 
 void yield(void) {
 	DISABLE();
 	enqueue(current, &readyQ);
 	dispatch(dequeue(&readyQ));
- 6ae:	0e 94 9d 02 	call	0x53a	; 0x53a <dispatch>
+ 732:	0e 94 df 02 	call	0x5be	; 0x5be <dispatch>
 	ENABLE();
- 6b2:	78 94       	sei
+ 736:	78 94       	sei
 }
- 6b4:	08 95       	ret
- 6b6:	ff cf       	rjmp	.-2      	; 0x6b6 <yield+0x34>
+ 738:	08 95       	ret
+ 73a:	ff cf       	rjmp	.-2      	; 0x73a <yield+0x34>
 
-000006b8 <lock>:
+0000073c <lock>:
 
 void lock(mutex *m) {
 	DISABLE();
- 6b8:	f8 94       	cli
-    // If already locked
+ 73c:	f8 94       	cli
+	// If already locked
 	if (m->locked) {
- 6ba:	fc 01       	movw	r30, r24
- 6bc:	20 81       	ld	r18, Z
- 6be:	31 81       	ldd	r19, Z+1	; 0x01
- 6c0:	23 2b       	or	r18, r19
- 6c2:	d1 f0       	breq	.+52     	; 0x6f8 <lock+0x40>
+ 73e:	fc 01       	movw	r30, r24
+ 740:	20 81       	ld	r18, Z
+ 742:	31 81       	ldd	r19, Z+1	; 0x01
+ 744:	23 2b       	or	r18, r19
+ 746:	d1 f0       	breq	.+52     	; 0x77c <lock+0x40>
 		enqueue(current, &(m->waitQ)); // Add to mutex wait queue
- 6c4:	bc 01       	movw	r22, r24
- 6c6:	6e 5f       	subi	r22, 0xFE	; 254
- 6c8:	7f 4f       	sbci	r23, 0xFF	; 255
- 6ca:	80 91 51 01 	lds	r24, 0x0151	; 0x800151 <current>
- 6ce:	90 91 52 01 	lds	r25, 0x0152	; 0x800152 <current+0x1>
- 6d2:	0e 94 86 02 	call	0x50c	; 0x50c <enqueue>
-        q->next = p;
-    }
+ 748:	bc 01       	movw	r22, r24
+ 74a:	6e 5f       	subi	r22, 0xFE	; 254
+ 74c:	7f 4f       	sbci	r23, 0xFF	; 255
+ 74e:	80 91 51 01 	lds	r24, 0x0151	; 0x800151 <current>
+ 752:	90 91 52 01 	lds	r25, 0x0152	; 0x800152 <current+0x1>
+ 756:	0e 94 c8 02 	call	0x590	; 0x590 <enqueue>
+		q->next = p;
+	}
 }
 
 static thread dequeue(thread *queue) {
-    thread p = *queue;
- 6d6:	80 91 66 01 	lds	r24, 0x0166	; 0x800166 <readyQ>
- 6da:	90 91 67 01 	lds	r25, 0x0167	; 0x800167 <readyQ+0x1>
-    if (*queue) {
- 6de:	00 97       	sbiw	r24, 0x00	; 0
- 6e0:	51 f0       	breq	.+20     	; 0x6f6 <lock+0x3e>
-        *queue = (*queue)->next;
- 6e2:	fc 01       	movw	r30, r24
- 6e4:	24 81       	ldd	r18, Z+4	; 0x04
- 6e6:	35 81       	ldd	r19, Z+5	; 0x05
- 6e8:	30 93 67 01 	sts	0x0167, r19	; 0x800167 <readyQ+0x1>
- 6ec:	20 93 66 01 	sts	0x0166, r18	; 0x800166 <readyQ>
+	thread p = *queue;
+ 75a:	80 91 6e 01 	lds	r24, 0x016E	; 0x80016e <readyQ>
+ 75e:	90 91 6f 01 	lds	r25, 0x016F	; 0x80016f <readyQ+0x1>
+	if (*queue) {
+ 762:	00 97       	sbiw	r24, 0x00	; 0
+ 764:	51 f0       	breq	.+20     	; 0x77a <lock+0x3e>
+		*queue = (*queue)->next;
+ 766:	fc 01       	movw	r30, r24
+ 768:	24 81       	ldd	r18, Z+4	; 0x04
+ 76a:	35 81       	ldd	r19, Z+5	; 0x05
+ 76c:	30 93 6f 01 	sts	0x016F, r19	; 0x80016f <readyQ+0x1>
+ 770:	20 93 6e 01 	sts	0x016E, r18	; 0x80016e <readyQ>
 void lock(mutex *m) {
 	DISABLE();
-    // If already locked
+	// If already locked
 	if (m->locked) {
 		enqueue(current, &(m->waitQ)); // Add to mutex wait queue
 		dispatch(dequeue(&readyQ));    // Dispatch the next thread
- 6f0:	0e 94 9d 02 	call	0x53a	; 0x53a <dispatch>
- 6f4:	06 c0       	rjmp	.+12     	; 0x702 <lock+0x4a>
- 6f6:	ff cf       	rjmp	.-2      	; 0x6f6 <lock+0x3e>
+ 774:	0e 94 df 02 	call	0x5be	; 0x5be <dispatch>
+ 778:	06 c0       	rjmp	.+12     	; 0x786 <lock+0x4a>
+ 77a:	ff cf       	rjmp	.-2      	; 0x77a <lock+0x3e>
 		} else {
 		m->locked = 1; // Lock the mutex
- 6f8:	21 e0       	ldi	r18, 0x01	; 1
- 6fa:	30 e0       	ldi	r19, 0x00	; 0
- 6fc:	fc 01       	movw	r30, r24
- 6fe:	31 83       	std	Z+1, r19	; 0x01
- 700:	20 83       	st	Z, r18
+ 77c:	21 e0       	ldi	r18, 0x01	; 1
+ 77e:	30 e0       	ldi	r19, 0x00	; 0
+ 780:	fc 01       	movw	r30, r24
+ 782:	31 83       	std	Z+1, r19	; 0x01
+ 784:	20 83       	st	Z, r18
 	}
 	ENABLE();
- 702:	78 94       	sei
- 704:	08 95       	ret
+ 786:	78 94       	sei
+ 788:	08 95       	ret
 
-00000706 <unlock>:
+0000078a <unlock>:
 }
 
 void unlock(mutex *m) {
- 706:	fc 01       	movw	r30, r24
+ 78a:	fc 01       	movw	r30, r24
 	DISABLE();
- 708:	f8 94       	cli
-    // If already unlocked
+ 78c:	f8 94       	cli
+	// If already unlocked
 	if (m->waitQ) {
- 70a:	82 81       	ldd	r24, Z+2	; 0x02
- 70c:	93 81       	ldd	r25, Z+3	; 0x03
- 70e:	00 97       	sbiw	r24, 0x00	; 0
- 710:	61 f0       	breq	.+24     	; 0x72a <unlock+0x24>
+ 78e:	82 81       	ldd	r24, Z+2	; 0x02
+ 790:	93 81       	ldd	r25, Z+3	; 0x03
+ 792:	00 97       	sbiw	r24, 0x00	; 0
+ 794:	61 f0       	breq	.+24     	; 0x7ae <unlock+0x24>
 }
 
 static thread dequeue(thread *queue) {
-    thread p = *queue;
-    if (*queue) {
-        *queue = (*queue)->next;
- 712:	dc 01       	movw	r26, r24
- 714:	14 96       	adiw	r26, 0x04	; 4
- 716:	2d 91       	ld	r18, X+
- 718:	3c 91       	ld	r19, X
- 71a:	15 97       	sbiw	r26, 0x05	; 5
- 71c:	33 83       	std	Z+3, r19	; 0x03
- 71e:	22 83       	std	Z+2, r18	; 0x02
+	thread p = *queue;
+	if (*queue) {
+		*queue = (*queue)->next;
+ 796:	dc 01       	movw	r26, r24
+ 798:	14 96       	adiw	r26, 0x04	; 4
+ 79a:	2d 91       	ld	r18, X+
+ 79c:	3c 91       	ld	r19, X
+ 79e:	15 97       	sbiw	r26, 0x05	; 5
+ 7a0:	33 83       	std	Z+3, r19	; 0x03
+ 7a2:	22 83       	std	Z+2, r18	; 0x02
 
 void unlock(mutex *m) {
 	DISABLE();
-    // If already unlocked
+	// If already unlocked
 	if (m->waitQ) {
 		enqueue(dequeue(&(m->waitQ)), &readyQ); // Move a thread from the wait queue to the ready queue
- 720:	66 e6       	ldi	r22, 0x66	; 102
- 722:	71 e0       	ldi	r23, 0x01	; 1
- 724:	0e 94 86 02 	call	0x50c	; 0x50c <enqueue>
- 728:	02 c0       	rjmp	.+4      	; 0x72e <unlock+0x28>
+ 7a4:	6e e6       	ldi	r22, 0x6E	; 110
+ 7a6:	71 e0       	ldi	r23, 0x01	; 1
+ 7a8:	0e 94 c8 02 	call	0x590	; 0x590 <enqueue>
+ 7ac:	02 c0       	rjmp	.+4      	; 0x7b2 <unlock+0x28>
 		} else {
 		m->locked = 0; // Unlock the mutex
- 72a:	11 82       	std	Z+1, r1	; 0x01
- 72c:	10 82       	st	Z, r1
+ 7ae:	11 82       	std	Z+1, r1	; 0x01
+ 7b0:	10 82       	st	Z, r1
 	}
 	ENABLE();
- 72e:	78 94       	sei
- 730:	08 95       	ret
+ 7b2:	78 94       	sei
+ 7b4:	08 95       	ret
 
-00000732 <getTimer>:
+000007b6 <getTimer>:
 }
 
 int getTimer() {
 	return interruptTimer;
 }
- 732:	80 91 62 01 	lds	r24, 0x0162	; 0x800162 <interruptTimer>
- 736:	90 91 63 01 	lds	r25, 0x0163	; 0x800163 <interruptTimer+0x1>
- 73a:	08 95       	ret
+ 7b6:	80 91 6a 01 	lds	r24, 0x016A	; 0x80016a <interruptTimer>
+ 7ba:	90 91 6b 01 	lds	r25, 0x016B	; 0x80016b <interruptTimer+0x1>
+ 7be:	08 95       	ret
 
-0000073c <setTimer0>:
+000007c0 <setTimer0>:
 
 void setTimer0() {
 	interruptTimer = 0;
- 73c:	10 92 63 01 	sts	0x0163, r1	; 0x800163 <interruptTimer+0x1>
- 740:	10 92 62 01 	sts	0x0162, r1	; 0x800162 <interruptTimer>
- 744:	08 95       	ret
+ 7c0:	10 92 6b 01 	sts	0x016B, r1	; 0x80016b <interruptTimer+0x1>
+ 7c4:	10 92 6a 01 	sts	0x016A, r1	; 0x80016a <interruptTimer>
+ 7c8:	08 95       	ret
 
-00000746 <__vector_7>:
+000007ca <__vector_7>:
 	return;
 }
 
 // Timer interupt
 ISR(TIMER1_COMPA_vect) {
- 746:	1f 92       	push	r1
- 748:	0f 92       	push	r0
- 74a:	0f b6       	in	r0, 0x3f	; 63
- 74c:	0f 92       	push	r0
- 74e:	11 24       	eor	r1, r1
- 750:	2f 93       	push	r18
- 752:	3f 93       	push	r19
- 754:	4f 93       	push	r20
- 756:	5f 93       	push	r21
- 758:	6f 93       	push	r22
- 75a:	7f 93       	push	r23
- 75c:	8f 93       	push	r24
- 75e:	9f 93       	push	r25
- 760:	af 93       	push	r26
- 762:	bf 93       	push	r27
- 764:	ef 93       	push	r30
- 766:	ff 93       	push	r31
+ 7ca:	1f 92       	push	r1
+ 7cc:	0f 92       	push	r0
+ 7ce:	0f b6       	in	r0, 0x3f	; 63
+ 7d0:	0f 92       	push	r0
+ 7d2:	11 24       	eor	r1, r1
+ 7d4:	2f 93       	push	r18
+ 7d6:	3f 93       	push	r19
+ 7d8:	4f 93       	push	r20
+ 7da:	5f 93       	push	r21
+ 7dc:	6f 93       	push	r22
+ 7de:	7f 93       	push	r23
+ 7e0:	8f 93       	push	r24
+ 7e2:	9f 93       	push	r25
+ 7e4:	af 93       	push	r26
+ 7e6:	bf 93       	push	r27
+ 7e8:	ef 93       	push	r30
+ 7ea:	ff 93       	push	r31
 	interruptTimer++;
- 768:	80 91 62 01 	lds	r24, 0x0162	; 0x800162 <interruptTimer>
- 76c:	90 91 63 01 	lds	r25, 0x0163	; 0x800163 <interruptTimer+0x1>
- 770:	01 96       	adiw	r24, 0x01	; 1
- 772:	90 93 63 01 	sts	0x0163, r25	; 0x800163 <interruptTimer+0x1>
- 776:	80 93 62 01 	sts	0x0162, r24	; 0x800162 <interruptTimer>
+ 7ec:	80 91 6a 01 	lds	r24, 0x016A	; 0x80016a <interruptTimer>
+ 7f0:	90 91 6b 01 	lds	r25, 0x016B	; 0x80016b <interruptTimer+0x1>
+ 7f4:	01 96       	adiw	r24, 0x01	; 1
+ 7f6:	90 93 6b 01 	sts	0x016B, r25	; 0x80016b <interruptTimer+0x1>
+ 7fa:	80 93 6a 01 	sts	0x016A, r24	; 0x80016a <interruptTimer>
 	yield(); // Call yield() to switch threads
- 77a:	0e 94 41 03 	call	0x682	; 0x682 <yield>
-}
- 77e:	ff 91       	pop	r31
- 780:	ef 91       	pop	r30
- 782:	bf 91       	pop	r27
- 784:	af 91       	pop	r26
- 786:	9f 91       	pop	r25
- 788:	8f 91       	pop	r24
- 78a:	7f 91       	pop	r23
- 78c:	6f 91       	pop	r22
- 78e:	5f 91       	pop	r21
- 790:	4f 91       	pop	r20
- 792:	3f 91       	pop	r19
- 794:	2f 91       	pop	r18
- 796:	0f 90       	pop	r0
- 798:	0f be       	out	0x3f, r0	; 63
- 79a:	0f 90       	pop	r0
- 79c:	1f 90       	pop	r1
- 79e:	18 95       	reti
+ 7fe:	0e 94 83 03 	call	0x706	; 0x706 <yield>
+ 802:	ff 91       	pop	r31
+ 804:	ef 91       	pop	r30
+ 806:	bf 91       	pop	r27
+ 808:	af 91       	pop	r26
+ 80a:	9f 91       	pop	r25
+ 80c:	8f 91       	pop	r24
+ 80e:	7f 91       	pop	r23
+ 810:	6f 91       	pop	r22
+ 812:	5f 91       	pop	r21
+ 814:	4f 91       	pop	r20
+ 816:	3f 91       	pop	r19
+ 818:	2f 91       	pop	r18
+ 81a:	0f 90       	pop	r0
+ 81c:	0f be       	out	0x3f, r0	; 63
+ 81e:	0f 90       	pop	r0
+ 820:	1f 90       	pop	r1
+ 822:	18 95       	reti
 
-000007a0 <__divmodhi4>:
- 7a0:	97 fb       	bst	r25, 7
- 7a2:	07 2e       	mov	r0, r23
- 7a4:	16 f4       	brtc	.+4      	; 0x7aa <__divmodhi4+0xa>
- 7a6:	00 94       	com	r0
- 7a8:	07 d0       	rcall	.+14     	; 0x7b8 <__divmodhi4_neg1>
- 7aa:	77 fd       	sbrc	r23, 7
- 7ac:	09 d0       	rcall	.+18     	; 0x7c0 <__divmodhi4_neg2>
- 7ae:	0e 94 09 04 	call	0x812	; 0x812 <__udivmodhi4>
- 7b2:	07 fc       	sbrc	r0, 7
- 7b4:	05 d0       	rcall	.+10     	; 0x7c0 <__divmodhi4_neg2>
- 7b6:	3e f4       	brtc	.+14     	; 0x7c6 <__divmodhi4_exit>
+00000824 <__divmodhi4>:
+ 824:	97 fb       	bst	r25, 7
+ 826:	07 2e       	mov	r0, r23
+ 828:	16 f4       	brtc	.+4      	; 0x82e <__divmodhi4+0xa>
+ 82a:	00 94       	com	r0
+ 82c:	07 d0       	rcall	.+14     	; 0x83c <__divmodhi4_neg1>
+ 82e:	77 fd       	sbrc	r23, 7
+ 830:	09 d0       	rcall	.+18     	; 0x844 <__divmodhi4_neg2>
+ 832:	0e 94 4b 04 	call	0x896	; 0x896 <__udivmodhi4>
+ 836:	07 fc       	sbrc	r0, 7
+ 838:	05 d0       	rcall	.+10     	; 0x844 <__divmodhi4_neg2>
+ 83a:	3e f4       	brtc	.+14     	; 0x84a <__divmodhi4_exit>
 
-000007b8 <__divmodhi4_neg1>:
- 7b8:	90 95       	com	r25
- 7ba:	81 95       	neg	r24
- 7bc:	9f 4f       	sbci	r25, 0xFF	; 255
- 7be:	08 95       	ret
+0000083c <__divmodhi4_neg1>:
+ 83c:	90 95       	com	r25
+ 83e:	81 95       	neg	r24
+ 840:	9f 4f       	sbci	r25, 0xFF	; 255
+ 842:	08 95       	ret
 
-000007c0 <__divmodhi4_neg2>:
- 7c0:	70 95       	com	r23
- 7c2:	61 95       	neg	r22
- 7c4:	7f 4f       	sbci	r23, 0xFF	; 255
+00000844 <__divmodhi4_neg2>:
+ 844:	70 95       	com	r23
+ 846:	61 95       	neg	r22
+ 848:	7f 4f       	sbci	r23, 0xFF	; 255
 
-000007c6 <__divmodhi4_exit>:
- 7c6:	08 95       	ret
+0000084a <__divmodhi4_exit>:
+ 84a:	08 95       	ret
 
-000007c8 <__divmodsi4>:
- 7c8:	05 2e       	mov	r0, r21
- 7ca:	97 fb       	bst	r25, 7
- 7cc:	1e f4       	brtc	.+6      	; 0x7d4 <__divmodsi4+0xc>
- 7ce:	00 94       	com	r0
- 7d0:	0e 94 fb 03 	call	0x7f6	; 0x7f6 <__negsi2>
- 7d4:	57 fd       	sbrc	r21, 7
- 7d6:	07 d0       	rcall	.+14     	; 0x7e6 <__divmodsi4_neg2>
- 7d8:	0e 94 1d 04 	call	0x83a	; 0x83a <__udivmodsi4>
- 7dc:	07 fc       	sbrc	r0, 7
- 7de:	03 d0       	rcall	.+6      	; 0x7e6 <__divmodsi4_neg2>
- 7e0:	4e f4       	brtc	.+18     	; 0x7f4 <__divmodsi4_exit>
- 7e2:	0c 94 fb 03 	jmp	0x7f6	; 0x7f6 <__negsi2>
+0000084c <__divmodsi4>:
+ 84c:	05 2e       	mov	r0, r21
+ 84e:	97 fb       	bst	r25, 7
+ 850:	1e f4       	brtc	.+6      	; 0x858 <__divmodsi4+0xc>
+ 852:	00 94       	com	r0
+ 854:	0e 94 3d 04 	call	0x87a	; 0x87a <__negsi2>
+ 858:	57 fd       	sbrc	r21, 7
+ 85a:	07 d0       	rcall	.+14     	; 0x86a <__divmodsi4_neg2>
+ 85c:	0e 94 5f 04 	call	0x8be	; 0x8be <__udivmodsi4>
+ 860:	07 fc       	sbrc	r0, 7
+ 862:	03 d0       	rcall	.+6      	; 0x86a <__divmodsi4_neg2>
+ 864:	4e f4       	brtc	.+18     	; 0x878 <__divmodsi4_exit>
+ 866:	0c 94 3d 04 	jmp	0x87a	; 0x87a <__negsi2>
 
-000007e6 <__divmodsi4_neg2>:
- 7e6:	50 95       	com	r21
- 7e8:	40 95       	com	r20
- 7ea:	30 95       	com	r19
- 7ec:	21 95       	neg	r18
- 7ee:	3f 4f       	sbci	r19, 0xFF	; 255
- 7f0:	4f 4f       	sbci	r20, 0xFF	; 255
- 7f2:	5f 4f       	sbci	r21, 0xFF	; 255
+0000086a <__divmodsi4_neg2>:
+ 86a:	50 95       	com	r21
+ 86c:	40 95       	com	r20
+ 86e:	30 95       	com	r19
+ 870:	21 95       	neg	r18
+ 872:	3f 4f       	sbci	r19, 0xFF	; 255
+ 874:	4f 4f       	sbci	r20, 0xFF	; 255
+ 876:	5f 4f       	sbci	r21, 0xFF	; 255
 
-000007f4 <__divmodsi4_exit>:
- 7f4:	08 95       	ret
+00000878 <__divmodsi4_exit>:
+ 878:	08 95       	ret
 
-000007f6 <__negsi2>:
- 7f6:	90 95       	com	r25
- 7f8:	80 95       	com	r24
- 7fa:	70 95       	com	r23
- 7fc:	61 95       	neg	r22
- 7fe:	7f 4f       	sbci	r23, 0xFF	; 255
- 800:	8f 4f       	sbci	r24, 0xFF	; 255
- 802:	9f 4f       	sbci	r25, 0xFF	; 255
- 804:	08 95       	ret
+0000087a <__negsi2>:
+ 87a:	90 95       	com	r25
+ 87c:	80 95       	com	r24
+ 87e:	70 95       	com	r23
+ 880:	61 95       	neg	r22
+ 882:	7f 4f       	sbci	r23, 0xFF	; 255
+ 884:	8f 4f       	sbci	r24, 0xFF	; 255
+ 886:	9f 4f       	sbci	r25, 0xFF	; 255
+ 888:	08 95       	ret
 
-00000806 <__tablejump2__>:
- 806:	ee 0f       	add	r30, r30
- 808:	ff 1f       	adc	r31, r31
- 80a:	05 90       	lpm	r0, Z+
- 80c:	f4 91       	lpm	r31, Z
- 80e:	e0 2d       	mov	r30, r0
- 810:	09 94       	ijmp
+0000088a <__tablejump2__>:
+ 88a:	ee 0f       	add	r30, r30
+ 88c:	ff 1f       	adc	r31, r31
+ 88e:	05 90       	lpm	r0, Z+
+ 890:	f4 91       	lpm	r31, Z
+ 892:	e0 2d       	mov	r30, r0
+ 894:	09 94       	ijmp
 
-00000812 <__udivmodhi4>:
- 812:	aa 1b       	sub	r26, r26
- 814:	bb 1b       	sub	r27, r27
- 816:	51 e1       	ldi	r21, 0x11	; 17
- 818:	07 c0       	rjmp	.+14     	; 0x828 <__udivmodhi4_ep>
+00000896 <__udivmodhi4>:
+ 896:	aa 1b       	sub	r26, r26
+ 898:	bb 1b       	sub	r27, r27
+ 89a:	51 e1       	ldi	r21, 0x11	; 17
+ 89c:	07 c0       	rjmp	.+14     	; 0x8ac <__udivmodhi4_ep>
 
-0000081a <__udivmodhi4_loop>:
- 81a:	aa 1f       	adc	r26, r26
- 81c:	bb 1f       	adc	r27, r27
- 81e:	a6 17       	cp	r26, r22
- 820:	b7 07       	cpc	r27, r23
- 822:	10 f0       	brcs	.+4      	; 0x828 <__udivmodhi4_ep>
- 824:	a6 1b       	sub	r26, r22
- 826:	b7 0b       	sbc	r27, r23
+0000089e <__udivmodhi4_loop>:
+ 89e:	aa 1f       	adc	r26, r26
+ 8a0:	bb 1f       	adc	r27, r27
+ 8a2:	a6 17       	cp	r26, r22
+ 8a4:	b7 07       	cpc	r27, r23
+ 8a6:	10 f0       	brcs	.+4      	; 0x8ac <__udivmodhi4_ep>
+ 8a8:	a6 1b       	sub	r26, r22
+ 8aa:	b7 0b       	sbc	r27, r23
 
-00000828 <__udivmodhi4_ep>:
- 828:	88 1f       	adc	r24, r24
- 82a:	99 1f       	adc	r25, r25
- 82c:	5a 95       	dec	r21
- 82e:	a9 f7       	brne	.-22     	; 0x81a <__udivmodhi4_loop>
- 830:	80 95       	com	r24
- 832:	90 95       	com	r25
- 834:	bc 01       	movw	r22, r24
- 836:	cd 01       	movw	r24, r26
- 838:	08 95       	ret
+000008ac <__udivmodhi4_ep>:
+ 8ac:	88 1f       	adc	r24, r24
+ 8ae:	99 1f       	adc	r25, r25
+ 8b0:	5a 95       	dec	r21
+ 8b2:	a9 f7       	brne	.-22     	; 0x89e <__udivmodhi4_loop>
+ 8b4:	80 95       	com	r24
+ 8b6:	90 95       	com	r25
+ 8b8:	bc 01       	movw	r22, r24
+ 8ba:	cd 01       	movw	r24, r26
+ 8bc:	08 95       	ret
 
-0000083a <__udivmodsi4>:
- 83a:	a1 e2       	ldi	r26, 0x21	; 33
- 83c:	1a 2e       	mov	r1, r26
- 83e:	aa 1b       	sub	r26, r26
- 840:	bb 1b       	sub	r27, r27
- 842:	fd 01       	movw	r30, r26
- 844:	0d c0       	rjmp	.+26     	; 0x860 <__udivmodsi4_ep>
+000008be <__udivmodsi4>:
+ 8be:	a1 e2       	ldi	r26, 0x21	; 33
+ 8c0:	1a 2e       	mov	r1, r26
+ 8c2:	aa 1b       	sub	r26, r26
+ 8c4:	bb 1b       	sub	r27, r27
+ 8c6:	fd 01       	movw	r30, r26
+ 8c8:	0d c0       	rjmp	.+26     	; 0x8e4 <__udivmodsi4_ep>
 
-00000846 <__udivmodsi4_loop>:
- 846:	aa 1f       	adc	r26, r26
- 848:	bb 1f       	adc	r27, r27
- 84a:	ee 1f       	adc	r30, r30
- 84c:	ff 1f       	adc	r31, r31
- 84e:	a2 17       	cp	r26, r18
- 850:	b3 07       	cpc	r27, r19
- 852:	e4 07       	cpc	r30, r20
- 854:	f5 07       	cpc	r31, r21
- 856:	20 f0       	brcs	.+8      	; 0x860 <__udivmodsi4_ep>
- 858:	a2 1b       	sub	r26, r18
- 85a:	b3 0b       	sbc	r27, r19
- 85c:	e4 0b       	sbc	r30, r20
- 85e:	f5 0b       	sbc	r31, r21
+000008ca <__udivmodsi4_loop>:
+ 8ca:	aa 1f       	adc	r26, r26
+ 8cc:	bb 1f       	adc	r27, r27
+ 8ce:	ee 1f       	adc	r30, r30
+ 8d0:	ff 1f       	adc	r31, r31
+ 8d2:	a2 17       	cp	r26, r18
+ 8d4:	b3 07       	cpc	r27, r19
+ 8d6:	e4 07       	cpc	r30, r20
+ 8d8:	f5 07       	cpc	r31, r21
+ 8da:	20 f0       	brcs	.+8      	; 0x8e4 <__udivmodsi4_ep>
+ 8dc:	a2 1b       	sub	r26, r18
+ 8de:	b3 0b       	sbc	r27, r19
+ 8e0:	e4 0b       	sbc	r30, r20
+ 8e2:	f5 0b       	sbc	r31, r21
 
-00000860 <__udivmodsi4_ep>:
- 860:	66 1f       	adc	r22, r22
- 862:	77 1f       	adc	r23, r23
- 864:	88 1f       	adc	r24, r24
- 866:	99 1f       	adc	r25, r25
- 868:	1a 94       	dec	r1
- 86a:	69 f7       	brne	.-38     	; 0x846 <__udivmodsi4_loop>
- 86c:	60 95       	com	r22
- 86e:	70 95       	com	r23
- 870:	80 95       	com	r24
- 872:	90 95       	com	r25
- 874:	9b 01       	movw	r18, r22
- 876:	ac 01       	movw	r20, r24
- 878:	bd 01       	movw	r22, r26
- 87a:	cf 01       	movw	r24, r30
- 87c:	08 95       	ret
+000008e4 <__udivmodsi4_ep>:
+ 8e4:	66 1f       	adc	r22, r22
+ 8e6:	77 1f       	adc	r23, r23
+ 8e8:	88 1f       	adc	r24, r24
+ 8ea:	99 1f       	adc	r25, r25
+ 8ec:	1a 94       	dec	r1
+ 8ee:	69 f7       	brne	.-38     	; 0x8ca <__udivmodsi4_loop>
+ 8f0:	60 95       	com	r22
+ 8f2:	70 95       	com	r23
+ 8f4:	80 95       	com	r24
+ 8f6:	90 95       	com	r25
+ 8f8:	9b 01       	movw	r18, r22
+ 8fa:	ac 01       	movw	r20, r24
+ 8fc:	bd 01       	movw	r22, r26
+ 8fe:	cf 01       	movw	r24, r30
+ 900:	08 95       	ret
 
-0000087e <setjmp>:
- 87e:	dc 01       	movw	r26, r24
- 880:	2d 92       	st	X+, r2
- 882:	3d 92       	st	X+, r3
- 884:	4d 92       	st	X+, r4
- 886:	5d 92       	st	X+, r5
- 888:	6d 92       	st	X+, r6
- 88a:	7d 92       	st	X+, r7
- 88c:	8d 92       	st	X+, r8
- 88e:	9d 92       	st	X+, r9
- 890:	ad 92       	st	X+, r10
- 892:	bd 92       	st	X+, r11
- 894:	cd 92       	st	X+, r12
- 896:	dd 92       	st	X+, r13
- 898:	ed 92       	st	X+, r14
- 89a:	fd 92       	st	X+, r15
- 89c:	0d 93       	st	X+, r16
- 89e:	1d 93       	st	X+, r17
- 8a0:	cd 93       	st	X+, r28
- 8a2:	dd 93       	st	X+, r29
- 8a4:	ff 91       	pop	r31
- 8a6:	ef 91       	pop	r30
- 8a8:	8d b7       	in	r24, 0x3d	; 61
- 8aa:	8d 93       	st	X+, r24
- 8ac:	8e b7       	in	r24, 0x3e	; 62
- 8ae:	8d 93       	st	X+, r24
- 8b0:	8f b7       	in	r24, 0x3f	; 63
- 8b2:	8d 93       	st	X+, r24
- 8b4:	ed 93       	st	X+, r30
- 8b6:	fd 93       	st	X+, r31
- 8b8:	88 27       	eor	r24, r24
- 8ba:	99 27       	eor	r25, r25
- 8bc:	09 94       	ijmp
+00000902 <setjmp>:
+ 902:	dc 01       	movw	r26, r24
+ 904:	2d 92       	st	X+, r2
+ 906:	3d 92       	st	X+, r3
+ 908:	4d 92       	st	X+, r4
+ 90a:	5d 92       	st	X+, r5
+ 90c:	6d 92       	st	X+, r6
+ 90e:	7d 92       	st	X+, r7
+ 910:	8d 92       	st	X+, r8
+ 912:	9d 92       	st	X+, r9
+ 914:	ad 92       	st	X+, r10
+ 916:	bd 92       	st	X+, r11
+ 918:	cd 92       	st	X+, r12
+ 91a:	dd 92       	st	X+, r13
+ 91c:	ed 92       	st	X+, r14
+ 91e:	fd 92       	st	X+, r15
+ 920:	0d 93       	st	X+, r16
+ 922:	1d 93       	st	X+, r17
+ 924:	cd 93       	st	X+, r28
+ 926:	dd 93       	st	X+, r29
+ 928:	ff 91       	pop	r31
+ 92a:	ef 91       	pop	r30
+ 92c:	8d b7       	in	r24, 0x3d	; 61
+ 92e:	8d 93       	st	X+, r24
+ 930:	8e b7       	in	r24, 0x3e	; 62
+ 932:	8d 93       	st	X+, r24
+ 934:	8f b7       	in	r24, 0x3f	; 63
+ 936:	8d 93       	st	X+, r24
+ 938:	ed 93       	st	X+, r30
+ 93a:	fd 93       	st	X+, r31
+ 93c:	88 27       	eor	r24, r24
+ 93e:	99 27       	eor	r25, r25
+ 940:	09 94       	ijmp
 
-000008be <longjmp>:
- 8be:	dc 01       	movw	r26, r24
- 8c0:	cb 01       	movw	r24, r22
- 8c2:	81 30       	cpi	r24, 0x01	; 1
- 8c4:	91 05       	cpc	r25, r1
- 8c6:	81 1d       	adc	r24, r1
- 8c8:	2d 90       	ld	r2, X+
- 8ca:	3d 90       	ld	r3, X+
- 8cc:	4d 90       	ld	r4, X+
- 8ce:	5d 90       	ld	r5, X+
- 8d0:	6d 90       	ld	r6, X+
- 8d2:	7d 90       	ld	r7, X+
- 8d4:	8d 90       	ld	r8, X+
- 8d6:	9d 90       	ld	r9, X+
- 8d8:	ad 90       	ld	r10, X+
- 8da:	bd 90       	ld	r11, X+
- 8dc:	cd 90       	ld	r12, X+
- 8de:	dd 90       	ld	r13, X+
- 8e0:	ed 90       	ld	r14, X+
- 8e2:	fd 90       	ld	r15, X+
- 8e4:	0d 91       	ld	r16, X+
- 8e6:	1d 91       	ld	r17, X+
- 8e8:	cd 91       	ld	r28, X+
- 8ea:	dd 91       	ld	r29, X+
- 8ec:	ed 91       	ld	r30, X+
- 8ee:	fd 91       	ld	r31, X+
- 8f0:	0d 90       	ld	r0, X+
- 8f2:	f8 94       	cli
- 8f4:	fe bf       	out	0x3e, r31	; 62
- 8f6:	0f be       	out	0x3f, r0	; 63
- 8f8:	ed bf       	out	0x3d, r30	; 61
- 8fa:	ed 91       	ld	r30, X+
- 8fc:	fd 91       	ld	r31, X+
- 8fe:	09 94       	ijmp
+00000942 <longjmp>:
+ 942:	dc 01       	movw	r26, r24
+ 944:	cb 01       	movw	r24, r22
+ 946:	81 30       	cpi	r24, 0x01	; 1
+ 948:	91 05       	cpc	r25, r1
+ 94a:	81 1d       	adc	r24, r1
+ 94c:	2d 90       	ld	r2, X+
+ 94e:	3d 90       	ld	r3, X+
+ 950:	4d 90       	ld	r4, X+
+ 952:	5d 90       	ld	r5, X+
+ 954:	6d 90       	ld	r6, X+
+ 956:	7d 90       	ld	r7, X+
+ 958:	8d 90       	ld	r8, X+
+ 95a:	9d 90       	ld	r9, X+
+ 95c:	ad 90       	ld	r10, X+
+ 95e:	bd 90       	ld	r11, X+
+ 960:	cd 90       	ld	r12, X+
+ 962:	dd 90       	ld	r13, X+
+ 964:	ed 90       	ld	r14, X+
+ 966:	fd 90       	ld	r15, X+
+ 968:	0d 91       	ld	r16, X+
+ 96a:	1d 91       	ld	r17, X+
+ 96c:	cd 91       	ld	r28, X+
+ 96e:	dd 91       	ld	r29, X+
+ 970:	ed 91       	ld	r30, X+
+ 972:	fd 91       	ld	r31, X+
+ 974:	0d 90       	ld	r0, X+
+ 976:	f8 94       	cli
+ 978:	fe bf       	out	0x3e, r31	; 62
+ 97a:	0f be       	out	0x3f, r0	; 63
+ 97c:	ed bf       	out	0x3d, r30	; 61
+ 97e:	ed 91       	ld	r30, X+
+ 980:	fd 91       	ld	r31, X+
+ 982:	09 94       	ijmp
 
-00000900 <_exit>:
- 900:	f8 94       	cli
+00000984 <_exit>:
+ 984:	f8 94       	cli
 
-00000902 <__stop_program>:
- 902:	ff cf       	rjmp	.-2      	; 0x902 <__stop_program>
+00000986 <__stop_program>:
+ 986:	ff cf       	rjmp	.-2      	; 0x986 <__stop_program>
