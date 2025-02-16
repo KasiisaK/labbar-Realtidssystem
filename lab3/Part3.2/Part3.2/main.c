@@ -30,7 +30,6 @@ int keyPresses = 0;
 mutex reg_mutex;
 mutex blink_mutex;
 mutex button_mutex;
-mutex printAt;
 
 void init() {
     // Clock Prescale Register "maximum speed"
@@ -166,14 +165,6 @@ void writeLong(long i) {
 	}
 }
 
-void printAt(long num, int pos) {
-	lock(&printAt);
-	writeChar((num % 100) / 10 + '0', pos);
-	pos++;
-	writeChar(num % 10 + '0', pos);
-	unlock(&printAt);
-}
-
 bool isPrime(int number)
 {
 	//0 and 1 are not prime numbers
@@ -201,8 +192,8 @@ void primes() {
 }
 
 void blink() {
+	lock(&blink_mutex);
 	while (1) {
-		lock(&blink_mutex);
 		// Toggle the segment
 		LCDDR16 ^= (1 << 1);
 	}
