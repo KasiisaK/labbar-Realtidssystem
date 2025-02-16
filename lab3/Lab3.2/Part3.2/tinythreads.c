@@ -81,9 +81,9 @@ void spawn(void (* function)(int), int arg) {
     }
     SETSTACK(&newp->context, &newp->stack);
 
-
+    enqueue(current, &readyQ);  //added
     enqueue(newp, &readyQ);
-    dispatch(dequeue(newp));
+    dispatch(dequeue(&readyQ)); //added
     ENABLE();
 }
 
@@ -96,7 +96,6 @@ void yield(void) {
 
 void lock(mutex *m) {
     DISABLE();
-    // If already locked
     if(m->locked){
         enqueue(current, &(m->waitQ));
         dispatch(dequeue(&readyQ));
@@ -108,10 +107,8 @@ void lock(mutex *m) {
 
 void unlock(mutex *m) {
     DISABLE();
-    //if not waiting
     if((m->waitQ) == NULL){
         m->locked = 0;
-    // If already unlocked
     } else {
         enqueue(current, &readyQ);
         dispatch(dequeue(&(m->waitQ)));
