@@ -248,10 +248,11 @@ int main(void) {
 	init();
 	LCD_init();
 	sei();
+	
 	lock(&blink_mutex);
 	lock(&button_mutex);
 
 	spawn(button, 0);
-	//spawn(blink, 0);
+	spawn(blink, 0);
 	primes();
 }
