@@ -192,8 +192,8 @@ void primes() {
 }
 
 void blink() {
-	lock(&blink_mutex);
 	while (1) {
+		lock(&blink_mutex);
 		// Toggle the segment
 		LCDDR16 ^= (1 << 1);
 	}
@@ -229,13 +229,12 @@ void keyCounter() {
 	printAt(keyPresses, 3);
 }
 
-// Timer interupt
+// Timer intetrupt
 ISR(TIMER1_COMPA_vect) {
 	unlock(&blink_mutex);
-	TCNT1 = 0;
 }
 
-// Joystick interupt
+// Joystick intetrupt
 ISR(PCINT1_vect) {
 	// Check if joystick is pressed (active low, bit 7 of PINB == 0)
 	if (!(PINB & (1 << PB7))) {
@@ -255,7 +254,7 @@ int main(void) {
 	lock(&blink_mutex);
 	lock(&button_mutex);
 
-	//spawn(button, 0);
+	spawn(button, 0);
 	spawn(blink, 0);
-	//primes();
+	primes();
 }
