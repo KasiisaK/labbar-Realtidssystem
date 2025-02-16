@@ -27,6 +27,7 @@ bool joystick_pressed = 0;
 int keyPresses = 0;
 
 //mutexes
+//mutex printAt_mutex;
 mutex blink_mutex;
 mutex button_mutex;
 
@@ -140,6 +141,12 @@ void writeChar(char ch, uint8_t pos) {
 	}
 }
 
+void printAt(long num, int pos) {
+	writeChar((num % 100) / 10 + '0', pos);
+	pos++;
+	writeChar(num % 10 + '0', pos);
+}
+
 //writes a number i to LCD
 void writeLong(long i) {
 	int pos = 4; //start writing at the rightmost pos
@@ -180,8 +187,8 @@ void primes() {
 	while (true) {
 		if (isPrime(i))
 		{
-			writeLong(i);
-			_delay_ms(500);
+			printAt(i, 0);
+			_delay_ms(5000);
 		}
 		i++;
 	}
@@ -222,7 +229,7 @@ void button() {
 }
 
 void keyCounter() {
-	
+	printAt(keyPresses, 3);
 }
 
 // Timer interupt
@@ -232,8 +239,6 @@ ISR(TIMER1_COMPA_vect) {
 
 // Joystick interupt
 ISR(PCINT1_vect) {
-	bool oldValue = joystick_pressed;
-
 	// Check if joystick is pressed (active low, bit 7 of PINB == 0)
 	if (!(PINB & (1 << PB7))) {
 		keyPresses++;
