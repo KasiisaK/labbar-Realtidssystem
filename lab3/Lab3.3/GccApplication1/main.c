@@ -23,10 +23,6 @@
 bool joystick_pressed = 0;
 int keyPresses = 0;
 int primeN = 2;
-//mutexes
-mutex reg_mutex;
-mutex blink_mutex;
-mutex button_mutex;
 
 void init() {
 	// Clock Prescale Register "maximum speed"

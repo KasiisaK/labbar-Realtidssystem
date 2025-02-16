@@ -639,11 +639,11 @@ END GROUP
  .debug_abbrev  0x0000074b      0x250 main.o
  .debug_abbrev  0x0000099b      0x1da tinythreads.o
 
-.debug_line     0x00000000      0x80d
+.debug_line     0x00000000      0x80b
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x121 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.3.300/gcc/dev/atmega169p/avr5/crtatmega169p.o
  .debug_line    0x00000121      0x471 main.o
- .debug_line    0x00000592      0x27b tinythreads.o
+ .debug_line    0x00000592      0x279 tinythreads.o
 
 .debug_frame    0x00000000      0x284
  *(.debug_frame)

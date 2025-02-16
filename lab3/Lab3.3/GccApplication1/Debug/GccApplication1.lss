@@ -19,7 +19,7 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
   7 .debug_abbrev 00000b75  00000000  00000000  00001e95  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   0000080d  00000000  00000000  00002a0a  2**0
+  8 .debug_line   0000080b  00000000  00000000  00002a0a  2**0
                   CONTENTS, READONLY, DEBUGGING
   9 .debug_frame  00000284  00000000  00000000  00003218  2**2
                   CONTENTS, READONLY, DEBUGGING
@@ -688,11 +688,11 @@ void toggle_lcd(uint8_t *current_segment) {
  498:	08 95       	ret
 
 0000049a <button>:
+	}
 }
 
 void button() {
 	static uint8_t current_segment = LCD_SEGMENT1;
-
 	toggle_lcd(&current_segment);
  49a:	80 e0       	ldi	r24, 0x00	; 0
  49c:	91 e0       	ldi	r25, 0x01	; 1
@@ -920,8 +920,8 @@ static void initialize(void) {
  60e:	30 e0       	ldi	r19, 0x00	; 0
  610:	30 93 63 01 	sts	0x0163, r19	; 0x800163 <initialized+0x1>
  614:	20 93 62 01 	sts	0x0162, r18	; 0x800162 <initialized>
-        q->next = p;
-    }*/
+    p->next = *queue;
+    *queue = p;
 }
 
 static thread dequeue(thread *queue) {
@@ -1000,8 +1000,6 @@ static void enqueue(thread p, thread *queue) {
     *queue = p;
  692:	f0 93 56 01 	sts	0x0156, r31	; 0x800156 <freeQ+0x1>
  696:	e0 93 55 01 	sts	0x0155, r30	; 0x800155 <freeQ>
-        q->next = p;
-    }*/
 }
 
 static thread dequeue(thread *queue) {
@@ -1040,7 +1038,8 @@ static thread dequeue(thread *queue) {
  6ce:	93 8b       	std	Z+19, r25	; 0x13
  6d0:	82 8b       	std	Z+18, r24	; 0x12
 
-    enqueue(current, &readyQ);  //added
+    //add and run the thread
+    enqueue(current, &readyQ);
  6d2:	e0 91 53 01 	lds	r30, 0x0153	; 0x800153 <current>
  6d6:	f0 91 54 01 	lds	r31, 0x0154	; 0x800154 <current+0x1>
     
@@ -1062,7 +1061,6 @@ static void enqueue(thread p, thread *queue) {
     *queue = p;
  6f2:	b0 93 65 01 	sts	0x0165, r27	; 0x800165 <readyQ+0x1>
  6f6:	a0 93 64 01 	sts	0x0164, r26	; 0x800164 <readyQ>
-    }*/
 }
 
 static thread dequeue(thread *queue) {
@@ -1078,12 +1076,12 @@ static thread dequeue(thread *queue) {
  706:	15 97       	sbiw	r26, 0x05	; 5
  708:	90 93 65 01 	sts	0x0165, r25	; 0x800165 <readyQ+0x1>
  70c:	80 93 64 01 	sts	0x0164, r24	; 0x800164 <readyQ>
-    }
     SETSTACK(&newp->context, &newp->stack);
 
-    enqueue(current, &readyQ);  //added
+    //add and run the thread
+    enqueue(current, &readyQ);
     enqueue(newp, &readyQ);
-    dispatch(dequeue(&readyQ)); //added
+    dispatch(dequeue(&readyQ));
  710:	89 81       	ldd	r24, Y+1	; 0x01
  712:	9a 81       	ldd	r25, Y+2	; 0x02
  714:	0e 94 c4 02 	call	0x588	; 0x588 <dispatch>
