@@ -221,6 +221,10 @@ void button() {
 	}
 }
 
+void keyCounter() {
+	
+}
+
 // Timer interupt
 ISR(TIMER1_COMPA_vect) {
 	unlock(&blink_mutex);
