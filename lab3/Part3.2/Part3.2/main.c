@@ -229,12 +229,12 @@ void keyCounter() {
 	printAt(keyPresses, 3);
 }
 
-// Timer intetrupt
+// Timer interrupt
 ISR(TIMER1_COMPA_vect) {
 	unlock(&blink_mutex);
 }
 
-// Joystick intetrupt
+// Joystick interrupt
 ISR(PCINT1_vect) {
 	// Check if joystick is pressed (active low, bit 7 of PINB == 0)
 	if (!(PINB & (1 << PB7))) {
