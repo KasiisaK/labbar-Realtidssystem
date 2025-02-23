@@ -20,5 +20,7 @@ void switchFocus(GUI *self, int newActive);
 void adjustFrequency(GUI *self, int delta);
 void saveRestore(GUI *self);
 void updateDisplay(GUI *self);
+void LCD_init(void);
+void printAt(long num, int pos);
 
 #endif
