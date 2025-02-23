@@ -22,5 +22,6 @@ void saveRestore(GUI *self);
 void updateDisplay(GUI *self);
 void LCD_init(void);
 void printAt(long num, int pos);
+void updateDisplay(GUI *self);
 
 #endif
