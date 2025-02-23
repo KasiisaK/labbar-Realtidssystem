@@ -15,22 +15,23 @@ void sysInit(){
 	CLKPR = 0b00000000; // Set 0 for sysclock
 }
 
-void joystickInit(){
+void joystickInteruptInit(){
     // Initialize Port E as output for PE4 and PE6
 	DDRE |= (1 << PE4) | (1 << PE6);
 }
 
 
 int main() {
+    // All Inits
+    cli();
     sysInit();
+    joystickInteruptInit();
     joystickInit();
+    LCD_init();
+    sei();
     
-    // Initial frequencies
-    ASYNC(&gen1, setFrequency, 1);
-    ASYNC(&gen2, setFrequency, 1);
-    
-    // Start GUI
-    ASYNC(&gui, updateDisplay, 0);
+    // Instal interupt handler
+    INSTALL(&joystick, joystickInterruptHandler, PCINT1_vect);
     
     // Start kernel
     TINYTIMBER(&joystick, joystickInterruptHandler, 0);
