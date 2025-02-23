@@ -11,9 +11,11 @@ typedef struct {
 	Msg pending_msg;	// Pending toggle msg
 	int frequency;		// Current freq
 	int saved_freq;		// Last saved freq
+	PortWrite *write;
 } PulseGen;
 
-#define initPulseGen()
+#define initPulseGen(bit, writer) \
+{ initObject(), bit, 0, 0, writer, 0, NULL }
 
 void setFrequency(PulseGen *self, int freq);
 void toggle(PulseGen *self);
