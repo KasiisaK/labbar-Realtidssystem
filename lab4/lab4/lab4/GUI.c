@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include <stdbool.h>
-#include <util/delay.h>
 
 #include "GUI.h"
 #include "PulseGenerator.h"
@@ -50,7 +48,7 @@ void writeChar(char ch, uint8_t pos) {
 	//chose position
 	switch (pos) {
 		case 0:
-			//segment start att 0, 5, 10, 15, higher 4 bits.
+			//segment start at 0, 5, 10, 15, higher 4 bits.
 			//(LCDDR0 & 0xF0) clears the segment before writing 
 			LCDDR0 = (LCDDR0 & 0xF0) | segment[0];
 			LCDDR5 = (LCDDR5 & 0xF0) | segment[1];
