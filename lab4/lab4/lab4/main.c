@@ -2,20 +2,25 @@
 
 #include "TinyTimber.h"
 #include "GUI.h"
+#include "PulseGen.h"
 #include "PortWrite.h"
 
 // GUI object
 GUI gui = initGUI();
+
 // Global PortWrite object
-PortWrite portWrite = initPortWrite();
+PortWrite portWriter = initPortWrite();
+
+// PulseGen
+PulseGen gen1 = initPulseGen(4, &portWriter);
+PulseGen gen2 = initPulseGen(6, &portWriter);
+
+ASYNC(&gen1, setFrequency(1));
 
 void init() {
 	// Clock Prescale Register "maximum speed"
 	CLKPR = 0b10000000; // Clock Prescaler Change Enable
 	CLKPR = 0b00000000; // Set 0 for sysclock
-
-    // Initialize Port E as output for PE4 and PE6
-    DDRE |= (1 << PE4) | (1 << PE6);
 }
 
 void LCD_init() {
@@ -31,12 +36,10 @@ void LCD_init() {
 
 
 int main() {
-    cli();
-    init();
-    LCD_init();
-    sei();
-
-  while(1){};
+    // Initialize Port E as output for PE4 and PE6
+    DDRE |= (1 << PE4) | (1 << PE6);
+	INSTALL(&gui, );
+	TINYTIMBER(&gui, updateDisplay, 0);
 }
 
 
