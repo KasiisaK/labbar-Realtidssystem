@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 #include "GUI.h"
-#include "PulseGenerator.h"
+#include "PulseGen.h"
 #include "TinyTimber.h"
 
 void LCD_init() {
@@ -101,4 +101,28 @@ void printAt(long num, int pos) {
 	writeChar((num % 100) / 10 + '0', pos);
 	pos++;
 	writeChar(num % 10 + '0', pos);
+}
+
+void switchFocus(GUI *self, int newActive) {
+    self->activeGen = newActive;
+    ASYNC(self, updateDisplay, 0);
+}
+
+void adjustFrequency(GUI *self, int delta) {
+    PulseGen *target = self->activeGen ? self->gen2 : self->gen1;
+    int newFreq = target->frequency + delta;
+    if (newFreq < 0) newFreq = 0;
+    ASYNC(target, setFrequency, newFreq);
+    ASYNC(self, updateDisplay, 0);
+}
+
+void saveRestore(GUI *self) {
+    PulseGen *target = self->activeGen ? self->gen2 : self->gen1;
+    if (target->frequency == 0) {
+        ASYNC(target, restore, 0);
+    } else {
+        ASYNC(target, save, 0);
+        ASYNC(target, setFrequency, 0);
+    }
+    ASYNC(self, updateDisplay, 0);
 }

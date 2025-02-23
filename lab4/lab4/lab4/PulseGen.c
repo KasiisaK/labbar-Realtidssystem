@@ -11,40 +11,36 @@
 
 
 void setFrequency(PulseGen *self, int freq) {
-	if (self->frequency == freq) return; // No change needed
-
-	// Cancel any pending toggle
-	if (self->pending_msg) {
-		BEFORE(self->pending_msg);
-		self->pending_msg = NULL;
-	}
-
-	self->frequency = freq;
-
-	if (freq <= 0) {
-		// Stop generator: set output LOW
-		ASYNC(self->writer, setPin(self->bit, 0));
-		} else {
-		// Start toggling with new frequency
-		self->state = 0; // Start LOW
-		ASYNC(self->writer, setPin(self->bit, self->state));
-		int delay = 500 / freq; // Half-period in ms (50% duty cycle)
-		self->pending_msg = AFTER(delay, self, toggle, NULL);
-	}
+    if (freq == self->frequency) return;
+    
+    // Cancel pending events
+    if (self->pending_msg) {
+        ABORT(self->pending_msg);
+    }
+    
+    self->frequency = freq;
+    
+    if (freq > 0) {
+        // Start new toggle cycle
+        int period = 1000 / freq;  // Full period in ms
+        self->state = 1;
+        ASYNC(self->writer, setPin, self->bit | (self->state << self->bit));
+        self->pending_msg = AFTER(period/2, self, toggle, 0);
+    } else {
+        // Set output low
+        ASYNC(self->writer, setPin, self->bit | 0);
+    }
 }
 
 // Toggle output and schedule next toggle
 void toggle(PulseGen *self) {
-	self->state = !self->state;
-	ASYNC(self->writer, setPin(self->bit, self->state));
-
-	if (self->frequency > 0) {
-		// Schedule next toggle
-		int delay = 500 / self->frequency;
-		self->pending_msg = AFTER(delay, self, toggle, NULL);
-		} else {
-		self->pending_msg = NULL; // No further toggles
-	}
+    self->state = !self->state;
+    ASYNC(self->writer, setPin, self->bit | (self->state << self->bit));
+    
+    if (self->frequency > 0) {
+        int period = 1000 / self->frequency;
+        self->pending_msg = AFTER(period/2, self, toggle, 0);
+    }
 }
 
 // Saves the freq

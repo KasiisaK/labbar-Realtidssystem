@@ -19,24 +19,14 @@ void joystickInit(){
 }
 
 // Joystick input handler
-void joystickInteruptHandler(JoystickHandler *self) {
-    // Joystick DOWN pressed
-    if (!(PINB & (1 << PB7))) {        
-        decreaseFreq(Gen????);
-    
-    // Joystick UP pressed
-    } else if (!(PINB & (1 << PB6))) {        
-        increaseFreq(Gen????);
-    
-    // Joystick LEFT pressed
-    } else if (!(PINB & (1 << PB1))) {        
-        switchLeft()??????
-    
-    // Joystick RIGHT pressed    
-    } else if (!(PINB & (1 << PB2))) {        
-        switchRight()???????
-    
-    } else {
-        return; //default
+void joystickInterruptHandler(JoystickHandler *self) {
+    if (!(PINB & (1 << PB2))) {        // RIGHT
+        ASYNC(self->gui, switchFocus, 1);
+    } else if (!(PINB & (1 << PB1))) { // LEFT
+        ASYNC(self->gui, switchFocus, 0);
+    } else if (!(PINB & (1 << PB6))) { // UP
+        ASYNC(self->gui, adjustFrequency, 1);
+    } else if (!(PINB & (1 << PB7))) { // DOWN
+        ASYNC(self->gui, adjustFrequency, -1);
     }
 }

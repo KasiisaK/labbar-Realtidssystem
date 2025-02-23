@@ -2,17 +2,23 @@
 #define GUI_H
 
 #include "TinyTimber.h"
+#include "PulseGen.h"
 
-// GUI object
 typedef struct {
     Object super;
+    PulseGen *gen1;
+    PulseGen *gen2;
+    int activeGen;  // 0 = gen1, 1 = gen2
+    int savedFreq1;
+    int savedFreq2;
 } GUI;
 
-// Initialize a GUI object
-#define initGUI() { initObject(), 0, 0, 0 }
+#define initGUI(g1, g2) { initObject(), g1, g2, 0, 0, 0 }
 
-// Function declarations
-void updateDisplay(GUI *self, int unused);
-void LCD_init(GUI *self);
+// Public methods
+void switchFocus(GUI *self, int newActive);
+void adjustFrequency(GUI *self, int delta);
+void saveRestore(GUI *self);
+void updateDisplay(GUI *self);
 
 #endif
