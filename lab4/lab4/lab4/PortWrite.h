@@ -16,7 +16,5 @@ typedef struct {
 // Function declarations
 void setPin(PortWrite *self, int bit, int value);
 void togglePin(PortWrite *self, int bit);
-void increaseFreq(void);
-void decreaseFreq(void);
 
 #endif
