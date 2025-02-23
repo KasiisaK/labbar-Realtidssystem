@@ -3,11 +3,12 @@
 
 #include <avr/io.h>
 #include "TinyTimber.h"
-#include "GUI.h"
+#include "PulseGen.h"
 
 typedef struct {
     Object super;  // TinyTimber base class
-    GUI *gui;      // Reference to the GUI object
+    PulseGen *pulsGen;      // Reference to the puls object
+    int leftGen;
 } JoystickHandler;
 
 // Macro to initialize a JoystickHandler object
@@ -15,6 +16,6 @@ typedef struct {
 
 // Function declarations
 void joystickInit();  
-void joystickInteruptHandler(JoystickHandler *self, int direction);
+void joystickInteruptHandler(JoystickHandler *self);
 
 #endif

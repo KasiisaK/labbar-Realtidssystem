@@ -102,9 +102,3 @@ void printAt(long num, int pos) {
 	pos++;
 	writeChar(num % 10 + '0', pos);
 }
-
-// Write a number to the LCD
-void updateDisplay(GUI *self) {
-    printAt(self->freq1, 0); // Gen1 hz at pos 0-1
-    printAt(self->freq2, 3); // Gen2 hz at pos 3-4
-}
