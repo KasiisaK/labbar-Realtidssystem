@@ -20,9 +20,9 @@ void joystickInit(){
 
 // Joystick input handler
 void joystickInterruptHandler(JoystickHandler *self) {
-    if (!(PINB & (1 << PB2))) {        // RIGHT
+    if (!(PINB & (1 << PB2))) {        // RIGHT (gen1)
         ASYNC(self->gui, switchFocus, 1);
-    } else if (!(PINB & (1 << PB1))) { // LEFT
+    } else if (!(PINB & (1 << PB1))) { // LEFT (gen0)
         ASYNC(self->gui, switchFocus, 0);
     } else if (!(PINB & (1 << PB6))) { // UP
         ASYNC(self->gui, adjustFrequency, 1);

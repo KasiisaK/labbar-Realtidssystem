@@ -9,6 +9,15 @@ PulseGen gen2 = initPulseGen(6, &portWriter);
 GUI gui = initGUI(&gen1, &gen2);
 JoystickHandler joystick = initJoystickHandler(&gui);
 
+void sysInit() {
+	// Clock Prescale Register "maximum speed"
+	CLKPR = 0b10000000; // Clock Prescaler Change Enable
+	CLKPR = 0b00000000; // Set 0 for sysclock
+	
+	// Initialize Port E as output for PE4 and PE6
+	DDRE |= (1 << PE4) | (1 << PE6);
+}
+
 int main() {
     sysInit();
     joystickInit();
