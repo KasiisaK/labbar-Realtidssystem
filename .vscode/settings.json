@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "gui.h": "c"
+        "gui.h": "c",
+        "portwrite.h": "c"
     }
 }
