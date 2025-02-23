@@ -6,7 +6,7 @@
 // GUI object
 typedef struct {
     Object super;
-    int selectedGen; // selectedGen=0 => gen 1, selectedGen=1 => gen 2
+    int selectedGen; // SelectedGen=0 => gen 1, selectedGen=1 => gen 2
     int freq1;       // Frequency gen 1
     int freq2;       // Frequency gen 2
 } GUI;
@@ -16,5 +16,6 @@ typedef struct {
 
 // Function declarations
 void updateDisplay(GUI *self, int unused);
+void LCD_init(GUI *self);
 
 #endif

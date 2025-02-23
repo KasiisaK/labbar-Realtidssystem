@@ -7,9 +7,23 @@
 #include "PulseGenerator.h"
 #include "TinyTimber.h"
 
-//returns wall of data based on char input ('0' = 48 (char))
+void LCD_init() {
+	// LCD(Contrast Control Register), LCD(Display Configuration)(000): 300 s, LCD(Contrast Control)(1111): 3.35 V
+	LCDCCR = (0 << LCDDC0) | (0 << LCDDC1) | (0 << LCDDC2) | (1 << LCDCC0) | (1 << LCDCC1) | (1 << LCDCC2) | (1 << LCDCC3);
+	// LCDCS: asynchronous clock, LCDMUX(11): D=1/4, B=1/3, LCD(Port Mask): 25 segments
+	LCDCRB = (1 << LCDCS) | (1 << LCDMUX1) | (1 << LCDMUX0) | (1 << LCDPM2) | (1 << LCDPM1) | (1 << LCDPM0);
+	// LCD(Clock Divide)(111): (D=8) 32Hz
+	LCDFRR = (1 << LCDCD2) | (1 << LCDCD1) | (1 << LCDCD0);
+	// LCD(Control and Status Register A), LCD(Enable): True, LCD(Low Power Waveform): True, (no frame interrupt, no blanking)
+	LCDCRA = (1 << LCDEN) | (1 << LCDAB);
+	
+	// Display update
+	ASYNC(self, updateDisplay, 0);
+}
+
+// Returns wall of data based on char input ('0' = 48 (char))
 int* getSegmentForChar(char ch) {
-    //LUT
+    // LUT
     int zero[] = {0b0001, 0b0101, 0b0101, 0b0001};
     int one[] = {0b0000, 0b0001, 0b0001, 0b0000};
     int two[] = {0b0001, 0b0001, 0b1110, 0b0001};
@@ -37,26 +51,26 @@ int* getSegmentForChar(char ch) {
 	}
 }
 
-//write a char ch at position pos
+// Write a char ch at position pos
 void writeChar(char ch, uint8_t pos) {
-	//check if outside range
+	// Check if outside range
 	if (pos > 4 || pos < 0) return;	
 
-	//get correct char data
+	// Get correct char data
 	int* segment = getSegmentForChar(ch);
 	
-	//chose position
+	// Chose position
 	switch (pos) {
 		case 0:
-			//segment start at 0, 5, 10, 15, higher 4 bits.
-			//(LCDDR0 & 0xF0) clears the segment before writing 
+			// Segment start at 0, 5, 10, 15, higher 4 bits.
+			// (LCDDR0 & 0xF0) clears the segment before writing 
 			LCDDR0 = (LCDDR0 & 0xF0) | segment[0];
 			LCDDR5 = (LCDDR5 & 0xF0) | segment[1];
 			LCDDR10 = (LCDDR10 & 0xF0) | segment[2];
 			LCDDR15 = (LCDDR15 & 0xF0) | segment[3];
 			break;
 		case 1:
-			//same segment just lower 4 bits
+			// Same segment just lower 4 bits
 			LCDDR0 = (LCDDR0 & 0x0F) | (segment[0] << 4);
 			LCDDR5 = (LCDDR5 & 0x0F) | (segment[1] << 4);
 			LCDDR10 = (LCDDR10 & 0x0F) | (segment[2] << 4);
@@ -89,8 +103,8 @@ void printAt(long num, int pos) {
 	writeChar(num % 10 + '0', pos);
 }
 
-//write a number to the LCD
+// Write a number to the LCD
 void updateDisplay(GUI *self) {
-    printAt(self->freq1, 0); //gen1 hz at pos 0-1
-    printAt(self->freq2, 3); //gen2 hz at pos 3-4
+    printAt(self->freq1, 0); // Gen1 hz at pos 0-1
+    printAt(self->freq2, 3); // Gen2 hz at pos 3-4
 }
