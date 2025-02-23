@@ -4,10 +4,11 @@
 #include "TinyTimber.h"
 
 typedef struct {
-	int frequency;
+	Object super;
 	uint8_t bit;
 	uint8_t state;
 	Msg pending_msg;
+	int frequency;
 } PulseGen;
 
 void setFrequency();
