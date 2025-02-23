@@ -109,9 +109,26 @@ void switchFocus(GUI *self, int newActive) {
 }
 
 void adjustFrequency(GUI *self, int delta) {
+	// Get right target gen
     PulseGen *target = self->activeGen ? self->gen2 : self->gen1;
     int newFreq = target->frequency + delta;
     if (newFreq < 0) newFreq = 0;
+	
+	// Update right savedFreqx
+	switch (self->activeGen)
+	{
+	// 0 is gen1 (left)
+	case 0:
+		self->savedFreq1 = newFreq;
+		break;
+	// 1 is gen2 (right)
+	case 0:
+		self->savedFreq2 = newFreq;
+		break;	
+	default:
+		break;
+	}
+	// Update everything
     ASYNC(target, setFrequency, newFreq);
     ASYNC(self, updateDisplay, 0);
 }
