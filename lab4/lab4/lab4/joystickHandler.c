@@ -22,27 +22,21 @@ void joystickInit(){
 void joystickInteruptHandler(JoystickHandler *self) {
     // Joystick DOWN pressed
     if (!(PINB & (1 << PB7))) {        
-        setFrequency(-1);
+        decreaseFreq(Gen????);
     
     // Joystick UP pressed
     } else if (!(PINB & (1 << PB6))) {        
-        setFrequency(1);
+        increaseFreq(Gen????);
     
     // Joystick LEFT pressed
     } else if (!(PINB & (1 << PB1))) {        
-        leftGen = 1;
+        switchLeft()??????
     
     // Joystick RIGHT pressed    
     } else if (!(PINB & (1 << PB2))) {        
-        leftGen = 0;
+        switchRight()???????
     
     } else {
         return; //default
     }
-}
-
-void setFrequency(int genValue){
-
-    setFrequency(Gen?, getFreq() + genValue);
-
 }
