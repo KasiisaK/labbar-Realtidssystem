@@ -1,6 +1,6 @@
 #include "TinyTimber.h"
 #include "joystickHandler.h"
-#include "GUI.h"
+#include "PulseGen.h"
 
 
 void joystickInit(){
@@ -19,26 +19,24 @@ void joystickInit(){
 }
 
 // Joystick input handler
-void joystickInteruptHandler(JoystickHandler *self, int direction) {
+void joystickInteruptHandler(JoystickHandler *self) {
     // Joystick DOWN pressed
     if (!(PINB & (1 << PB7))) {        
-        direction = 0;
+        decreaseFreq(Gen????);
     
     // Joystick UP pressed
     } else if (!(PINB & (1 << PB6))) {        
-        direction = 1;
+        increaseFreq(Gen????);
     
     // Joystick LEFT pressed
     } else if (!(PINB & (1 << PB1))) {        
-        direction = 2;
+        switchLeft()??????
     
     // Joystick RIGHT pressed    
     } else if (!(PINB & (1 << PB2))) {        
-        direction = 3;
+        switchRight()???????
     
     } else {
         return; //default
     }
-
-    //ASYNC(self->gui, handleJoystickInput, direction);
 }

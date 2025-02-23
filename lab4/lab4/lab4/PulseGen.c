@@ -56,3 +56,14 @@ void save(PulseGen *self) {
 void restore(PulseGen *self) {
 	ASYNC(self, setFrequency(self->saved_freq));
 }
+
+void increaseFreq(PulseGen *self){
+	self->frequency++;
+}
+
+void decreaseFreq(PulseGen *self)[
+	self->frequency--;
+	if (self->frequency < 0){
+		self->frequency = 0;
+	}
+]

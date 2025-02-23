@@ -6,9 +6,6 @@
 // GUI object
 typedef struct {
     Object super;
-    int selectedGen; // SelectedGen=0 => gen 1, selectedGen=1 => gen 2
-    int freq1;       // Frequency gen 1
-    int freq2;       // Frequency gen 2
 } GUI;
 
 // Initialize a GUI object
