@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "gui.h": "c",
-        "portwrite.h": "c"
+        "portwrite.h": "c",
+        "joystickhandler.h": "c"
     }
 }

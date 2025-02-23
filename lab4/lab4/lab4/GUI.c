@@ -94,21 +94,3 @@ void updateDisplay(GUI *self) {
     printAt(self->freq1, 0); //gen1 hz at pos 0-1
     printAt(self->freq2, 3); //gen2 hz at pos 3-4
 }
-
-//joystick input
-void handleJoystick(GUI *self, int direction) {
-    if (direction == 1) {  //joystick up => inc frequency
-        if (self->selectedGen == 0) self->freq1++;
-        else self->freq2++;
-    } else if (direction == -1) {  //joystick down => dec frequency
-        if (self->selectedGen == 0 && self->freq1 > 0) self->freq1--;
-        else if (self->selectedGen == 1 && self->freq2 > 0) self->freq2--;
-    } else if (direction == 2) {  //joystick right => select gen 2
-        self->selectedGen = 1;
-    } else if (direction == -2) { //joystick right => select gen 1
-        self->selectedGen = 0;
-    }
-
-    //update LCD
-    ASYNC(self, updateDisplay);
-}
