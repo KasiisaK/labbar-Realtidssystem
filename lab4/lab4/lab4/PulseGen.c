@@ -7,6 +7,7 @@
 
 #include <avr/io.h>
 #include "PulseGen.h"
+#include "PortWrite.h"
 
 
 void setFrequency(PulseGen *self, int freq) {
@@ -45,11 +46,10 @@ void toggle(PulseGen *self) {
 	}
 }
 
-int main(void)
-{
-    /* Replace with your application code */
-    while (1) 
-    {
-    }
+void save(PulseGen *self) {
+	self->saved_freq = self->frequency;
 }
 
+void restore(PulseGen *self) {
+	ASYNC(self, setFrequency(self->saved_freq));
+}
