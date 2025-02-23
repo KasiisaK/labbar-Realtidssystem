@@ -7,6 +7,20 @@
 #include "PulseGenerator.h"
 #include "TinyTimber.h"
 
+void LCD_init() {
+	// LCD(Contrast Control Register), LCD(Display Configuration)(000): 300 s, LCD(Contrast Control)(1111): 3.35 V
+	LCDCCR = (0 << LCDDC0) | (0 << LCDDC1) | (0 << LCDDC2) | (1 << LCDCC0) | (1 << LCDCC1) | (1 << LCDCC2) | (1 << LCDCC3);
+	// LCDCS: asynchronous clock, LCDMUX(11): D=1/4, B=1/3, LCD(Port Mask): 25 segments
+	LCDCRB = (1 << LCDCS) | (1 << LCDMUX1) | (1 << LCDMUX0) | (1 << LCDPM2) | (1 << LCDPM1) | (1 << LCDPM0);
+	// LCD(Clock Divide)(111): (D=8) 32Hz
+	LCDFRR = (1 << LCDCD2) | (1 << LCDCD1) | (1 << LCDCD0);
+	// LCD(Control and Status Register A), LCD(Enable): True, LCD(Low Power Waveform): True, (no frame interrupt, no blanking)
+	LCDCRA = (1 << LCDEN) | (1 << LCDAB);
+	
+	// Display update
+	ASYNC(self, updateDisplay, 0);
+}
+
 //returns wall of data based on char input ('0' = 48 (char))
 int* getSegmentForChar(char ch) {
     //LUT
@@ -93,22 +107,4 @@ void printAt(long num, int pos) {
 void updateDisplay(GUI *self) {
     printAt(self->freq1, 0); //gen1 hz at pos 0-1
     printAt(self->freq2, 3); //gen2 hz at pos 3-4
-}
-
-//joystick input
-void handleJoystick(GUI *self, int direction) {
-    if (direction == 1) {  //joystick up => inc frequency
-        if (self->selectedGen == 0) self->freq1++;
-        else self->freq2++;
-    } else if (direction == -1) {  //joystick down => dec frequency
-        if (self->selectedGen == 0 && self->freq1 > 0) self->freq1--;
-        else if (self->selectedGen == 1 && self->freq2 > 0) self->freq2--;
-    } else if (direction == 2) {  //joystick right => select gen 2
-        self->selectedGen = 1;
-    } else if (direction == -2) { //joystick right => select gen 1
-        self->selectedGen = 0;
-    }
-
-    //update LCD
-    ASYNC(self, updateDisplay);
 }

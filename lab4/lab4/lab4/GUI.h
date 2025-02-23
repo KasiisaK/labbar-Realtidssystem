@@ -16,6 +16,6 @@ typedef struct {
 
 // Function declarations
 void updateDisplay(GUI *self, int unused);
-void handleJoystick(GUI *self, int direction);
+void LCD_init(GUI *self);
 
 #endif
