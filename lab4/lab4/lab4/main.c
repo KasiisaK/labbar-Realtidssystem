@@ -4,12 +4,16 @@
 #include "GUI.h"
 #include "PulseGen.h"
 #include "PortWrite.h"
+#include "joystickHandler.h"
 
 // GUI object
 GUI gui = initGUI();
 
 // Global PortWrite object
 PortWrite portWriter = initPortWrite();
+
+// JoystickHanlder object
+JoystickHandler joystick = initJoystickHandler();
 
 // PulseGen
 PulseGen gen1 = initPulseGen(4, &portWriter);
@@ -32,11 +36,8 @@ int main() {
 	
 	LCD_init(&gui);
 	
-	// Install interrupt handlers
-	INSTALL() // Up
-	INSTALL() // Down
-	INSTALL() // Left
-	INSTALL() // Right
+	// Install interrupt handler
+	INSTALL(&joystick, joystickInteruptHandler, PCINT1_vect)
 	
 	// Start pulseGen
 	ASYNC(&gen1, setFrequency, 1);
