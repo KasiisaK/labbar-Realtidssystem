@@ -21,9 +21,9 @@ void LCD_init() {
 	ASYNC(self, updateDisplay, 0);
 }
 
-//returns wall of data based on char input ('0' = 48 (char))
+// Returns wall of data based on char input ('0' = 48 (char))
 int* getSegmentForChar(char ch) {
-    //LUT
+    // LUT
     int zero[] = {0b0001, 0b0101, 0b0101, 0b0001};
     int one[] = {0b0000, 0b0001, 0b0001, 0b0000};
     int two[] = {0b0001, 0b0001, 0b1110, 0b0001};
@@ -51,26 +51,26 @@ int* getSegmentForChar(char ch) {
 	}
 }
 
-//write a char ch at position pos
+// Write a char ch at position pos
 void writeChar(char ch, uint8_t pos) {
-	//check if outside range
+	// Check if outside range
 	if (pos > 4 || pos < 0) return;	
 
-	//get correct char data
+	// Get correct char data
 	int* segment = getSegmentForChar(ch);
 	
-	//chose position
+	// Chose position
 	switch (pos) {
 		case 0:
-			//segment start at 0, 5, 10, 15, higher 4 bits.
-			//(LCDDR0 & 0xF0) clears the segment before writing 
+			// Segment start at 0, 5, 10, 15, higher 4 bits.
+			// (LCDDR0 & 0xF0) clears the segment before writing 
 			LCDDR0 = (LCDDR0 & 0xF0) | segment[0];
 			LCDDR5 = (LCDDR5 & 0xF0) | segment[1];
 			LCDDR10 = (LCDDR10 & 0xF0) | segment[2];
 			LCDDR15 = (LCDDR15 & 0xF0) | segment[3];
 			break;
 		case 1:
-			//same segment just lower 4 bits
+			// Same segment just lower 4 bits
 			LCDDR0 = (LCDDR0 & 0x0F) | (segment[0] << 4);
 			LCDDR5 = (LCDDR5 & 0x0F) | (segment[1] << 4);
 			LCDDR10 = (LCDDR10 & 0x0F) | (segment[2] << 4);
@@ -103,8 +103,8 @@ void printAt(long num, int pos) {
 	writeChar(num % 10 + '0', pos);
 }
 
-//write a number to the LCD
+// Write a number to the LCD
 void updateDisplay(GUI *self) {
-    printAt(self->freq1, 0); //gen1 hz at pos 0-1
-    printAt(self->freq2, 3); //gen2 hz at pos 3-4
+    printAt(self->freq1, 0); // Gen1 hz at pos 0-1
+    printAt(self->freq2, 3); // Gen2 hz at pos 3-4
 }
