@@ -34,7 +34,7 @@ int main() {
     INSTALL(&joystick, joystickInterruptHandler, PCINT1_vect);
     
     // Start kernel
-    TINYTIMBER(&joystick, joystickInterruptHandler, 0);
+    return TINYTIMBER(&gui, NULL, NULL);
 }
 
 
