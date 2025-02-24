@@ -126,7 +126,7 @@ void adjustFrequency(GUI *self, int delta) {
 		break;
 	}
 	// Update everything
-    //ASYNC(target, setFrequency, newFreq);
+    ASYNC(target, setFrequency, newFreq);
     ASYNC(self, updateDisplay, 0);
 }
 

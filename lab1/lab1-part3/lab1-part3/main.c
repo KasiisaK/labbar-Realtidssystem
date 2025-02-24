@@ -25,7 +25,7 @@ void init() {
 	LCDFRR = (1 << LCDCD2) | (1 << LCDCD1) | (1 << LCDCD0);	
 	//LCD(Control and StatusRegister A), LCD(Enable): True, LCD(Low Power Waveform): True, (no frame interrupt, no blanking)
 	LCDCRA = (1 << LCDEN) | (1 << LCDAB);
-}
+
 	// Configure bit 7 of PORTB as input and enable pull-up resistor
 	DDRB &= ~(1 << PB7);
 	PORTB |= (1 << PB7);

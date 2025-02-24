@@ -2,6 +2,7 @@
 #include "gui.h"
 #include "joystickHandler.h"
 
+
 // Initialize objects
 PortWrite portWriter = initPortWrite();
 PulseGen gen1 = initPulseGen(4, &portWriter);
@@ -15,7 +16,7 @@ void sysInit(){
 	CLKPR = 0b00000000; // Set 0 for sysclock
 }
 
-void joystickInteruptInit(){
+void pinOutputInit(){
     // Initialize Port E as output for PE4 and PE6
 	DDRE |= (1 << PE4) | (1 << PE6);
 }
@@ -25,7 +26,7 @@ int main() {
     // All Inits
     cli();
     sysInit();
-    joystickInteruptInit();
+    pinOutputInit();
     joystickInit();
     LCD_init();
     sei();
