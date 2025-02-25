@@ -104,7 +104,7 @@ void switchFocus(GUI *self, int newActive) {
     self->activeGen = newActive;
 	PulseGen *target = self->activeGen ? self->gen2 : self->gen1;
 	//SYNC(target, toggle, 0)
-    SYNC(self, updateDisplay, 0);
+    ASYNC(self, updateDisplay, 0);
 }
 
 void adjustFrequency(GUI *self, int delta) {
@@ -114,7 +114,7 @@ void adjustFrequency(GUI *self, int delta) {
     if (newFreq < 0) newFreq = 0;
 	// Update everything
     //SYNC(target, setFrequency, newFreq);
-    SYNC(self, updateDisplay, 0);
+    ASYNC(self, updateDisplay, 0);
 }
 
 void saveRestore(GUI *self) {
@@ -125,7 +125,7 @@ void saveRestore(GUI *self) {
         ASYNC(target, save, 0);
         ASYNC(target, setFrequency, 0);
     }
-    SYNC(self, updateDisplay, 0);
+    ASYNC(self, updateDisplay, 0);
 }
 
 void updateDisplay(GUI *self) {
