@@ -18,21 +18,20 @@ void LCD_init() {
 	LCDCRA = (1 << LCDEN) | (1 << LCDAB);
 }
 
+int zero[] = {0b0001, 0b0101, 0b0101, 0b0001};
+int one[] = {0b0000, 0b0001, 0b0001, 0b0000};
+int two[] = {0b0001, 0b0001, 0b1110, 0b0001};
+int three[] = {0b0001, 0b0001, 0b1011, 0b0001};
+int four[] = {0b0000, 0b0101, 0b1011, 0b0000};
+int five[] = {0b0001, 0b0100, 0b1011, 0b0001};
+int six[] = {0b0001, 0b0100, 0b1111, 0b0001};
+int seven[] = {0b0001, 0b0001, 0b0001, 0b0000};
+int eight[] = {0b0001, 0b0101, 0b1111, 0b0001};
+int nine[] = {0b0001, 0b0101, 0b1011, 0b0001};
+int none[] = {0b0000, 0b0000, 0b0000, 0b0000};
+	
 // Returns wall of data based on char input ('0' = 48 (char))
 int* getSegmentForChar(char ch) {
-    // LUT
-    int zero[] = {0b0001, 0b0101, 0b0101, 0b0001};
-    int one[] = {0b0000, 0b0001, 0b0001, 0b0000};
-    int two[] = {0b0001, 0b0001, 0b1110, 0b0001};
-    int three[] = {0b0001, 0b0001, 0b1011, 0b0001};
-    int four[] = {0b0000, 0b0101, 0b1011, 0b0000};
-    int five[] = {0b0001, 0b0100, 0b1011, 0b0001};
-    int six[] = {0b0001, 0b0100, 0b1111, 0b0001};
-    int seven[] = {0b0001, 0b0001, 0b0001, 0b0000};
-    int eight[] = {0b0001, 0b0101, 0b1111, 0b0001};
-    int nine[] = {0b0001, 0b0101, 0b1011, 0b0001};
-    int none[] = {0b0000, 0b0000, 0b0000, 0b0000};
-
 	switch (ch) {
 		case '0': return zero;
 		case '1': return one;
@@ -101,13 +100,13 @@ void printAt(long num, int pos) {
 }
 
 void switchFocus(GUI *self, int newActive) {
-	writeChar(4, 1)
+	writeChar("4", 1);
     /* self->activeGen = newActive;
     ASYNC(self, updateDisplay, 0); */
 }
 
 void adjustFrequency(GUI *self, int delta) {
-	writeChar(5, 4)
+	writeChar("5", 4);
 	/* // Get right target gen
     PulseGen *target = self->activeGen ? self->gen2 : self->gen1;
     int newFreq = target->frequency + delta;
