@@ -103,7 +103,7 @@ void printAt(long num, int pos) {
 void switchFocus(GUI *self, int newActive) {
     self->activeGen = newActive;
 	PulseGen *target = self->activeGen ? self->gen2 : self->gen1;
-	//SYNC(target, toggle, 0)
+	SYNC(target, toggle, 0)
     ASYNC(self, updateDisplay, 0);
 }
 
@@ -113,7 +113,7 @@ void adjustFrequency(GUI *self, int delta) {
     int newFreq = target->frequency + delta;
     if (newFreq < 0) newFreq = 0;
 	// Update everything
-    //SYNC(target, setFrequency, newFreq);
+    SYNC(target, setFrequency, newFreq);
     ASYNC(self, updateDisplay, 0);
 }
 
