@@ -23,16 +23,16 @@ void pinOutputInit(){
 
 
 int main() {
-    // All Inits
-    cli();
     sysInit();
     pinOutputInit();
     joystickInit();
     LCD_init();
-    sei();
     
     // Instal interupt handler
-    INSTALL(&joystick, joystickInterruptHandler, PCINT1_vect);
+    //when the joystick's vertical state changes
+    INSTALL(&joystick, interruptPinB, IRQ_PCINT1);
+    //when the joystick's horizontal (minus middle) state changes
+    INSTALL(&joystick, interruptPinE, IRQ_PCINT0);
     
     // Start kernel
     return TINYTIMBER(&gui, NULL, NULL);

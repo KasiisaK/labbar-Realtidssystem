@@ -13,5 +13,7 @@ typedef struct {
 
 void joystickInit();
 void joystickInterruptHandler(JoystickHandler *self);
+void interruptPinB(JoystickHandler *self);
+void interruptPinE(JoystickHandler *self);
 
 #endif

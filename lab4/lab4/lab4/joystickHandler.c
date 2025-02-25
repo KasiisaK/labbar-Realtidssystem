@@ -4,33 +4,43 @@
 
 
 void joystickInit() {
-    // Enable Pin Change Interrupts for PCINT[7:0] (PCIE0)
-    PCICR |= (1 << PCIE0); // Enable Pin Change Interrupts for PCMSK0
+    //sätter på upp, ner och inåt som input
+    PORTB = PORTB | 0b11010000;
+    //sätter på höger och vänster  som input
+    PORTE = PORTE | 0b00001100;
+    //DDRE = 0b01010000;
+    //sätter på upp,ner,in (15) hög,ven (14) //sida 53 AVr..169 nånitng
+    EIMSK = EIMSK | (1<<PCINT15) | (1<<PCINT14);
 
-    // Enable input for PB7 (Up), PB6 (Down), PB1 (Left), PB2 (Right), PB5 (Click)
-    DDRB &= ~((1 << DDB7) | (1 << DDB6) | (1 << DDB1) | (1 << DDB2) | (1 << DDB5));
-
-    // Enable pull-up resistors for joystick buttons (assuming active-low)
-    PORTB |= (1 << PB7) | (1 << PB6) | (1 << PB1) | (1 << PB2) | (1 << PB5);
-
-    // Enable pin change interrupts for joystick directions
-    PCMSK0 |= (1 << PCINT7) | (1 << PCINT6); // PB7 (up), PB6 (down) => PCINT7, PCINT6
-    PCMSK0 |= (1 << PCINT1) | (1 << PCINT2); // PB1 (left), PB2 (right) => PCINT1, PCINT2
-    PCMSK0 |= (1 << PCINT5);                 // PB5 (click) => PCINT5
+    //sätter på upp, ner och inåt på joystick (som interrupt)
+    PCMSK1 = PCMSK1 | (1<<PCINT15) | (1<<PCINT14) | (1<<PCINT12);
+    //sätter på höger och vänster på joystick (som interrupt)
+    PCMSK0 = PCMSK0 | (1<<PCINT3) | (1<<PCINT2);
 }
 
 
 // Joystick input handler
-void joystickInterruptHandler(JoystickHandler *self) {
-    if (!(PINB & (1 << PB2))) {        // RIGHT
-        ASYNC(self->gui, switchFocus, 1);
-    } else if (!(PINB & (1 << PB1))) { // LEFT
-        ASYNC(self->gui, switchFocus, 0);
-    } else if (!(PINB & (1 << PB6))) { // UP
-        ASYNC(self->gui, adjustFrequency, 1);
-    } else if (!(PINB & (1 << PB7))) { // DOWN
-        ASYNC(self->gui, adjustFrequency, -1);
-    } else if (!(PINB & (1 << PB5))) {
-        ASYNC(self->gui, saveRestore, 0);
+void interruptPinB(JoystickHandler *self) { 
+    if((PINB & 0b10000000) >> 7 == 0){ //down press on joystick
+        printAt(5, 1);
+    }
+
+    if((PINB & 0b01000000) >> 6 == 0){ //up press on joystick
+        printAt(6, 1);
+    }
+
+    if((PINB & 0b00010000) >> 4 == 0){ //middle press
+        printAt(7, 1);
+    }
+}
+
+void interruptPinE(JoystickHandler *self) {  
+    if((PINE & 0b00000100) >> 2 == 0){ //left press
+        printAt(2, 2);
+    }
+
+    if((PINE & 0b00001000) >> 3 == 0){  //right press
+        //LCDDR2 = 0xF;
+        printAt(4, 2);
     }
 }
