@@ -16,9 +16,6 @@ void LCD_init() {
 	LCDFRR = (1 << LCDCD2) | (1 << LCDCD1) | (1 << LCDCD0);
 	// LCD(Control and Status Register A), LCD(Enable): True, LCD(Low Power Waveform): True, (no frame interrupt, no blanking)
 	LCDCRA = (1 << LCDEN) | (1 << LCDAB);
-	
-	// Display update
-	ASYNC(self, updateDisplay, 0);
 }
 
 // Returns wall of data based on char input ('0' = 48 (char))
@@ -122,7 +119,7 @@ void adjustFrequency(GUI *self, int delta) {
 		self->savedFreq1 = newFreq;
 		break;
 	// 1 is gen2 (right)
-	case 0:
+	case 1:
 		self->savedFreq2 = newFreq;
 		break;	
 	default:
