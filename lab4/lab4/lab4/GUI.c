@@ -142,6 +142,6 @@ void saveRestore(GUI *self) {
 }
 
 void updateDisplay(GUI *self) {
-    printAt(self->savedFreq1, 0); //gen1 hz at pos 0-1
-    printAt(self->savedFreq2, 3); //gen2 hz at pos 3-4
+    printAt(self->gen1->frequency, 0); //gen1 hz at pos 0-1
+    printAt(self->gen2->frequency, 3); //gen2 hz at pos 3-4
 }

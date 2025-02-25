@@ -54,3 +54,7 @@ void restore(PulseGen *self) {
 	self->frequency = self->saved_freq;
 	//ASYNC(self, setFrequency(self, self->saved_freq), 0);
 }
+
+int getFrequency(PulseGen *self) {
+    return self->frequency;
+}
