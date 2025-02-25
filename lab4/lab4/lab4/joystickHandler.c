@@ -3,21 +3,22 @@
 #include "PulseGen.h"
 
 
-void joystickInit(){
-    // Enable Pin Change Interrupts for PCMSK1 and PCMSK0
-    EIMSK |= (1 << PCIE1) | (1 << PCIE0);
+void joystickInit() {
+    // Enable Pin Change Interrupts for PCINT[7:0] (PCIE0)
+    PCICR |= (1 << PCIE0); // Enable Pin Change Interrupts for PCMSK0
 
-    // Set PB7 (down), PB6 (up), PB1 (left), PB2 (right), PB5 (click)
+    // Enable input for PB7 (Up), PB6 (Down), PB1 (Left), PB2 (Right), PB5 (Click)
     DDRB &= ~((1 << DDB7) | (1 << DDB6) | (1 << DDB1) | (1 << DDB2) | (1 << DDB5));
 
-    // Enable pull-up resistors for the joystick buttons
+    // Enable pull-up resistors for joystick buttons (assuming active-low)
     PORTB |= (1 << PB7) | (1 << PB6) | (1 << PB1) | (1 << PB2) | (1 << PB5);
 
     // Enable pin change interrupts for joystick directions
-    PCMSK1 |= (1 << PCINT15) | (1 << PCINT14); // PB7 (down), PB6 (up) => PCINT15, PCINT14
-    PCMSK0 |= (1 << PCINT1) | (1 << PCINT2);  // PB1 (left), PB2 (right) => PCINT1, PCINT2
-    PCMSK0 |= (1 << PCINT15); // PB5 (click) => PCINT15
+    PCMSK0 |= (1 << PCINT7) | (1 << PCINT6); // PB7 (up), PB6 (down) => PCINT7, PCINT6
+    PCMSK0 |= (1 << PCINT1) | (1 << PCINT2); // PB1 (left), PB2 (right) => PCINT1, PCINT2
+    PCMSK0 |= (1 << PCINT5);                 // PB5 (click) => PCINT5
 }
+
 
 // Joystick input handler
 void joystickInterruptHandler(JoystickHandler *self) {
