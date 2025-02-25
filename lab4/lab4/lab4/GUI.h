@@ -9,8 +9,6 @@ typedef struct {
     PulseGen *gen1;
     PulseGen *gen2;
     int activeGen;  // 0 = gen1, 1 = gen2
-    int savedFreq1;
-    int savedFreq2;
 } GUI;
 
 #define initGUI(g1, g2) { initObject(), g1, g2, 0, 0, 0 }

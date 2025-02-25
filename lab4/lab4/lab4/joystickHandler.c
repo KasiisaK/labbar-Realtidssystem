@@ -22,25 +22,24 @@ void joystickInit() {
 // Joystick input handler
 void interruptPinB(JoystickHandler *self) { 
     if((PINB & 0b10000000) >> 7 == 0){ //down press on joystick
-        printAt(5, 1);
+        ASYNC(self->gui, adjustFrequency, -1);
     }
 
     if((PINB & 0b01000000) >> 6 == 0){ //up press on joystick
-        printAt(6, 1);
+        ASYNC(self->gui, adjustFrequency, 1);
     }
 
     if((PINB & 0b00010000) >> 4 == 0){ //middle press
-        printAt(7, 1);
+        ASYNC(self->gui, saveRestore, 0);
     }
 }
 
 void interruptPinE(JoystickHandler *self) {  
     if((PINE & 0b00000100) >> 2 == 0){ //left press
-        printAt(2, 2);
+        ASYNC(self->gui, switchFocus, 0);
     }
 
     if((PINE & 0b00001000) >> 3 == 0){  //right press
-        //LCDDR2 = 0xF;
-        printAt(4, 2);
+        ASYNC(self->gui, switchFocus, 1);
     }
 }

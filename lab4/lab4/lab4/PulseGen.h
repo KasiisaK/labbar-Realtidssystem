@@ -21,5 +21,6 @@ void setFrequency(PulseGen *self, int freq);
 void toggle(PulseGen *self);
 void save(PulseGen *self);
 void restore(PulseGen *self);
+int getFrequency(PulseGen *self)
 
 #endif

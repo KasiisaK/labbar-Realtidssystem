@@ -102,6 +102,8 @@ void printAt(long num, int pos) {
 
 void switchFocus(GUI *self, int newActive) {
     self->activeGen = newActive;
+	PulseGen *target = self->activeGen ? self->gen2 : self->gen1;
+	//SYNC(target, toggle, 0)
     ASYNC(self, updateDisplay, 0);
 }
 
@@ -110,23 +112,8 @@ void adjustFrequency(GUI *self, int delta) {
     PulseGen *target = self->activeGen ? self->gen2 : self->gen1;
     int newFreq = target->frequency + delta;
     if (newFreq < 0) newFreq = 0;
-	
-	// Update right savedFreqx
-	switch (self->activeGen)
-	{
-	// 0 is gen1 (left)
-	case 0:
-		self->savedFreq1 = newFreq;
-		break;
-	// 1 is gen2 (right)
-	case 1:
-		self->savedFreq2 = newFreq;
-		break;	
-	default:
-		break;
-	}
 	// Update everything
-    ASYNC(target, setFrequency, newFreq);
+    //SYNC(target, setFrequency, newFreq);
     ASYNC(self, updateDisplay, 0);
 }
 
@@ -142,6 +129,6 @@ void saveRestore(GUI *self) {
 }
 
 void updateDisplay(GUI *self) {
-    printAt(self->savedFreq1, 0); //gen1 hz at pos 0-1
-    printAt(self->savedFreq2, 3); //gen2 hz at pos 3-4
+    printAt(self->gen1->frequency, 0); //gen1 hz at pos 0-1
+    printAt(self->gen2->frequency, 3); //gen2 hz at pos 3-4
 }
