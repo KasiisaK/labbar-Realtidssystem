@@ -106,7 +106,7 @@ void swithToLeftGen(GUI *self) {
 	// Clear 1 and 2
 	LCDDR0 &= ~(0b01000100);
 	// Set 1 for left (gen1)
-	LCDDR0 |= 0b01000000;
+	LCDDR0 |= 0b00000100;
 }
 
 void swithToRightGen(GUI *self) {
@@ -114,7 +114,7 @@ void swithToRightGen(GUI *self) {
 	// Clear 1 and 2
 	LCDDR0 &= ~(0b01000100);
 	// Set 1 for right (gen2)
-	LCDDR0 |= 0b00000100;
+	LCDDR0 |= 0b01000000;
 }
 
 void adjustFrequency(GUI *self, int delta) {
