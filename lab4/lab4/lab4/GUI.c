@@ -18,20 +18,21 @@ void LCD_init() {
 	LCDCRA = (1 << LCDEN) | (1 << LCDAB);
 }
 
+// LUT
+int zero[] = {0b0001, 0b0101, 0b0101, 0b0001};
+int one[] = {0b0000, 0b0001, 0b0001, 0b0000};
+int two[] = {0b0001, 0b0001, 0b1110, 0b0001};
+int three[] = {0b0001, 0b0001, 0b1011, 0b0001};
+int four[] = {0b0000, 0b0101, 0b1011, 0b0000};
+int five[] = {0b0001, 0b0100, 0b1011, 0b0001};
+int six[] = {0b0001, 0b0100, 0b1111, 0b0001};
+int seven[] = {0b0001, 0b0001, 0b0001, 0b0000};
+int eight[] = {0b0001, 0b0101, 0b1111, 0b0001};
+int nine[] = {0b0001, 0b0101, 0b1011, 0b0001};
+int none[] = {0b0000, 0b0000, 0b0000, 0b0000};
+
 // Returns wall of data based on char input ('0' = 48 (char))
 int* getSegmentForChar(char ch) {
-    // LUT
-    int zero[] = {0b0001, 0b0101, 0b0101, 0b0001};
-    int one[] = {0b0000, 0b0001, 0b0001, 0b0000};
-    int two[] = {0b0001, 0b0001, 0b1110, 0b0001};
-    int three[] = {0b0001, 0b0001, 0b1011, 0b0001};
-    int four[] = {0b0000, 0b0101, 0b1011, 0b0000};
-    int five[] = {0b0001, 0b0100, 0b1011, 0b0001};
-    int six[] = {0b0001, 0b0100, 0b1111, 0b0001};
-    int seven[] = {0b0001, 0b0001, 0b0001, 0b0000};
-    int eight[] = {0b0001, 0b0101, 0b1111, 0b0001};
-    int nine[] = {0b0001, 0b0101, 0b1011, 0b0001};
-    int none[] = {0b0000, 0b0000, 0b0000, 0b0000};
 
 	switch (ch) {
 		case '0': return zero;
@@ -51,7 +52,7 @@ int* getSegmentForChar(char ch) {
 // Write a char ch at position pos
 void writeChar(char ch, uint8_t pos) {
 	// Check if outside range
-	if (pos > 4 || pos < 0) return;	
+	if (pos > 5 || pos < 0) return;	
 
 	// Get correct char data
 	int* segment = getSegmentForChar(ch);
@@ -103,14 +104,14 @@ void printAt(long num, int pos) {
 void switchFocus(GUI *self, int newActive) {
     self->activeGen = newActive;
 	PulseGen *target = self->activeGen ? self->gen2 : self->gen1;
-	SYNC(target, toggle, 0)
+	//SYNC(target, toggle, 0)
     ASYNC(self, updateDisplay, 0);
 }
 
 void adjustFrequency(GUI *self, int delta) {
 	// Get right target gen
     PulseGen *target = self->activeGen ? self->gen2 : self->gen1;
-    int newFreq = target->frequency + delta;
+    int newFreq = SYNC(target, getFrequency, 0) + delta;
     if (newFreq < 0) newFreq = 0;
 	// Update everything
     SYNC(target, setFrequency, newFreq);
@@ -120,15 +121,27 @@ void adjustFrequency(GUI *self, int delta) {
 void saveRestore(GUI *self) {
     PulseGen *target = self->activeGen ? self->gen2 : self->gen1;
     if (target->frequency == 0) {
-        ASYNC(target, restore, 0);
+        SYNC(target, restore, 0);		
     } else {
-        ASYNC(target, save, 0);
-        ASYNC(target, setFrequency, 0);
+        SYNC(target, save, 0);
+        SYNC(target, setFrequency, 0);
     }
     ASYNC(self, updateDisplay, 0);
 }
 
 void updateDisplay(GUI *self) {
-    printAt(self->gen1->frequency, 0); //gen1 hz at pos 0-1
-    printAt(self->gen2->frequency, 3); //gen2 hz at pos 3-4
+	updateOneOrTwo(self);
+	int gen1Freq = SYNC(self->gen1, getFrequency(self->gen1), 0);
+	int gen2Freq = SYNC(self->gen2, getFrequency(self->gen2), 0);
+    printAt(gen1Freq, 0); //gen1 hz at pos 0-1
+    printAt(gen2Freq, 3); //gen2 hz at pos 3-4	
+}
+
+void updateOneOrTwo(GUI *self) {
+	LCDDR0 &= ~(0b01000100);
+	if (self->activeGen) {		
+		LCDDR0 |= 0b01000000;
+	} else {
+		LCDDR0 |= 0b00000100;
+	}
 }

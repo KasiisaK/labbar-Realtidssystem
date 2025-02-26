@@ -1,6 +1,7 @@
 #include <avr/io.h>
 #include "gui.h"
 #include "joystickHandler.h"
+#include "TinyTimber.h"
 
 
 // Initialize objects
@@ -28,6 +29,11 @@ int main() {
     joystickInit();
     LCD_init();
     
+
+	//ett och två
+	//LCDDR0 = 0b01000100;
+	//LCDDR0 = 0b01000100;
+	
     // Instal interupt handler
     //when the joystick's vertical state changes
     INSTALL(&joystick, interruptPinB, IRQ_PCINT1);

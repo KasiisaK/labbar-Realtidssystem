@@ -11,7 +11,7 @@ typedef struct {
     int activeGen;  // 0 = gen1, 1 = gen2
 } GUI;
 
-#define initGUI(g1, g2) { initObject(), g1, g2, 0, 0, 0 }
+#define initGUI(g1, g2) { initObject(), g1, g2, 0 }
 
 // Public methods
 void switchFocus(GUI *self, int newActive);
