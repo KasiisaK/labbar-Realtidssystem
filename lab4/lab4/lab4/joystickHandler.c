@@ -16,11 +16,11 @@ void joystickInit() {
 
 // Joystick input handler
 void joysticckInteruptHandler(JoystickHandler *self) { 
-    // Up
+    // Down
     if (!(PINB & (1 << PB7))) {
         adjustFrequency(self->gui, 1);
     }
-    // Down
+    // Up
     if (!(PINB & (1 << PB6))) {
         adjustFrequency(self->gui, -1);
     }
