@@ -36,10 +36,10 @@ void interruptPinB(JoystickHandler *self) {
 
 void interruptPinE(JoystickHandler *self) {  
     if((PINE & 0b00000100) >> 2 == 0){ //left press
-       switchFocus(self->gui, 0);
+       swithToLeftGen(self->gui);
     }
 
     if((PINE & 0b00001000) >> 3 == 0){  //right press
-       switchFocus(self->gui, 1);
+       swithToRightGen(self->gui);
     }
 }

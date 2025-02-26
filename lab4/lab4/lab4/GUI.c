@@ -103,29 +103,27 @@ void printAt(long num, int pos) {
 
 void updateOneOrTwo(GUI *self) {
 	LCDDR0 &= ~(0b01000100);
-	if (self->activeGen) {		
+	if (self->activeGen == self->gen1) {		
 		LCDDR0 |= 0b01000000;
 	} else {
 		LCDDR0 |= 0b00000100;
 	}
 }
 
-PulseGen* getCurrentGen(GUI *self) {
-    //activeGen = 1 => gen2
-    if(self->activeGen) {
-        return &(self->gen2);
-    } else {
-        return &(self->gen1);
-    }
+void swithToLeftGen(GUI *self) {
+	self->activeGen = self->gen1;
+}
+
+void swithToRightGen(GUI *self) {
+	self->activeGen = self->gen2;
 }
 
 void adjustFrequency(GUI *self, int delta) {
 	// Get right target gen
-	PulseGen *target = getCurrentGen(self);
-	int newFreq = SYNC(self->gen1, getFrequency, 0) + delta;
+	int newFreq = SYNC(self->activeGen, getFrequency, 0) + delta;
 	if (newFreq < 0) newFreq = 0;
 	// Update everything
-	SYNC(self->gen1, setFrequency, newFreq);
+	SYNC(self->activeGen, setFrequency, newFreq);
 	ASYNC(self, updateDisplay, 0);
 }
 
@@ -135,13 +133,6 @@ void updateDisplay(GUI *self) {
 	int gen2Freq = SYNC(self->gen2, getFrequency, 0);
     printAt(gen1Freq, 0); //gen1 hz at pos 0-1
     printAt(gen2Freq, 3); //gen2 hz at pos 3-4	
-}
-
-void switchFocus(GUI *self, int newActive) {
-	self->activeGen = newActive;
-	PulseGen *target = getCurrentGen(self);
-	//SYNC(target, toggle, 0)
-	ASYNC(self, updateDisplay, 0);
 }
 
 void saveRestore(GUI *self) {

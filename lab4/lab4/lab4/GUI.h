@@ -8,13 +8,14 @@ typedef struct {
     Object super;
     PulseGen *gen1;
     PulseGen *gen2;
-    int activeGen;  // 0 = gen1, 1 = gen2
+    PulseGen *activeGen; //g1 deafult
 } GUI;
 
-#define initGUI(g1, g2) { initObject(), g1, g2, 0 }
+#define initGUI(g1, g2) { initObject(), g1, g2, g1 }
 
 // Public methods
-void switchFocus(GUI *self, int newActive);
+void swithToLeftGen(GUI *self)
+void swithToRightGen(GUI *self);
 void adjustFrequency(GUI *self, int delta);
 void saveRestore(GUI *self);
 void updateDisplay(GUI *self);
