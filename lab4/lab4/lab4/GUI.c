@@ -136,12 +136,11 @@ void updateDisplay(GUI *self) {
 }
 
 void saveRestore(GUI *self) {
-	PulseGen *target = getCurrentGen(self);
-	if (target->frequency == 0) {
-		SYNC(target, restore, 0);
+	if (self->activeGen->frequency == 0) {
+		SYNC(self->activeGen, restore, 0);
 		} else {
-		SYNC(target, save, 0);
-		SYNC(target, setFrequency, 0);
+		SYNC(self->activeGen, save, 0);
+		SYNC(self->activeGen, setFrequency, 0);
 	}
 	ASYNC(self, updateDisplay, 0);
 }
