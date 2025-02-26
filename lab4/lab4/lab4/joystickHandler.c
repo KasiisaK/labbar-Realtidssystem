@@ -4,42 +4,36 @@
 
 
 void joystickInit() {
-    //sätter på upp, ner och inåt som input
-    PORTB = PORTB | 0b11010000;
-    //sätter på höger och vänster  som input
-    PORTE = PORTE | 0b00001100;
-    //DDRE = 0b01010000;
-    //sätter på upp,ner,in (15) hög,ven (14) //sida 53 AVr..169 nånitng
-    EIMSK = EIMSK | (1<<PCINT15) | (1<<PCINT14);
+    // Set 7 to 3 as inputs
+    PORTB |= (1 << PB7) | (1 << PB6) | (1 << PB5) | (1 << PB4) | (1 << PB3);
+    // Turn on interupts for 0 to 7
+    EIMSK |= (1 << PCINT15);
 
-    //sätter på upp, ner och inåt på joystick (som interrupt)
-    PCMSK1 = PCMSK1 | (1<<PCINT15) | (1<<PCINT14) | (1<<PCINT12);
-    //sätter på höger och vänster på joystick (som interrupt)
-    PCMSK0 = PCMSK0 | (1<<PCINT3) | (1<<PCINT2);
+    // Deffine interupts from PB7-3
+    PCMSK1 |= (1 << PCINT15) | (1 << PCINT14) | (1 << PCINT12) | (1 << PCINT11) | (1 << PCINT10);
 }
 
 
 // Joystick input handler
-void interruptPinB(JoystickHandler *self) { 
-    if((PINB & 0b10000000) >> 7 == 0){ //down press on joystick
-        adjustFrequency(self->gui, -1);
-    }
-
-    if((PINB & 0b01000000) >> 6 == 0){ //up press on joystick
+void joysticckInteruptHandler(JoystickHandler *self) { 
+    // Up
+    if((PINB & PB7) >> 7 == 0){
         adjustFrequency(self->gui, 1);
     }
-
-    if((PINB & 0b00010000) >> 4 == 0){ //middle press
+    // Down
+    if((PINB & PB7) >> 7 == 0){
+        adjustFrequency(self->gui, -1);
+    }
+    // Left
+    if((PINB & PB7) >> 7 == 0){
+        swithToLeftGen(self->gui);
+    }
+    // Right
+    if((PINB & PB7) >> 7 == 0){
+        swithToRightGen(self->gui);
+    }
+    // CLick
+    if((PINB & PB7) >> 7 == 0){
         saveRestore(self->gui);
-    }
-}
-
-void interruptPinE(JoystickHandler *self) {  
-    if((PINE & 0b00000100) >> 2 == 0){ //left press
-       swithToLeftGen(self->gui);
-    }
-
-    if((PINE & 0b00001000) >> 3 == 0){  //right press
-       swithToRightGen(self->gui);
     }
 }

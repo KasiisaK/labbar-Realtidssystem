@@ -36,9 +36,8 @@ int main() {
 	
     // Instal interupt handler
     //when the joystick's vertical state changes
-    INSTALL(&joystick, interruptPinB, IRQ_PCINT1);
+    INSTALL(&joystick, joysticckInteruptHandler, IRQ_PCINT1);
     //when the joystick's horizontal (minus middle) state changes
-    INSTALL(&joystick, interruptPinE, IRQ_PCINT0);
     
     // Start kernel
     return TINYTIMBER(&gui, NULL, NULL);
