@@ -103,7 +103,7 @@ void printAt(long num, int pos) {
 
 void updateOneOrTwo(GUI *self) {
 	LCDDR0 &= ~(0b01000100);
-	if (self->activeGen == self->gen1) {		
+	if (self->activeGen == self->gen2) {		
 		LCDDR0 |= 0b01000000;
 	} else {
 		LCDDR0 |= 0b00000100;
@@ -112,10 +112,12 @@ void updateOneOrTwo(GUI *self) {
 
 void swithToLeftGen(GUI *self) {
 	self->activeGen = self->gen1;
+	ASYNC(self, updateOneOrTwo, 0);
 }
 
 void swithToRightGen(GUI *self) {
 	self->activeGen = self->gen2;
+	ASYNC(self, updateOneOrTwo, 0);
 }
 
 void adjustFrequency(GUI *self, int delta) {
