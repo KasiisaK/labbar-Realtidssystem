@@ -870,8 +870,8 @@ void joysticckInteruptHandler(JoystickHandler *self) {
      54c:	0e 94 35 02 	call	0x46a	; 0x46a <saveRestore>
     }
     // ...
-    if (!(PINE & (1 << PE3))) {
-     550:	63 99       	sbic	0x0c, 3	; 12
+    if((PINE & 0b00000100) >> 2 == 0) {
+     550:	62 99       	sbic	0x0c, 2	; 12
      552:	04 c0       	rjmp	.+8      	; 0x55c <joysticckInteruptHandler+0x3e>
         swithToLeftGen(self->gui);
      554:	8c 81       	ldd	r24, Y+4	; 0x04
@@ -879,8 +879,8 @@ void joysticckInteruptHandler(JoystickHandler *self) {
      558:	0e 94 df 01 	call	0x3be	; 0x3be <swithToLeftGen>
     }
     // ...
-    if (!(PINE & (1 << PE2))) {
-     55c:	62 99       	sbic	0x0c, 2	; 12
+    if((PINE & 0b00001000) >> 3 == 0) {
+     55c:	63 99       	sbic	0x0c, 3	; 12
      55e:	04 c0       	rjmp	.+8      	; 0x568 <joysticckInteruptHandler+0x4a>
         swithToRightGen(self->gui);
      560:	8c 81       	ldd	r24, Y+4	; 0x04

@@ -33,11 +33,11 @@ void joysticckInteruptHandler(JoystickHandler *self) {
         saveRestore(self->gui);
     }
     // ...
-    if (!(PINE & (1 << PE3))) {
+    if((PINE & 0b00000100) >> 2 == 0) {
         swithToLeftGen(self->gui);
     }
     // ...
-    if (!(PINE & (1 << PE2))) {
+    if((PINE & 0b00001000) >> 3 == 0) {
         swithToRightGen(self->gui);
     }
 }
