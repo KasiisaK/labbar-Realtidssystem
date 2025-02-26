@@ -30,7 +30,7 @@ int main() {
     LCD_init();
     
 
-	//ett och två
+	//ett och tvï¿½
 	//LCDDR0 = 0b01000100;
 	//LCDDR0 = 0b01000100;
 	
