@@ -4,36 +4,40 @@
 
 
 void joystickInit() {
-    // Set 7 to 3 as inputs
-    PORTB |= (1 << PB7) | (1 << PB6) | (1 << PB5) | (1 << PB4) | (1 << PB3);
-    // Turn on interupts for 0 to 7
-    EIMSK |= (1 << PCINT15);
+    // Input for: Down, Up, Click
+    PORTB |= (1 << PB7) | (1 << PB6) | (1 << PB4);
+    //Input for; Left, Right
+    PORTE |= (1 << PE3) | (1 << PE2)
+    // Turn on interupts
+    EIMSK |= (1 << PCINT15) | (1 << PCINT14);
 
-    // Deffine interupts from PB7-3
-    PCMSK1 |= (1 << PCINT15) | (1 << PCINT14) | (1 << PCINT12) | (1 << PCINT11) | (1 << PCINT10);
+    // Deffine interupts from PB7,6,4
+    PCMSK1 |= (1 << PCINT15) | (1 << PCINT14) | (1 << PCINT12);
+    // Deffine interupts from PE3,2
+    PCMSK0 |= (1 << PCINT3) | (1 << PCINT2);
 }
 
 
 // Joystick input handler
 void joysticckInteruptHandler(JoystickHandler *self) { 
-    // Up
+    // Down
     if (!(PINB & (1 << PB7))) {
         adjustFrequency(self->gui, 1);
     }
-    // Down
+    // Up
     if (!(PINB & (1 << PB6))) {
         adjustFrequency(self->gui, -1);
     }
-    // Left
-    if (!(PINB & (1 << PB5))) {
-        swithToLeftGen(self->gui);
-    }
-    // Right
+    // In
     if (!(PINB & (1 << PB4))) {
         swithToRightGen(self->gui);
     }
-    // CLick
-    if (!(PINB & (1 << PB3))) {
+    // ...
+    if (!(PINE & (1 << PE3))) {
+        swithToLeftGen(self->gui);
+    }
+    // ...
+    if (!(PINE & (1 << PE2))) {
         saveRestore(self->gui);
     }
 }
