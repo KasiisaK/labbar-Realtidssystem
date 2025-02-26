@@ -20,7 +20,7 @@ void printAt(long num, int pos);
 void updateOneOrTwo(GUI *self);
 
 //logich stuff
-void swithToLeftGen(GUI *self)
+void swithToLeftGen(GUI *self);
 void swithToRightGen(GUI *self);
 void adjustFrequency(GUI *self, int delta);
 void saveRestore(GUI *self);
