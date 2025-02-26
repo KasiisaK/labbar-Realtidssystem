@@ -15,11 +15,12 @@ typedef struct {
 } PulseGen;
 
 #define initPulseGen(bit, writer) \
-	{ initObject(), bit, 0, 0, writer, 0, NULL }
+	{ initObject(), bit, 0, 0, 0, 0, NULL }
 
 void setFrequency(PulseGen *self, int freq);
 void toggle(PulseGen *self);
 void save(PulseGen *self);
 void restore(PulseGen *self);
+int getFrequency(PulseGen *self);
 
 #endif
