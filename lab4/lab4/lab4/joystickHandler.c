@@ -17,23 +17,23 @@ void joystickInit() {
 // Joystick input handler
 void joysticckInteruptHandler(JoystickHandler *self) { 
     // Up
-    if((PINB & PB7) >> 7 == 0){
+    if (!(PINB & (1 << PB7))) {
         adjustFrequency(self->gui, 1);
     }
     // Down
-    if((PINB & PB7) >> 7 == 0){
+    if (!(PINB & (1 << PB6))) {
         adjustFrequency(self->gui, -1);
     }
     // Left
-    if((PINB & PB7) >> 7 == 0){
+    if (!(PINB & (1 << PB5))) {
         swithToLeftGen(self->gui);
     }
     // Right
-    if((PINB & PB7) >> 7 == 0){
+    if (!(PINB & (1 << PB4))) {
         swithToRightGen(self->gui);
     }
     // CLick
-    if((PINB & PB7) >> 7 == 0){
+    if (!(PINB & (1 << PB3))) {
         saveRestore(self->gui);
     }
 }
