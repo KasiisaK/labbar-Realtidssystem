@@ -13,13 +13,17 @@ typedef struct {
 
 #define initGUI(g1, g2) { initObject(), g1, g2, g1 }
 
-// Public methods
+// print stuff
+void LCD_init();
+int* getSegmentForChar(char ch);
+void printAt(long num, int pos);
+void updateOneOrTwo(GUI *self);
+
+//logich stuff
 void swithToLeftGen(GUI *self)
 void swithToRightGen(GUI *self);
 void adjustFrequency(GUI *self, int delta);
 void saveRestore(GUI *self);
 void updateDisplay(GUI *self);
-void LCD_init(void);
-void printAt(long num, int pos);
 
 #endif

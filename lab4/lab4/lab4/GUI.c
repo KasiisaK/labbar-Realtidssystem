@@ -127,20 +127,20 @@ void adjustFrequency(GUI *self, int delta) {
 	ASYNC(self, updateDisplay, 0);
 }
 
-void updateDisplay(GUI *self) {
-	updateOneOrTwo(self);
-	int gen1Freq = SYNC(self->gen1, getFrequency, 0);
-	int gen2Freq = SYNC(self->gen2, getFrequency, 0);
-    printAt(gen1Freq, 0); //gen1 hz at pos 0-1
-    printAt(gen2Freq, 3); //gen2 hz at pos 3-4	
-}
-
 void saveRestore(GUI *self) {
-	if (self->activeGen->frequency == 0) {
+	if (SYNC(self->activeGen, getFrequency, 0) == 0) {
 		SYNC(self->activeGen, restore, 0);
 		} else {
 		SYNC(self->activeGen, save, 0);
 		SYNC(self->activeGen, setFrequency, 0);
 	}
 	ASYNC(self, updateDisplay, 0);
+}
+
+void updateDisplay(GUI *self) {
+	updateOneOrTwo(self);
+	int gen1Freq = SYNC(self->gen1, getFrequency, 0);
+	int gen2Freq = SYNC(self->gen2, getFrequency, 0);
+    printAt(gen1Freq, 0); //gen1 hz at pos 0-1
+    printAt(gen2Freq, 3); //gen2 hz at pos 3-4	
 }
