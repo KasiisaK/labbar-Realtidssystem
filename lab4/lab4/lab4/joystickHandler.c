@@ -22,7 +22,7 @@ void joystickInit() {
 // Joystick input handler
 void interruptPinB(JoystickHandler *self) { 
     if((PINB & 0b10000000) >> 7 == 0){ //down press on joystick
-        //ASYNC(self->gui, adjustFrequency, -1);
+        adjustFrequency(self->gui, -1);
     }
 
     if((PINB & 0b01000000) >> 6 == 0){ //up press on joystick
@@ -30,7 +30,7 @@ void interruptPinB(JoystickHandler *self) {
     }
 
     if((PINB & 0b00010000) >> 4 == 0){ //middle press
-        //ASYNC(self->gui, saveRestore, 0);
+        saveRestore();
     }
 }
 
