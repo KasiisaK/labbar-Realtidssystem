@@ -52,7 +52,7 @@ int* getSegmentForChar(char ch) {
 // Write a char ch at position pos
 void writeChar(char ch, uint8_t pos) {
 	// Check if outside range
-	if (pos > 4 || pos < 0) return;	
+	if (pos > 5 || pos < 0) return;	
 
 	// Get correct char data
 	int* segment = getSegmentForChar(ch);
@@ -120,7 +120,7 @@ void adjustFrequency(GUI *self, int delta) {
 void saveRestore(GUI *self) {
     PulseGen *target = self->activeGen ? self->gen2 : self->gen1;
     if (target->frequency == 0) {
-        ASYNC(target, restore, 0);
+        SYNC(target, restore, 0);		
     } else {
         SYNC(target, save, 0);
         SYNC(target, setFrequency, 0);
@@ -130,8 +130,10 @@ void saveRestore(GUI *self) {
 
 void updateDisplay(GUI *self) {
 	updateOneOrTwo(self);
-    printAt(SYNC(self->gen1, getFrequency(self->gen1), 0), 0); //gen1 hz at pos 0-1
-    printAt(SYNC(self->gen2, getFrequency(self->gen2), 0), 3); //gen2 hz at pos 3-4	
+	int gen1Freq = SYNC(self->gen1, getFrequency(self->gen1), 0);
+	int gen2Freq = SYNC(self->gen2, getFrequency(self->gen2), 0);
+    printAt(gen1Freq, 0); //gen1 hz at pos 0-1
+    printAt(gen2Freq, 3); //gen2 hz at pos 3-4	
 }
 
 void updateOneOrTwo(GUI *self) {
