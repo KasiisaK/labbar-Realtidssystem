@@ -102,8 +102,6 @@ void printAt(long num, int pos) {
 }
 
 void activeGenIndicator(GUI *self) {
-	// Clear 1 and 2
-	LCDDR0 &= ~(0b01000100);
 	//turn on 1 or 2
 	if (self->activeGen == self->gen1) {
 		LCDDR0 |= 0b00000100;
