@@ -17,7 +17,6 @@ typedef struct {
 void LCD_init();
 int* getSegmentForChar(char ch);
 void printAt(long num, int pos);
-void updateOneOrTwo(GUI *self);
 
 //logich stuff
 void swithToLeftGen(GUI *self);

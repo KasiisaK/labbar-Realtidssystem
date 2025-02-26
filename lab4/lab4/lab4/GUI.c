@@ -101,23 +101,20 @@ void printAt(long num, int pos) {
 	writeChar(num % 10 + '0', pos);
 }
 
-void updateOneOrTwo(GUI *self) {
-	LCDDR0 &= ~(0b01000100);
-	if (self->activeGen == self->gen2) {		
-		LCDDR0 |= 0b01000000;
-	} else {
-		LCDDR0 |= 0b00000100;
-	}
-}
-
 void swithToLeftGen(GUI *self) {
 	self->activeGen = self->gen1;
-	ASYNC(self, updateOneOrTwo, 0);
+	// Clear 1 and 2
+	LCDDR0 &= ~(0b01000100);
+	// Set 1 for left (gen1)
+	LCDDR0 |= 0b01000000;
 }
 
 void swithToRightGen(GUI *self) {
 	self->activeGen = self->gen2;
-	ASYNC(self, updateOneOrTwo, 0);
+	// Clear 1 and 2
+	LCDDR0 &= ~(0b01000100);
+	// Set 1 for right (gen2)
+	LCDDR0 |= 0b00000100;
 }
 
 void adjustFrequency(GUI *self, int delta) {
@@ -140,7 +137,6 @@ void saveRestore(GUI *self) {
 }
 
 void updateDisplay(GUI *self) {
-	updateOneOrTwo(self);
 	int gen1Freq = SYNC(self->gen1, getFrequency, 0);
 	int gen2Freq = SYNC(self->gen2, getFrequency, 0);
     printAt(gen1Freq, 0); //gen1 hz at pos 0-1
