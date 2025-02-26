@@ -22,7 +22,7 @@ void joystickInit() {
 void joysticckInteruptHandler(JoystickHandler *self) { 
     // Down
     if (!(PINB & (1 << PB7))) {
-        adjustFrequency(self->gui, -1);
+        holdDown(self);
     }
     // Up
     if (!(PINB & (1 << PB6))) {
@@ -39,5 +39,12 @@ void joysticckInteruptHandler(JoystickHandler *self) {
     // Right
     if (!(PINE & (1 << PB3))) {
         swithToRightGen(self->gui);
+    }
+}
+
+void holdDown(JoystickHandler *self) {
+    if (!(PINB & (1 << PB7))) {
+        AFTER(MSEC(100), self, holdDown, 0)
+        SYNC(self->gui, adjustFrequency, -1);
     }
 }
