@@ -13,5 +13,6 @@ typedef struct {
 
 void joystickInit();
 void joysticckInteruptHandler(JoystickHandler *self);
+void holdDown(JoystickHandler *self);
 
 #endif

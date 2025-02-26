@@ -44,7 +44,7 @@ void joysticckInteruptHandler(JoystickHandler *self) {
 
 void holdDown(JoystickHandler *self) {
     if (!(PINB & (1 << PB7))) {
-        AFTER(MSEC(100), self, holdDown, 0)
+        AFTER(MSEC(100), self, holdDown, 0);
         SYNC(self->gui, adjustFrequency, -1);
     }
 }
