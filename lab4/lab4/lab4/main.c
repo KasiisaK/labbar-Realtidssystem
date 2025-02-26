@@ -1,6 +1,7 @@
 #include <avr/io.h>
 #include "gui.h"
 #include "joystickHandler.h"
+#include "TinyTimber.h"
 
 
 // Initialize objects

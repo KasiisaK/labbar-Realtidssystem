@@ -101,20 +101,19 @@ void printAt(long num, int pos) {
 }
 
 void switchFocus(GUI *self, int newActive) {
-	writeChar(4, 1)
-    /* self->activeGen = newActive;
-    ASYNC(self, updateDisplay, 0); */
+    self->activeGen = newActive;
+	SYNC(self, toggle, 0);
+    ASYNC(self, updateDisplay, 0);
 }
 
 void adjustFrequency(GUI *self, int delta) {
-	writeChar(5, 4)
-	/* // Get right target gen
+	// Get right target gen
     PulseGen *target = self->activeGen ? self->gen2 : self->gen1;
     int newFreq = target->frequency + delta;
     if (newFreq < 0) newFreq = 0;
 	// Update everything
     SYNC(target, setFrequency, newFreq);
-    ASYNC(self, updateDisplay, 0); */
+    ASYNC(self, updateDisplay, 0);
 }
 
 void saveRestore(GUI *self) {
