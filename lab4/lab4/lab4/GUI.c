@@ -101,34 +101,6 @@ void printAt(long num, int pos) {
 	writeChar(num % 10 + '0', pos);
 }
 
-void switchFocus(GUI *self, int newActive) {
-    self->activeGen = newActive;
-	PulseGen *target = self->activeGen ? self->gen2 : self->gen1;
-	//SYNC(target, toggle, 0)
-    ASYNC(self, updateDisplay, 0);
-}
-
-void adjustFrequency(GUI *self, int delta) {
-	// Get right target gen
-    PulseGen *target = self->activeGen ? self->gen2 : self->gen1;
-    int newFreq = SYNC(target, getFrequency, 0) + delta;
-    if (newFreq < 0) newFreq = 0;
-	// Update everything
-    SYNC(target, setFrequency, newFreq);
-    ASYNC(self, updateDisplay, 0);
-}
-
-void saveRestore(GUI *self) {
-    PulseGen *target = self->activeGen ? self->gen2 : self->gen1;
-    if (target->frequency == 0) {
-        SYNC(target, restore, 0);		
-    } else {
-        SYNC(target, save, 0);
-        SYNC(target, setFrequency, 0);
-    }
-    ASYNC(self, updateDisplay, 0);
-}
-
 void updateDisplay(GUI *self) {
 	updateOneOrTwo(self);
 	int gen1Freq = SYNC(self->gen1, getFrequency(self->gen1), 0);
@@ -144,4 +116,41 @@ void updateOneOrTwo(GUI *self) {
 	} else {
 		LCDDR0 |= 0b00000100;
 	}
+}
+
+PulseGen* getCurrentGen(GUI *self) {
+    //activeGen = 1 => gen2
+    if(self->activeGen) {
+        return &(self->gen2);
+    } else {
+        return &(self->gen1);
+    }
+}
+
+void adjustFrequency(GUI *self, int delta) {
+	// Get right target gen
+	PulseGen *target = getCurrentGen(self);
+	int newFreq = SYNC(target, getFrequency, 0) + delta;
+	if (newFreq < 0) newFreq = 0;
+	// Update everything
+	SYNC(target, setFrequency, newFreq);
+	ASYNC(self, updateDisplay, 0);
+}
+
+void switchFocus(GUI *self, int newActive) {
+	self->activeGen = newActive;
+	PulseGen *target = getCurrentGen(self);
+	//SYNC(target, toggle, 0)
+	ASYNC(self, updateDisplay, 0);
+}
+
+void saveRestore(GUI *self) {
+	PulseGen *target = getCurrentGen(self);
+	if (target->frequency == 0) {
+		SYNC(target, restore, 0);
+		} else {
+		SYNC(target, save, 0);
+		SYNC(target, setFrequency, 0);
+	}
+	ASYNC(self, updateDisplay, 0);
 }

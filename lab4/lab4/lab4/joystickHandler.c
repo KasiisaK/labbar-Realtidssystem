@@ -30,16 +30,16 @@ void interruptPinB(JoystickHandler *self) {
     }
 
     if((PINB & 0b00010000) >> 4 == 0){ //middle press
-        saveRestore();
+        saveRestore(self->gui);
     }
 }
 
 void interruptPinE(JoystickHandler *self) {  
     if((PINE & 0b00000100) >> 2 == 0){ //left press
-       // ASYNC(self->gui, switchFocus, 0);
+       switchFocus(self->gui, 0);
     }
 
     if((PINE & 0b00001000) >> 3 == 0){  //right press
-       // ASYNC(self->gui, switchFocus, 1);
+       switchFocus(self->gui, 1);
     }
 }

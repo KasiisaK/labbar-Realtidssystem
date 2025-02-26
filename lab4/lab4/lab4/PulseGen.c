@@ -39,3 +39,4 @@ void restore(PulseGen *self) {
 int getFrequency(PulseGen *self) {
 	return self->frequency;
 }
+
