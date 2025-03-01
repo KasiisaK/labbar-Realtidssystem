@@ -50,8 +50,9 @@ void holdDown(JoystickHandler *self) {
 }
 
 void holdUp(JoystickHandler *self) {
-	if (!(PINB & (1 << PB6))) {
-		AFTER(MSEC(100), self, holdUp, 0);
-		SYNC(self->gui, adjustFrequency, 1);
-	}
+    // If holding down key
+    if (!(PINB & (1 << PB6))) {
+        SYNC(self->gui, adjustFrequency, 1);
+        AFTER(MSEC(500), self, holdUp, 0);
+    }
 }
