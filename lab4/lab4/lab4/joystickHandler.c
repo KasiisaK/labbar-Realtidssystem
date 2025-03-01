@@ -26,7 +26,7 @@ void joysticckInteruptHandler(JoystickHandler *self) {
     }
     // Up
     if (!(PINB & (1 << PB6))) {
-        interruptUp(self);
+        holdUp(self);
     }
     // In
     if (!(PINB & (1 << PB4))) {
@@ -44,31 +44,15 @@ void joysticckInteruptHandler(JoystickHandler *self) {
 
 void holdDown(JoystickHandler *self) {
 	if (!(PINB & (1 << PB7))) {
-		AFTER(MSEC(100), self, holdDown, 0);
 		SYNC(self->gui, adjustFrequency, -1);
+        AFTER(MSEC(500), self, holdUp, 0);
 	}
 }
 
-void interruptUp(JoystickHandler *self) {
-    AFTER(MSEC(400), self, holdUp, 0);  // Initial delay before repeating
-    SYNC(self->gui, adjustFrequency, 1);  
-
-    if (self->gui->activeGen == self->gui->gen1) {
-        SYNC(self->gui, updateDisplay, 0);
-    } else {
-        SYNC(self->gui, updateDisplay, 1);
-    }
-}
-
 void holdUp(JoystickHandler *self) {
-    if (!(PINB & (1 << PB6))) {  // If still holding joystick up
-        AFTER(MSEC(70), self, holdUp, 0);  // Repeat every 70ms
+    // If holding down (up) key
+    if (!(PINB & (1 << PB6))) {
         SYNC(self->gui, adjustFrequency, 1);
-
-        if (self->gui->activeGen == self->gui->gen1) {
-            SYNC(self->gui, updateDisplay, 0);
-        } else {
-            SYNC(self->gui, updateDisplay, 1);
-        }
+        AFTER(MSEC(500), self, holdUp, 0);
     }
 }
