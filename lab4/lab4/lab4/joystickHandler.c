@@ -6,7 +6,7 @@
 void joystickInit() {
     // Input for: Down, Up, Click
     PORTB |= (1 << PB7) | (1 << PB6) | (1 << PB4);
-    //Input for; Left, Right
+    // Input for; Left, Right
     PORTE |= (1 << PE3) | (1 << PE2);
     // Turn on interrupts
     EIMSK |= (1 << PCINT15) | (1 << PCINT14);
@@ -22,11 +22,11 @@ void joystickInit() {
 void joysticckInteruptHandler(JoystickHandler *self) { 
     // Down
     if (!(PINB & (1 << PB7))) {
-        holdDown(self);
+	    holdDown(self);
     }
     // Up
     if (!(PINB & (1 << PB6))) {
-        adjustFrequency(self->gui, 1);
+        holdUp(self);
     }
     // In
     if (!(PINB & (1 << PB4))) {
@@ -43,8 +43,15 @@ void joysticckInteruptHandler(JoystickHandler *self) {
 }
 
 void holdDown(JoystickHandler *self) {
-    if (!(PINB & (1 << PB7))) {
-        AFTER(MSEC(100), self, holdDown, 0);
-        SYNC(self->gui, adjustFrequency, -1);
-    }
+	if (!(PINB & (1 << PB7))) {
+		AFTER(MSEC(100), self, holdDown, 0);
+		SYNC(self->gui, adjustFrequency, -1);
+	}
+}
+
+void holdUp(JoystickHandler *self) {
+	if (!(PINB & (1 << PB6))) {
+		AFTER(MSEC(100), self, holdUp, 0);
+		SYNC(self->gui, adjustFrequency, 1);
+	}
 }

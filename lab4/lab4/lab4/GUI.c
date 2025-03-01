@@ -112,11 +112,15 @@ void activeGenIndicator(GUI *self) {
 
 void swithToLeftGen(GUI *self) {
 	self->activeGen = self->gen1;
+	SYNC(self->gen1, setStatus, true);
+	SYNC(self->gen2, setStatus, false);
 	ASYNC(self, updateDisplay, 0);
 }
 
 void swithToRightGen(GUI *self) {
 	self->activeGen = self->gen2;
+	SYNC(self->gen2, setStatus, true);
+	SYNC(self->gen1, setStatus, false);
 	ASYNC(self, updateDisplay, 0);
 }
 

@@ -3,7 +3,7 @@
 
 #include <avr/io.h>
 #include "TinyTimber.h"
-
+#include <stdbool.h>
 
 // Define PortWrite object
 typedef struct {

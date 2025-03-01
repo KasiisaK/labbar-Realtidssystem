@@ -1,6 +1,7 @@
 #ifndef _PULSEGEN_
 #define _PULSEGEN_
 
+#include <stdbool.h>
 #include "TinyTimber.h"
 #include "PortWrite.h"
 
@@ -12,15 +13,17 @@ typedef struct {
 	int frequency;		// Current freq
 	int saved_freq;		// Last saved freq
 	PortWrite *write;
+	bool genStatus;
 } PulseGen;
 
-#define initPulseGen(bit, writer) \
-	{ initObject(), bit, 0, 0, 0, 0, NULL }
+#define initPulseGen(bit, writer, status) \
+	{ initObject(), bit, 0, 0, 0, 0, writer, status }
 
 void setFrequency(PulseGen *self, int freq);
 void toggle(PulseGen *self);
 void save(PulseGen *self);
 void restore(PulseGen *self);
+void setStatus(PulseGen *self, bool status);
 int getFrequency(PulseGen *self);
 
 #endif

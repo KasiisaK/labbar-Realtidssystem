@@ -15,17 +15,6 @@ void setFrequency(PulseGen *self, int freq) {
 	self->frequency = freq;
 }
 
-// Toggle output and schedule next toggle
-void toggle(PulseGen *self) {
-    self->state = !self->state;
-    ASYNC(self->write, setPin, self->bit | (self->state << self->bit));
-    
-    if (self->frequency > 0) {
-        int period = 1000 / self->frequency;
-        self->pending_msg = AFTER(period/2, self, toggle, 0);
-    }
-}
-
 // Saves the freq
 void save(PulseGen *self) {
 	self->saved_freq = self->frequency;
@@ -40,3 +29,12 @@ int getFrequency(PulseGen *self) {
 	return self->frequency;
 }
 
+void setStatus(PulseGen *self, bool status) {
+	self->genStatus = status;
+}
+
+int genFreq(PulseGen *self) {
+	if (self->genStatus) {
+		
+	}
+}
