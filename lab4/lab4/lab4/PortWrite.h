@@ -11,10 +11,10 @@ typedef struct {
 } PortWrite;
 
 // Initialization macro
-#define initPortWrite() { initObject() }
+#define initPortWrite() { initObject()}
 
 // Function declarations
-void setPin(PortWrite *self, int bit, int value);
-void togglePin(PortWrite *self, int bit);
+void turnOfPin(PortWrite *self, uint8_t bit);
+void togglePin(PortWrite *self, uint8_t bit);
 
 #endif

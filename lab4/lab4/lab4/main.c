@@ -26,7 +26,7 @@ void pinOutputInit(){
 
 int main() {
     sysInit();
-    pinOutputInit();
+    pinOutputInit(); // Is this needed
     joystickInit();
     LCD_init();
     
