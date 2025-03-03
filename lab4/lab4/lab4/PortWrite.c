@@ -6,6 +6,6 @@ void turnOfPin(PortWrite *self, uint8_t bit) {
 }
 
 // Toggle a specific bit on Port E
-void togglePin(PortWrite *self, int bit) {
+void togglePin(PortWrite *self, uint8_t bit) {
     PORTE ^= (1 << bit);   // Toggle the bit
 }

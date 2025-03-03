@@ -29,11 +29,16 @@ int main() {
     pinOutputInit(); // Is this needed
     joystickInit();
     LCD_init();
+	//freqInit(&gen1);
+	//freqInit(&gen2);
     
 
-	//ett och tv�
-	//LCDDR0 = 0b01000100;
-	//LCDDR0 = 0b01000100;
+	while (1) {
+		PORTE ^= (1 << 6);
+		_delay_ms(500);
+	}
+
+	/*
 	
     // Instal interupt handler
     //when the joystick's vertical state changes
@@ -43,6 +48,7 @@ int main() {
     
     // Start kernel
     return TINYTIMBER(&gui, NULL, NULL);
+	*/
 }
 
 

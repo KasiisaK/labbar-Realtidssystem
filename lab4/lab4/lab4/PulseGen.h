@@ -19,11 +19,13 @@ typedef struct {
 #define initPulseGen(bit, writer, status) \
 	{ initObject(), bit, 0, 0, 0, 0, writer, status }
 
+void freqInit(PulseGen *self);
 void setFrequency(PulseGen *self, int freq);
 void toggle(PulseGen *self);
 void save(PulseGen *self);
 void restore(PulseGen *self);
 void setStatus(PulseGen *self, bool status);
 int getFrequency(PulseGen *self);
+int genFreq(PulseGen *self);
 
 #endif
