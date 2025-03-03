@@ -1,7 +1,7 @@
 #include "PortWrite.h"
 
 // Set a specific bit on Port E high or low
-void turnOfPin(PortWrite *self, uint8_t bit) {
+void turnOffPin(PortWrite *self, uint8_t bit) {
     PORTE &= ~(1 << bit);
 }
 

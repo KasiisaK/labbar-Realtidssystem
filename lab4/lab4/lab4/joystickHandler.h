@@ -11,7 +11,7 @@ typedef struct {
 #define initJoystickHandler(backendRef) { initObject(), backendRef}
 
 void joystickInit();
-void joysticckInteruptHandler(JoystickHandler *self);
+void joystickInteruptHandler(JoystickHandler *self);
 void holdDown(JoystickHandler *self);
 void holdUp(JoystickHandler *self);
 

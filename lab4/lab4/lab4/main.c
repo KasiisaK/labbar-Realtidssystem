@@ -12,8 +12,8 @@ PortWrite portWriter = initPortWrite();
 PulseGen gen1 = initPulseGen(4, &portWriter, true);
 PulseGen gen2 = initPulseGen(6, &portWriter, false);
 GUI gui = initGUI();
-BACKEND backend = initBackend(&gen1, &gen2, &gui, &joystick);
 JoystickHandler joystick = initJoystickHandler(&backend);
+BACKEND backend = initBackend(&gen1, &gen2, &gui, &joystick);
 
 void sysInit(){
     // Clock Prescale Register "maximum speed"
@@ -39,8 +39,8 @@ int main() {
 	
     // Instal interupt handler
     //when the joystick's vertical state changes
-    INSTALL(&joystick, joysticckInteruptHandler, IRQ_PCINT0);
-	INSTALL(&joystick, joysticckInteruptHandler, IRQ_PCINT1);
+    INSTALL(&joystick, joystickInteruptHandler, IRQ_PCINT0);
+	INSTALL(&joystick, joystickInteruptHandler, IRQ_PCINT1);
     //when the joystick's horizontal (minus middle) state changes
     
     // Start kernel

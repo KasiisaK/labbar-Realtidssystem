@@ -1,6 +1,6 @@
 #include "TinyTimber.h"
 #include "Backend.h"
-
+#include "GUI.h"
 
 
 void swithToLeftGen(BACKEND *self) {

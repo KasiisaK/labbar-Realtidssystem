@@ -14,7 +14,7 @@ typedef struct {
 #define initPortWrite() { initObject()}
 
 // Function declarations
-void turnOfPin(PortWrite *self, uint8_t bit);
+void turnOffPin(PortWrite *self, uint8_t bit);
 void togglePin(PortWrite *self, uint8_t bit);
 
 #endif
