@@ -4,13 +4,16 @@
 #include "TinyTimber.h"
 #include <stdbool.h>
 
+#include <util/delay.h>
+
 
 // Initialize objects
 PortWrite portWriter = initPortWrite();
 PulseGen gen1 = initPulseGen(4, &portWriter, true);
 PulseGen gen2 = initPulseGen(6, &portWriter, false);
-GUI gui = initGUI(&gen1, &gen2);
-JoystickHandler joystick = initJoystickHandler(&gui);
+GUI gui = initGUI();
+BACKEND backend = initBackend(&gen1, &gen2, &gui, &joystick);
+JoystickHandler joystick = initJoystickHandler(&backend);
 
 void sysInit(){
     // Clock Prescale Register "maximum speed"
@@ -32,13 +35,7 @@ int main() {
 	//freqInit(&gen1);
 	//freqInit(&gen2);
     
-
-	while (1) {
-		PORTE ^= (1 << 6);
-		_delay_ms(500);
-	}
-
-	/*
+	
 	
     // Instal interupt handler
     //when the joystick's vertical state changes
@@ -48,7 +45,6 @@ int main() {
     
     // Start kernel
     return TINYTIMBER(&gui, NULL, NULL);
-	*/
 }
 
 

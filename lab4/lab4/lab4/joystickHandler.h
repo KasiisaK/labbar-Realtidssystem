@@ -2,14 +2,13 @@
 #define JOYSTICKHANDLER_H
 
 #include "TinyTimber.h"
-#include "gui.h"
 
 typedef struct {
     Object super;
-    GUI *gui;
+	BACKEND backend;
 } JoystickHandler;
 
-#define initJoystickHandler(guiRef) { initObject(), guiRef }
+#define initJoystickHandler(backendRef) { initObject(), backendRef}
 
 void joystickInit();
 void joysticckInteruptHandler(JoystickHandler *self);

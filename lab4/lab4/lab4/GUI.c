@@ -101,52 +101,27 @@ void printAt(long num, int pos) {
 	writeChar(num % 10 + '0', pos);
 }
 
-void activeGenIndicator(GUI *self) {
+void turnOnNumberOne(GUI * self) {
+	
+}
+
+void turnOnNumberTwo(GUI * self) {
+	
+}
+
+void activeGenIndicator(PulseGen *activeGen, PulseGen *gen1) {
 	//turn on 1 or 2
-	if (self->activeGen == self->gen1) {
+	if (activeGen == gen1) {
 		LCDDR0 |= 0b00000100;
 	} else {
 		LCDDR0 |= 0b01000000;
 	}
 }
 
-void swithToLeftGen(GUI *self) {
-	self->activeGen = self->gen1;
-	SYNC(self->gen1, setStatus, true);
-	SYNC(self->gen2, setStatus, false);
-	ASYNC(self, updateDisplay, 0);
-}
-
-void swithToRightGen(GUI *self) {
-	self->activeGen = self->gen2;
-	SYNC(self->gen2, setStatus, true);
-	SYNC(self->gen1, setStatus, false);
-	ASYNC(self, updateDisplay, 0);
-}
-
-void adjustFrequency(GUI *self, int delta) {
-	// Get right target gen
-	int newFreq = SYNC(self->activeGen, getFrequency, 0) + delta;
-	if (newFreq < 0) newFreq = 0;
-	// Update everything
-	SYNC(self->activeGen, setFrequency, newFreq);
-	ASYNC(self, updateDisplay, 0);
-}
-
-void saveRestore(GUI *self) {
-	if (SYNC(self->activeGen, getFrequency, 0) == 0) {
-		SYNC(self->activeGen, restore, 0);
-		} else {
-		SYNC(self->activeGen, save, 0);
-		SYNC(self->activeGen, setFrequency, 0);
-	}
-	ASYNC(self, updateDisplay, 0);
-}
-
-void updateDisplay(GUI *self) {
+void updateDisplay(BACKEND *backend) {
 	int gen1Freq = SYNC(self->gen1, getFrequency, 0);
 	int gen2Freq = SYNC(self->gen2, getFrequency, 0);
-    printAt(gen1Freq, 0); //gen1 hz at pos 0-1
-    printAt(gen2Freq, 3); //gen2 hz at pos 3-4
-	activeGenIndicator(self);
+	printAt(gen1Freq, 0); //gen1 hz at pos 0-1
+	printAt(gen2Freq, 3); //gen2 hz at pos 3-4
+	activeGenIndicator(backend->activeGen, backend->gen1);
 }

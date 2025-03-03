@@ -2,28 +2,17 @@
 #define GUI_H
 
 #include "TinyTimber.h"
-#include "PulseGen.h"
 
 typedef struct {
     Object super;
-    PulseGen *gen1;
-    PulseGen *gen2;
-    PulseGen *activeGen; //g1 deafult
 } GUI;
 
-#define initGUI(g1, g2) { initObject(), g1, g2, g1 }
+#define initGUI() { initObject()}
 
 // print stuff
 void LCD_init();
 int* getSegmentForChar(char ch);
 void printAt(long num, int pos);
-void activeGenIndicator(GUI *self);
-
-//logich stuff
-void swithToLeftGen(GUI *self);
-void swithToRightGen(GUI *self);
-void adjustFrequency(GUI *self, int delta);
-void saveRestore(GUI *self);
-void updateDisplay(GUI *self);
-
+void activeGenIndicator(PulseGen *activeGen, PulseGen *gen1);
+void updateDisplay(GUI *gui, PulseGen *activeGen, PulseGen *gen1);
 #endif
