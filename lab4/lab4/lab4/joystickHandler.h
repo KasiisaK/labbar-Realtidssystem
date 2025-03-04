@@ -7,7 +7,7 @@
 
 typedef struct {
     Object super;
-	Backend *backend;
+	Backend *BE;
 } JoystickHandler;
 
 #define initJoystickHandler(backendRef) { initObject(), backendRef}
