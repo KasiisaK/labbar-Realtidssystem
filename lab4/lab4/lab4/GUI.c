@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 #include "GUI.h"
 #include "PulseGen.h"
@@ -102,13 +103,17 @@ void printAt(long num, int pos) {
 }
 
 void activeGenIndicator(GUI *self, int activeGen) {
-	// 20 => Gen2 (right), 10 0> Gen1 (left)
-	if (activeGen == 20) {
+	LCDDR0 &= ~(0b01000100);
+	if (!(self->leftActive)) {
 		LCDDR0 |= 0b00000100;
 	} 
-	if (activeGen == 10) {
+	if (self->leftActive) {
 		LCDDR0 |= 0b01000000;
 	}
+}
+
+void setActive(GUI *self, bool status) {
+	self->leftActive = status;
 }
 
 void updateDisplay(GUI *self, int activeGen) {

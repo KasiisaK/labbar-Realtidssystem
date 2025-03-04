@@ -3,7 +3,6 @@
 
 #include "TinyTimber.h"
 #include "GUI.h"
-#include "joystickHandler.h"
 #include "PulseGen.h"
 
 
@@ -23,6 +22,7 @@ void swithToLeftGen(Backend *self);
 void swithToRightGen(Backend *self);
 void adjustFrequency(Backend *self, int delta);
 void saveRestore(Backend *self);
+void startProgram(Backend *self);
 
 
 #endif

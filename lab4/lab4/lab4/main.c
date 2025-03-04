@@ -5,13 +5,14 @@
 #include "gui.h"
 #include "joystickHandler.h"
 #include "TinyTimber.h"
+#include "Backend.h"
 
 
 // Initialize objects
 PortWrite portWriter = initPortWrite();
 PulseGen gen1 = initPulseGen(4, &portWriter, true);
 PulseGen gen2 = initPulseGen(6, &portWriter, false);
-GUI gui = initGUI(&gen1, &gen2);
+GUI gui = initGUI(&gen1, &gen2, true);
 Backend BE = initBackend(&gen1, &gen2, &gui);
 JoystickHandler joystick = initJoystickHandler(&BE);
 
@@ -42,7 +43,7 @@ int main() {
     //when the joystick's horizontal (minus middle) state changes
     
     // Start kernel
-    return TINYTIMBER(&BE, NULL, NULL);
+    return TINYTIMBER(&BE, startProgram, NULL);
 }
 
 

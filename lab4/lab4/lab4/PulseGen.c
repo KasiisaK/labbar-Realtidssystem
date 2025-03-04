@@ -38,12 +38,14 @@ void setStatus(PulseGen *self, bool status) {
 }
 
 int genFreq(PulseGen *self) {
-	if (self->genStatus && self->frequency > 0) {
-		SYNC(self->write, togglePin, self->bit);
+	if (self->frequency > 0) {
 		int delay_ms = 500 / self->frequency;
+		SYNC(self->write, togglePin, self->bit);
 		AFTER(MSEC(delay_ms), self, genFreq, 0);
 	} else {
 		SYNC(self->write, turnOffPin, self->bit);
 	}
 	return 0;
+	
+	
 }

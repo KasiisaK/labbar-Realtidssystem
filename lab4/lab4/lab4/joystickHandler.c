@@ -17,7 +17,7 @@ void joystickInit() {
 
 
 // Joystick input handler
-void joysticckInteruptHandler(JoystickHandler *self) { 
+void joystickInteruptHandler(JoystickHandler *self) { 
     // Down
     if (!(PINB & (1 << PB7))) {
 		ASYNC(self->BE, adjustFrequency, -1);
@@ -33,14 +33,14 @@ void joysticckInteruptHandler(JoystickHandler *self) {
         ASYNC(self->BE, saveRestore, 0);
 		//saveRestore(self->gui);
     }
-    // Left
+    // Right
     if (!(PINE & (1 << PB2))) {
-        ASYNC(self->BE, swithToLeftGen, 0);
+        ASYNC(self->BE, swithToRightGen, 0);
 		//swithToLeftGen(self->gui);
     }
-    // Right
+    // Left
     if (!(PINE & (1 << PB3))) {
-        ASYNC(self->BE, swithToRightGen, 0);
+        ASYNC(self->BE, swithToLeftGen, 0);
 		//swithToRightGen(self->gui);
     }
 }
