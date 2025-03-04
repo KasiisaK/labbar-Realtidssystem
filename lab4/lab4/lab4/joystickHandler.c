@@ -1,6 +1,4 @@
-#include "TinyTimber.h"
 #include "joystickHandler.h"
-#include "Backend.h"
 
 
 void joystickInit() {
@@ -22,12 +20,12 @@ void joystickInit() {
 void joysticckInteruptHandler(JoystickHandler *self) { 
     // Down
     if (!(PINB & (1 << PB7))) {
-		ASYNC(self, holdDown, 0);
+		ASYNC(self->backend, adjustFrequency, -1);
 	    //holdDown(self);
     }
     // Up
     if (!(PINB & (1 << PB6))) {
-        ASYNC(self, holdUp, 0);
+        ASYNC(self->backend, adjustFrequency, 1);
 		//holdUp(self);
     }
     // In
@@ -44,20 +42,5 @@ void joysticckInteruptHandler(JoystickHandler *self) {
     if (!(PINE & (1 << PB3))) {
         ASYNC(self->backend, swithToRightGen, 0);
 		//swithToRightGen(self->gui);
-    }
-}
-
-void holdDown(JoystickHandler *self) {
-	if (!(PINB & (1 << PB7))) {
-		SYNC(self->backend, adjustFrequency, -1);
-        AFTER(MSEC(500), self, holdDown, 0);
-	}
-}
-
-void holdUp(JoystickHandler *self) {
-    // If holding down (up) key
-    if (!(PINB & (1 << PB6))) {
-        SYNC(self->backend, adjustFrequency, 1);
-        AFTER(MSEC(500), self, holdUp, 0);
     }
 }

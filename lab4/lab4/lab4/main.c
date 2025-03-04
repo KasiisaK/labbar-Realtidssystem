@@ -1,19 +1,19 @@
 #include <avr/io.h>
+#include <stdbool.h>
+#include <util/delay.h>
+
 #include "gui.h"
 #include "joystickHandler.h"
 #include "TinyTimber.h"
-#include <stdbool.h>
-
-#include <util/delay.h>
 
 
 // Initialize objects
 PortWrite portWriter = initPortWrite();
 PulseGen gen1 = initPulseGen(4, &portWriter, true);
 PulseGen gen2 = initPulseGen(6, &portWriter, false);
-GUI gui = initGUI();
+GUI gui = initGUI(&gen1, &gen2);
+Backend backend = initBackend(&gen1, &gen2, &gui);
 JoystickHandler joystick = initJoystickHandler(&backend);
-BACKEND backend = initBackend(&gen1, &gen2, &gui, &joystick);
 
 void sysInit(){
     // Clock Prescale Register "maximum speed"
@@ -26,7 +26,6 @@ void pinOutputInit(){
 	DDRE |= (1 << PE4) | (1 << PE6);
 }
 
-
 int main() {
     sysInit();
     pinOutputInit(); // Is this needed
@@ -35,7 +34,6 @@ int main() {
 	//freqInit(&gen1);
 	//freqInit(&gen2);
     
-	
 	
     // Instal interupt handler
     //when the joystick's vertical state changes

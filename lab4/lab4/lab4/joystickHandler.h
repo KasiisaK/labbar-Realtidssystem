@@ -2,17 +2,17 @@
 #define JOYSTICKHANDLER_H
 
 #include "TinyTimber.h"
+#include "Backend.h"
+#include <avr/io.h>
 
 typedef struct {
     Object super;
-	BACKEND backend;
+	Backend *backend;
 } JoystickHandler;
 
 #define initJoystickHandler(backendRef) { initObject(), backendRef}
 
 void joystickInit();
 void joystickInteruptHandler(JoystickHandler *self);
-void holdDown(JoystickHandler *self);
-void holdUp(JoystickHandler *self);
 
 #endif

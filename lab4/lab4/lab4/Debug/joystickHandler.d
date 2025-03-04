@@ -1,5 +1,6 @@
 joystickHandler.d joystickHandler.o: .././joystickHandler.c \
- .././TinyTimber.h .././joystickHandler.h .././gui.h .././PulseGen.h \
+ .././joystickHandler.h .././TinyTimber.h .././Backend.h .././GUI.h \
+ .././PulseGen.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stdbool.h \
  .././PortWrite.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h \
@@ -14,11 +15,13 @@ joystickHandler.d joystickHandler.o: .././joystickHandler.c \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\fuse.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h
 
-.././TinyTimber.h:
-
 .././joystickHandler.h:
 
-.././gui.h:
+.././TinyTimber.h:
+
+.././Backend.h:
+
+.././GUI.h:
 
 .././PulseGen.h:
 

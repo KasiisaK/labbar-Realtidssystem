@@ -101,14 +101,6 @@ void printAt(long num, int pos) {
 	writeChar(num % 10 + '0', pos);
 }
 
-void turnOnNumberOne(GUI * self) {
-	
-}
-
-void turnOnNumberTwo(GUI * self) {
-	
-}
-
 void activeGenIndicator(GUI *self, int activeGen) {
 	// 20 => Gen2 (right), 10 0> Gen1 (left)
 	if (activeGen == 20) {
