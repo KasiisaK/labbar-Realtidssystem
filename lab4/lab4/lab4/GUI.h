@@ -14,7 +14,7 @@ typedef struct {
 
 #define initGUI(gen1, gen2, status) { initObject(), status, gen1, gen2 }
 
-// print stuff
+// Print stuff
 void LCD_init();
 int* getSegmentForChar(char ch);
 void printAt(long num, int pos);

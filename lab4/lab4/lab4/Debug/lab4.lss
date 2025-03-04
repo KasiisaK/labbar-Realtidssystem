@@ -13,21 +13,21 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  0000243c  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 000002a8  00000000  00000000  0000247c  2**0
+  5 .debug_aranges 000002a0  00000000  00000000  0000247c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00003271  00000000  00000000  00002724  2**0
+  6 .debug_info   000031fc  00000000  00000000  0000271c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 000012ca  00000000  00000000  00005995  2**0
+  7 .debug_abbrev 000012b0  00000000  00000000  00005918  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   0000185b  00000000  00000000  00006c5f  2**0
+  8 .debug_line   0000183f  00000000  00000000  00006bc8  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  00000cd0  00000000  00000000  000084bc  2**2
+  9 .debug_frame  00000ca0  00000000  00000000  00008408  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00000aa1  00000000  00000000  0000918c  2**0
+ 10 .debug_str    00000a98  00000000  00000000  000090a8  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00002acd  00000000  00000000  00009c2d  2**0
+ 11 .debug_loc    00002a34  00000000  00000000  00009b40  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000238  00000000  00000000  0000c6fa  2**0
+ 12 .debug_ranges 00000230  00000000  00000000  0000c574  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -1221,11 +1221,9 @@ int main() {
      79e:	0e 94 ad 03 	call	0x75a	; 0x75a <joystickInit>
     LCD_init();
      7a2:	0e 94 54 01 	call	0x2a8	; 0x2a8 <LCD_init>
-	//freqInit(&gen2);
-    
+
 	
-    // Instal interupt handler
-    //when the joystick's vertical state changes
+    // Install interrupt handler
     INSTALL(&joystick, joystickInteruptHandler, IRQ_PCINT0);
      7a6:	41 e0       	ldi	r20, 0x01	; 1
      7a8:	64 e0       	ldi	r22, 0x04	; 4
@@ -1240,7 +1238,6 @@ int main() {
      7ba:	80 e5       	ldi	r24, 0x50	; 80
      7bc:	91 e0       	ldi	r25, 0x01	; 1
      7be:	0e 94 77 10 	call	0x20ee	; 0x20ee <install>
-    //when the joystick's horizontal (minus middle) state changes
     
     // Start kernel
     return TINYTIMBER(&BE, startProgram, NULL);
@@ -1293,12 +1290,12 @@ void togglePin(PortWrite *self, uint8_t bit) {
      800:	08 95       	ret
 
 00000802 <genFreq>:
-#include "PortWrite.h"
-#include "TinyTimber.h"
 
-void freqInit(PulseGen *self) {
-	ASYNC(self, genFreq, 0);
+int getFrequency(PulseGen *self) {
+	return self->frequency;
 }
+
+int genFreq(PulseGen *self) {
      802:	cf 92       	push	r12
      804:	df 92       	push	r13
      806:	ef 92       	push	r14
@@ -1308,11 +1305,14 @@ void freqInit(PulseGen *self) {
      80e:	cf 93       	push	r28
      810:	df 93       	push	r29
      812:	ec 01       	movw	r28, r24
+	if (self->frequency > 0) {
      814:	0e 81       	ldd	r16, Y+6	; 0x06
      816:	1f 81       	ldd	r17, Y+7	; 0x07
      818:	10 16       	cp	r1, r16
      81a:	11 06       	cpc	r1, r17
      81c:	9c f5       	brge	.+102    	; 0x884 <genFreq+0x82>
+		int delay_ms = 500 / self->frequency;
+		SYNC(self->write, togglePin, self->bit);
      81e:	4c 81       	ldd	r20, Y+4	; 0x04
      820:	50 e0       	ldi	r21, 0x00	; 0
      822:	66 ef       	ldi	r22, 0xF6	; 246
@@ -1320,6 +1320,7 @@ void freqInit(PulseGen *self) {
      826:	8a 85       	ldd	r24, Y+10	; 0x0a
      828:	9b 85       	ldd	r25, Y+11	; 0x0b
      82a:	0e 94 7c 0f 	call	0x1ef8	; 0x1ef8 <sync>
+		AFTER(MSEC(delay_ms), self, genFreq, 0);
      82e:	84 ef       	ldi	r24, 0xF4	; 244
      830:	91 e0       	ldi	r25, 0x01	; 1
      832:	b8 01       	movw	r22, r16
@@ -1360,6 +1361,8 @@ void freqInit(PulseGen *self) {
      87c:	a9 01       	movw	r20, r18
      87e:	0e 94 6b 0e 	call	0x1cd6	; 0x1cd6 <async>
      882:	08 c0       	rjmp	.+16     	; 0x894 <genFreq+0x92>
+	} else {
+		SYNC(self->write, turnOffPin, self->bit);
      884:	4c 81       	ldd	r20, Y+4	; 0x04
      886:	50 e0       	ldi	r21, 0x00	; 0
      888:	6a ee       	ldi	r22, 0xEA	; 234
@@ -1367,6 +1370,10 @@ void freqInit(PulseGen *self) {
      88c:	8a 85       	ldd	r24, Y+10	; 0x0a
      88e:	9b 85       	ldd	r25, Y+11	; 0x0b
      890:	0e 94 7c 0f 	call	0x1ef8	; 0x1ef8 <sync>
+	}
+	return 0;
+	
+	
      894:	80 e0       	ldi	r24, 0x00	; 0
      896:	90 e0       	ldi	r25, 0x00	; 0
      898:	df 91       	pop	r29
@@ -1380,7 +1387,9 @@ void freqInit(PulseGen *self) {
      8a8:	08 95       	ret
 
 000008aa <setFrequency>:
-
+#include "PulseGen.h"
+#include "PortWrite.h"
+#include "TinyTimber.h"
 
 void setFrequency(PulseGen *self, int freq) {
 	self->frequency = freq;

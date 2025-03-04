@@ -57,8 +57,6 @@ Discarded input sections
  .text          0x00000000        0x0 PulseGen.o
  .data          0x00000000        0x0 PulseGen.o
  .bss           0x00000000        0x0 PulseGen.o
- .text.freqInit
-                0x00000000       0x3c PulseGen.o
  .text          0x00000000        0x0 TinyTimber.o
  .data          0x00000000        0x0 TinyTimber.o
  .bss           0x00000000        0x0 TinyTimber.o
@@ -801,7 +799,7 @@ END GROUP
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000      0x2a8
+.debug_aranges  0x00000000      0x2a0
  *(.debug_aranges)
  .debug_aranges
                 0x00000000       0x40 Backend.o
@@ -814,14 +812,14 @@ END GROUP
  .debug_aranges
                 0x000000e8       0x28 PortWrite.o
  .debug_aranges
-                0x00000110       0x48 PulseGen.o
+                0x00000110       0x40 PulseGen.o
  .debug_aranges
-                0x00000158      0x150 TinyTimber.o
+                0x00000150      0x150 TinyTimber.o
 
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x3271
+.debug_info     0x00000000     0x31fc
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x7b6 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.3.300/gcc/dev/atmega169p/avr5/crtatmega169p.o
  .debug_info    0x000007b6      0x53e Backend.o
@@ -829,10 +827,10 @@ END GROUP
  .debug_info    0x0000121d      0x592 joystickHandler.o
  .debug_info    0x000017af      0x445 main.o
  .debug_info    0x00001bf4      0x13b PortWrite.o
- .debug_info    0x00001d2f      0x364 PulseGen.o
- .debug_info    0x00002093     0x11de TinyTimber.o
+ .debug_info    0x00001d2f      0x2ef PulseGen.o
+ .debug_info    0x0000201e     0x11de TinyTimber.o
 
-.debug_abbrev   0x00000000     0x12ca
+.debug_abbrev   0x00000000     0x12b0
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x74b C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.3.300/gcc/dev/atmega169p/avr5/crtatmega169p.o
  .debug_abbrev  0x0000074b      0x10c Backend.o
@@ -840,10 +838,10 @@ END GROUP
  .debug_abbrev  0x000009f8      0x172 joystickHandler.o
  .debug_abbrev  0x00000b6a      0x142 main.o
  .debug_abbrev  0x00000cac       0xb7 PortWrite.o
- .debug_abbrev  0x00000d63      0x160 PulseGen.o
- .debug_abbrev  0x00000ec3      0x407 TinyTimber.o
+ .debug_abbrev  0x00000d63      0x146 PulseGen.o
+ .debug_abbrev  0x00000ea9      0x407 TinyTimber.o
 
-.debug_line     0x00000000     0x185b
+.debug_line     0x00000000     0x183f
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x121 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.3.300/gcc/dev/atmega169p/avr5/crtatmega169p.o
  .debug_line    0x00000121      0x19d Backend.o
@@ -851,20 +849,20 @@ END GROUP
  .debug_line    0x0000055a      0x1f6 joystickHandler.o
  .debug_line    0x00000750      0x155 main.o
  .debug_line    0x000008a5       0xd9 PortWrite.o
- .debug_line    0x0000097e      0x15e PulseGen.o
- .debug_line    0x00000adc      0xd7f TinyTimber.o
+ .debug_line    0x0000097e      0x142 PulseGen.o
+ .debug_line    0x00000ac0      0xd7f TinyTimber.o
 
-.debug_frame    0x00000000      0xcd0
+.debug_frame    0x00000000      0xca0
  *(.debug_frame)
  .debug_frame   0x00000000      0x110 Backend.o
  .debug_frame   0x00000110       0xe8 GUI.o
  .debug_frame   0x000001f8       0x5c joystickHandler.o
  .debug_frame   0x00000254       0x44 main.o
  .debug_frame   0x00000298       0x34 PortWrite.o
- .debug_frame   0x000002cc       0xbc PulseGen.o
- .debug_frame   0x00000388      0x948 TinyTimber.o
+ .debug_frame   0x000002cc       0x8c PulseGen.o
+ .debug_frame   0x00000358      0x948 TinyTimber.o
 
-.debug_str      0x00000000      0xaa1
+.debug_str      0x00000000      0xa98
  *(.debug_str)
  .debug_str     0x00000000      0x2b3 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.3.300/gcc/dev/atmega169p/avr5/crtatmega169p.o
  .debug_str     0x000002b3      0x247 Backend.o
@@ -877,19 +875,19 @@ END GROUP
                                 0x37a (size before relaxing)
  .debug_str     0x00000797       0x26 PortWrite.o
                                 0x1d3 (size before relaxing)
- .debug_str     0x000007bd       0x48 PulseGen.o
-                                0x244 (size before relaxing)
- .debug_str     0x00000805      0x29c TinyTimber.o
+ .debug_str     0x000007bd       0x3f PulseGen.o
+                                0x23b (size before relaxing)
+ .debug_str     0x000007fc      0x29c TinyTimber.o
                                 0x581 (size before relaxing)
 
-.debug_loc      0x00000000     0x2acd
+.debug_loc      0x00000000     0x2a34
  *(.debug_loc)
  .debug_loc     0x00000000      0x367 Backend.o
  .debug_loc     0x00000367      0x4a1 GUI.o
  .debug_loc     0x00000808      0x143 joystickHandler.o
  .debug_loc     0x0000094b       0x4c PortWrite.o
- .debug_loc     0x00000997      0x1cd PulseGen.o
- .debug_loc     0x00000b64     0x1f69 TinyTimber.o
+ .debug_loc     0x00000997      0x134 PulseGen.o
+ .debug_loc     0x00000acb     0x1f69 TinyTimber.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -909,15 +907,15 @@ END GROUP
 .debug_pubtypes
  *(.debug_pubtypes)
 
-.debug_ranges   0x00000000      0x238
+.debug_ranges   0x00000000      0x230
  *(.debug_ranges)
  .debug_ranges  0x00000000       0x30 Backend.o
  .debug_ranges  0x00000030       0x40 GUI.o
  .debug_ranges  0x00000070       0x18 joystickHandler.o
  .debug_ranges  0x00000088       0x20 main.o
  .debug_ranges  0x000000a8       0x18 PortWrite.o
- .debug_ranges  0x000000c0       0x38 PulseGen.o
- .debug_ranges  0x000000f8      0x140 TinyTimber.o
+ .debug_ranges  0x000000c0       0x30 PulseGen.o
+ .debug_ranges  0x000000f0      0x140 TinyTimber.o
 
 .debug_macro
  *(.debug_macro)

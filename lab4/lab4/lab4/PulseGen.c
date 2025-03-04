@@ -10,11 +10,6 @@
 #include "PortWrite.h"
 #include "TinyTimber.h"
 
-void freqInit(PulseGen *self) {
-	ASYNC(self, genFreq, 0);
-}
-
-
 void setFrequency(PulseGen *self, int freq) {
 	self->frequency = freq;
 }

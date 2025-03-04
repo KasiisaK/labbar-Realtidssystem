@@ -11,13 +11,13 @@ typedef struct {
 	GUI *gui;
 	PulseGen *gen1;
 	PulseGen *gen2;
-	PulseGen *activeGen; //g1 deafult
+	PulseGen *activeGen; //g1 default
 } Backend;
 
 #define initBackend(g1, g2, gui_ptr) \
 	{ initObject(), gui_ptr, g1, g2, g1 }
 
-//logich stuff
+//logic stuff
 void swithToLeftGen(Backend *self);
 void swithToRightGen(Backend *self);
 void adjustFrequency(Backend *self, int delta);

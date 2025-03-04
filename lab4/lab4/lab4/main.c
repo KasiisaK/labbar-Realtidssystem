@@ -32,15 +32,11 @@ int main() {
     pinOutputInit(); // Is this needed
     joystickInit();
     LCD_init();
-	//freqInit(&gen1);
-	//freqInit(&gen2);
-    
+
 	
-    // Instal interupt handler
-    //when the joystick's vertical state changes
+    // Install interrupt handler
     INSTALL(&joystick, joystickInteruptHandler, IRQ_PCINT0);
 	INSTALL(&joystick, joystickInteruptHandler, IRQ_PCINT1);
-    //when the joystick's horizontal (minus middle) state changes
     
     // Start kernel
     return TINYTIMBER(&BE, startProgram, NULL);

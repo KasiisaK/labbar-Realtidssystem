@@ -17,7 +17,6 @@ typedef struct {
 #define initPulseGen(bit, writer ) \
 	{ initObject(), bit, 0, 0, 0, writer }
 
-void freqInit(PulseGen *self);
 void setFrequency(PulseGen *self, int freq);
 void toggle(PulseGen *self);
 void save(PulseGen *self);
