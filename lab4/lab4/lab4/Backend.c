@@ -2,18 +2,14 @@
 
 
 void swithToLeftGen(Backend *self) {
-	self->activeGen = self->gen2;
+	self->activeGen = self->gen1;
 	SYNC(self->gui, setActive, true);
-	SYNC(self->gen1, setStatus, 0);
-	SYNC(self->gen2, setStatus, 1);
 	ASYNC(self->gui, updateDisplay, 10);
 }
 
 void swithToRightGen(Backend *self) {
-	self->activeGen = self->gen1;
+	self->activeGen = self->gen2;
 	SYNC(self->gui, setActive, false);
-	SYNC(self->gen1, setStatus, 1);
-	SYNC(self->gen2, setStatus, 0);
 	ASYNC(self->gui, updateDisplay, 20);
 }
 

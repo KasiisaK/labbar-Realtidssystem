@@ -12,18 +12,16 @@ typedef struct {
 	int frequency;		// Current freq
 	int saved_freq;		// Last saved freq
 	PortWrite *write;
-	bool genStatus;
 } PulseGen;
 
-#define initPulseGen(bit, writer, status) \
-	{ initObject(), bit, 0, 0, 0, writer, status }
+#define initPulseGen(bit, writer ) \
+	{ initObject(), bit, 0, 0, 0, writer }
 
 void freqInit(PulseGen *self);
 void setFrequency(PulseGen *self, int freq);
 void toggle(PulseGen *self);
 void save(PulseGen *self);
 void restore(PulseGen *self);
-void setStatus(PulseGen *self, bool status);
 int getFrequency(PulseGen *self);
 int genFreq(PulseGen *self);
 

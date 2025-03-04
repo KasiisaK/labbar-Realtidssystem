@@ -104,10 +104,10 @@ void printAt(long num, int pos) {
 
 void activeGenIndicator(GUI *self, int activeGen) {
 	LCDDR0 &= ~(0b01000100);
-	if (!(self->leftActive)) {
+	if (self->leftActive) {
 		LCDDR0 |= 0b00000100;
 	} 
-	if (self->leftActive) {
+	if (!self->leftActive) {
 		LCDDR0 |= 0b01000000;
 	}
 }

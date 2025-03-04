@@ -10,8 +10,8 @@
 
 // Initialize objects
 PortWrite portWriter = initPortWrite();
-PulseGen gen1 = initPulseGen(4, &portWriter, true);
-PulseGen gen2 = initPulseGen(6, &portWriter, false);
+PulseGen gen1 = initPulseGen(4, &portWriter);
+PulseGen gen2 = initPulseGen(6, &portWriter);
 GUI gui = initGUI(&gen1, &gen2, true);
 Backend BE = initBackend(&gen1, &gen2, &gui);
 JoystickHandler joystick = initJoystickHandler(&BE);

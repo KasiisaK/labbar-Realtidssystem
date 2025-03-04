@@ -33,10 +33,6 @@ int getFrequency(PulseGen *self) {
 	return self->frequency;
 }
 
-void setStatus(PulseGen *self, bool status) {
-	self->genStatus = status;
-}
-
 int genFreq(PulseGen *self) {
 	if (self->frequency > 0) {
 		int delay_ms = 500 / self->frequency;

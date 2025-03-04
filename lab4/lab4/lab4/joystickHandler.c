@@ -1,4 +1,5 @@
 #include "joystickHandler.h"
+#include <util/delay.h>
 
 
 void joystickInit() {
@@ -18,29 +19,35 @@ void joystickInit() {
 
 // Joystick input handler
 void joystickInteruptHandler(JoystickHandler *self) { 
-    // Down
-    if (!(PINB & (1 << PB7))) {
-		ASYNC(self->BE, adjustFrequency, -1);
-	    //holdDown(self);
-    }
-    // Up
-    if (!(PINB & (1 << PB6))) {
-        ASYNC(self->BE, adjustFrequency, 1);
-		//holdUp(self);
-    }
-    // In
-    if (!(PINB & (1 << PB4))) {
-        ASYNC(self->BE, saveRestore, 0);
-		//saveRestore(self->gui);
-    }
-    // Right
-    if (!(PINE & (1 << PB2))) {
-        ASYNC(self->BE, swithToRightGen, 0);
-		//swithToLeftGen(self->gui);
-    }
-    // Left
-    if (!(PINE & (1 << PB3))) {
-        ASYNC(self->BE, swithToLeftGen, 0);
-		//swithToRightGen(self->gui);
-    }
+	
+	_delay_ms(100);
+	
+	// In
+	if (!(PINB & (1 << PB4))) {
+		ASYNC(self->BE, saveRestore, 0);
+	}
+	
+	// Right
+	if (!(PINE & (1 << PB3))) {
+		ASYNC(self->BE, swithToRightGen, 0);
+	}
+	
+	// Left
+	if (!(PINE & (1 << PB2))) {
+		ASYNC(self->BE, swithToLeftGen, 0);
+	}
+	
+	_delay_ms(900);
+	
+	// Down
+	if (!(PINB & (1 << PB7))) {
+		ASYNC(self->BE, adjustFrequency, -1);	
+		ASYNC(self, joystickInteruptHandler, 0);
+	}
+	
+	// Up
+	if (!(PINB & (1 << PB6))) {
+		ASYNC(self->BE, adjustFrequency, 1);
+		ASYNC(self, joystickInteruptHandler, 0);
+	}	
 }
