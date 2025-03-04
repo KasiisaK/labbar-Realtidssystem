@@ -1,5 +1,6 @@
 #include "TinyTimber.h"
 #include "Backend.h"
+#include "PulseGen.h"
 #include "GUI.h"
 
 
@@ -7,14 +8,14 @@ void swithToLeftGen(BACKEND *self) {
 	self->activeGen = self->gen1;
 	SYNC(self->gen1, setStatus, 1);
 	SYNC(self->gen2, setStatus, 0);
-	ASYNC(self, updateDisplay, 0);
+	ASYNC(self, updateDisplay, 10);
 }
 
 void swithToRightGen(BACKEND *self) {
 	self->activeGen = self->gen2;
 	SYNC(self->gen1, setStatus, 0);
 	SYNC(self->gen2, setStatus, 1);
-	ASYNC(self, updateDisplay, 0);
+	ASYNC(self, updateDisplay, 20);
 }
 
 void adjustFrequency(BACKEND *self, int delta) {

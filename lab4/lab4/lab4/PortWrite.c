@@ -1,4 +1,5 @@
 #include "PortWrite.h"
+#include "TinyTimber.h"
 
 // Set a specific bit on Port E high or low
 void turnOffPin(PortWrite *self, uint8_t bit) {

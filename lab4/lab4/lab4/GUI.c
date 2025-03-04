@@ -109,19 +109,20 @@ void turnOnNumberTwo(GUI * self) {
 	
 }
 
-void activeGenIndicator(PulseGen *activeGen, PulseGen *gen1) {
-	//turn on 1 or 2
-	if (activeGen == gen1) {
+void activeGenIndicator(GUI *self, int activeGen) {
+	// 20 => Gen2 (right), 10 0> Gen1 (left)
+	if (activeGen == 20) {
 		LCDDR0 |= 0b00000100;
-	} else {
+	} 
+	if (activeGen == 10) {
 		LCDDR0 |= 0b01000000;
 	}
 }
 
-void updateDisplay(GUI *self) {
+void updateDisplay(GUI *self, int activeGen) {
 	int gen1Freq = SYNC(self->gen1, getFrequency, 0);
 	int gen2Freq = SYNC(self->gen2, getFrequency, 0);
 	printAt(gen1Freq, 0); //gen1 hz at pos 0-1
 	printAt(gen2Freq, 3); //gen2 hz at pos 3-4
-	activeGenIndicator(backend->activeGen, backend->gen1);
+	activeGenIndicator(self, activeGen);
 }
