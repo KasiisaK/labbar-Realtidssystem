@@ -34,8 +34,8 @@ void genFreq(PulseGen *self) {
 		SYNC(self->write, turnOffPin, self->bit);
 		AFTER(SEC(1), self, genFreq, 0);
 	} else {		
-		int freq = (int)(500 / self->frequency);
-		AFTER(MSEC(freq), self, genFreq, 0);
+		int halfFreq = (int)(500 / self->frequency);
+		AFTER(MSEC(halfFreq), self, genFreq, 0);
 		SYNC(self->write, togglePin, self->bit);
 	}
 	

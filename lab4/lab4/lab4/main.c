@@ -35,11 +35,13 @@ int main() {
 	
 	/*
 	while(1) {
-		PORTE ^= (1 << 6);
+		//PORTE ^= (1 << 6);
 		PORTE ^= (1 << 4);
-		_delay_ms(500);
+		//PORTE &= ~(1 << 4);
+		_delay_ms(5000);
 	}
 	*/
+	
 	
 	
 	
