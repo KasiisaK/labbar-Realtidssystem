@@ -7,8 +7,7 @@
 
 #include <avr/io.h>
 #include "PulseGen.h"
-#include "PortWrite.h"
-#include "TinyTimber.h"
+#include <util/delay.h>
 
 void setFrequency(PulseGen *self, int freq) {
 	self->frequency = freq;
@@ -28,15 +27,30 @@ int getFrequency(PulseGen *self) {
 	return self->frequency;
 }
 
-int genFreq(PulseGen *self) {
-	if (self->frequency > 0) {
-		int delay_ms = 500 / self->frequency;
-		SYNC(self->write, togglePin, self->bit);
-		AFTER(MSEC(delay_ms), self, genFreq, 0);
-	} else {
+void genFreq(PulseGen *self) {
+	
+	
+	if (self->frequency == 0) {
 		SYNC(self->write, turnOffPin, self->bit);
+		AFTER(SEC(1), self, genFreq, 0);
+	} else {		
+		int freq = (int)(500 / self->frequency);
+		AFTER(MSEC(freq), self, genFreq, 0);
+		SYNC(self->write, togglePin, self->bit);
 	}
-	return 0;
 	
 	
+	
+	/*
+	while (1) {		
+		if (self->frequency == 0) {
+			SYNC(self->write, turnOffPin, self->bit);
+		} else {
+			int freq = (int)(500 / 1);
+			SYNC(self->write, togglePin, self->bit);
+			_delay_ms(freq);
+			
+		}
+	}
+	*/
 }

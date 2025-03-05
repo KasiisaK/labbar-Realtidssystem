@@ -32,7 +32,17 @@ int main() {
     pinOutputInit(); // Is this needed
     joystickInit();
     LCD_init();
-
+	
+	/*
+	while(1) {
+		PORTE ^= (1 << 6);
+		PORTE ^= (1 << 4);
+		_delay_ms(500);
+	}
+	*/
+	
+	
+	
 	
     // Install interrupt handler
     INSTALL(&joystick, joystickInteruptHandler, IRQ_PCINT0);
@@ -40,6 +50,8 @@ int main() {
     
     // Start kernel
     return TINYTIMBER(&BE, startProgram, NULL);
+	
+	
 }
 
 
