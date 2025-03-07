@@ -7,15 +7,6 @@
 #include "TinyTimber.h"
 #include "Backend.h"
 
-
-// Initialize objects
-PortWrite portWriter = initPortWrite();
-PulseGen gen1 = initPulseGen(4, &portWriter);
-PulseGen gen2 = initPulseGen(6, &portWriter);
-GUI gui = initGUI(&gen1, &gen2, true);
-Backend BE = initBackend(&gen1, &gen2, &gui);
-JoystickHandler joystick = initJoystickHandler(&BE);
-
 void sysInit(){
     // Clock Prescale Register "maximum speed"
 	CLKPR = 0b10000000; // Clock Prescaler Change Enable
@@ -28,22 +19,18 @@ void pinOutputInit(){
 }
 
 int main() {
+	// Initialize objects
+	PortWrite portWriter = initPortWrite();
+	PulseGen gen1 = initPulseGen(4, &portWriter);
+	PulseGen gen2 = initPulseGen(6, &portWriter);
+	GUI gui = initGUI(&gen1, &gen2, true);
+	Backend BE = initBackend(&gen1, &gen2, &gui);
+	JoystickHandler joystick = initJoystickHandler(&BE);
+	
     sysInit();
     pinOutputInit(); // Is this needed
     joystickInit();
-    LCD_init();
-	
-	/*
-	while(1) {
-		//PORTE ^= (1 << 6);
-		PORTE ^= (1 << 4);
-		//PORTE &= ~(1 << 4);
-		_delay_ms(5000);
-	}
-	*/
-	
-	
-	
+    LCD_init();	
 	
 	
     // Install interrupt handler
@@ -51,9 +38,7 @@ int main() {
 	INSTALL(&joystick, joystickInteruptHandler, IRQ_PCINT1);
     
     // Start kernel
-    return TINYTIMBER(&BE, startProgram, NULL);
-	
-	
+    return TINYTIMBER(&BE, startProgram, NULL);	
 }
 
 

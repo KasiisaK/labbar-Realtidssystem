@@ -178,7 +178,7 @@ Msg dequeue(Msg *queue) {
     if (m)
         *queue = m->next;
     else
-        return NULL;  // Empty queue, kernel panic!!!
+        PANIC();  // Empty queue, kernel panic!!!
     return m;
 }
 
@@ -241,15 +241,6 @@ static void dispatch( Thread next ) {
 static void run(void) {
     while (1) {
         Msg this = current->msg = dequeue(&msgQ);
-		if (!this) {
-			// Handle empty queue: return to pool and reschedule
-			char status;
-			DISABLE(status);
-			push(pop(&activeStack), &threadPool);
-			ENABLE(status);
-			schedule();
-			continue;
-		}
         Msg oldMsg;
         char status = 1;
         
