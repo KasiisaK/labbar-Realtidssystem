@@ -10,7 +10,6 @@
 #include <util/delay.h>
 
 #include "gui.h"
-#include "joystickHandler.h"
 
 
 void sysInit(){
