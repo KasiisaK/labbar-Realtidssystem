@@ -13,6 +13,15 @@ void updateDisplay(TrafficLight *self) {
 	}
 }
 
+void updateLamps(TrafficLight *self) {
+	uint8_t new_state = 0;
+	
+}
+
+void handleSensor(TrafficLight *self, uint8_t sensor) {
+	
+}
+
 void releaseCar(TrafficLight *self, int arg) {
 	if (self->cars_on_bridge == 0) {
 		self->direction = !self->direction;
