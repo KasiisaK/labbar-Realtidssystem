@@ -2,10 +2,18 @@
 #include <pthread.h>
 
 #include "input_handler.h"
+#include "bridge.h"
+#include "simulation.h"
 
 #define FOSC 1843200// Clock Speed
 #define BAUD 9600
 #define MYUBRR FOSC/16/BAUD-1
+
+void sysInit(){
+    // Clock Prescale Register "maximum speed"
+	CLKPR = 0b10000000; // Clock Prescaler Change Enable
+	CLKPR = 0b00000000; // Set 0 for sysclock
+}
 
 void USART_Init(unsigned int ubrr) {
 // Set baud rate
@@ -19,10 +27,18 @@ UCSRnC = (0<<USBS0)|(3<<UCSZ00);
 
 
 void main() {
+    // Objects
+    Bridge bridge = initBridge();
+    Simulation simulation = initSimulation(&bridge);
+    Input_handler inputHandler = initInput_handler(&simulation);
+
+    sysInit();
     USART_Init(MYUBRR);
 
     pthread_t inputThread;
+    pthread_t simulationThread;
 
     pthread_create(inputThread, NULL, getUserInput, NULL);
+    pthread_create(simulationThread, NULL, mainSimulationLoop, NULL);
 
 }
