@@ -1,6 +1,8 @@
 #include <avr/io.h>
 #include <pthread.h>
 
+#include "input_handler.h"
+
 #define FOSC 1843200// Clock Speed
 #define BAUD 9600
 #define MYUBRR FOSC/16/BAUD-1
@@ -18,5 +20,9 @@ UCSRnC = (0<<USBS0)|(3<<UCSZ00);
 
 void main() {
     USART_Init(MYUBRR);
+
+    pthread_t inputThread;
+
+    pthread_create(inputThread, NULL, getUserInput, NULL);
 
 }
