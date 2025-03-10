@@ -100,5 +100,3 @@ void printAt(long num, int pos) {
 	pos++;
 	writeChar(num % 10 + '0', pos);
 }
-
-
