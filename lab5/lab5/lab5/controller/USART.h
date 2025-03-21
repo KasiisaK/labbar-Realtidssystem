@@ -9,16 +9,17 @@
 #define USART_H
 
 #include "TinyTimber.h"
-#include "TrafficLight.h"
+#include "traffic_light.h"
 
 typedef struct {
 	Object super;
-	TrafficLight *trafficLight; 
+	TrafficLight *trafficLight;
+	void (*send)(struct USART *self, uint8_t data);
 } USART;
 
-void usart_init(USART *self);  
-void usart_send(USART *self, uint8_t data); 
+void usart_init(USART *self);
+void usart_send(USART *self, uint8_t data);
 
-#define initUSART(tl) { initObject(), tl }
+#define initUSART(tl) { initObject(), tl, usart_send }
 
 #endif
