@@ -27,6 +27,7 @@ void updateLamps(TrafficLight *self, uint8_t sensor) {
 			}
 			break;
 		case ???;
+			self->south_queue++;
 			break;
 		case ???;
 			break;
