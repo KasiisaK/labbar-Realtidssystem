@@ -6,5 +6,25 @@ bool getLightState(Bridge *self) {
 }
 
 void changeLightState(Bridge *self) {
-    // Code
+    __int8 status; //temp
+
+    // Bit 0: Northbound green light status
+    if (status & (1 << 0)) {
+        // Northbound green
+    }
+    
+    // Bit 1: Northbound red light status
+    if (status & (1 << 1)) {
+        // Northbound red
+    }
+    
+    // Bit 2: Southbound green light status
+    if (status & (1 << 2)) {
+        // Southbound green
+    }
+    
+    // Bit 3: Southbound red light status
+    if (status & (1 << 3)) {
+        // Southbound red
+    }
 }
