@@ -76,9 +76,12 @@ void moveOverCars(Simulation *self, int forAmountOfTime) {
 
 void mainSimulationLoop(Simulation *self) {
     // Calculate light on/off dynamicaly, how many more in north/south side, and deafult to 0 if divison by 0
+    pthread_mutex_lock(&(self->northCarQueue));
+    pthread_mutex_lock(&(self->southMtx));
     int northCarTime = (self->southCarQueue == 0) ? self->northCarQueue : (self->northCarQueue / self->southCarQueue);
     int southCarTime= (self->northCarQueue == 0) ? self->southCarQueue : (self->southCarQueue / self->northCarQueue);
-
+    pthread_mutex_unlock(&(self->southMtx));
+    pthread_mutex_unlock(&(self->northCarQueue));
 
     // Start movement in one direction
     SYNC(self, moveOverCars, northCarTime);
