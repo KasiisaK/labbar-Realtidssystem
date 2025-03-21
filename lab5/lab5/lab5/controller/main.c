@@ -11,7 +11,7 @@ USART usart = initUSART(NULL); // Placeholder (fixed later)
 TrafficLight trafficLight = initTrafficLight(&gui, &usart);
 
 // Reassign usart with TrafficLight reference
-USART usart = initUSART(&trafficLight); // Now usart has the correct reference
+trafficLight.usart = &usart; // Now usart has the correct reference
 
 int main() {
 	LCD_init();
