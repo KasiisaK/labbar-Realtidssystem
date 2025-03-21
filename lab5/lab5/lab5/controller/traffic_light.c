@@ -16,20 +16,30 @@ void updateDisplay(TrafficLight *self) {
 void updateLamps(TrafficLight *self, uint8_t sensor) {
 	uint8_t new_state = 0;
 	switch (sensor) {
-		case ???:  //north in
+		case 0x01:  // North in
 			self->north_queue++;
 			break;
-		case ???:  // north out
+			
+		case 0x02:  // North out
 			if (self->lamp_state & 0x01) {
 				self->north_queue--;
 				self->cars_on_bridge++;
 				ASYNC(self, releaseCar, 0, SEC(5));
 			}
 			break;
-		case ???;
+			
+		case 0x04;	// South in
 			self->south_queue++;
 			break;
-		case ???;
+			
+		case 0x08;	// South out
+			if (self->lamp_state & 0x04) { // South green is ON
+                if (self->south_queue > 0) {
+                    self->south_queue--;
+                    self->cars_on_bridge++;
+                    ASYNC(self, releaseCar, 0, SEC(5));
+                }
+            }
 			break;
 		
 	}
