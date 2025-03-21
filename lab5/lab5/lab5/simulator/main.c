@@ -1,4 +1,3 @@
-#include <avr/io.h>
 #include <pthread.h>
 
 #include "TinyTimber.h"
