@@ -1,6 +1,7 @@
 #include "TinyTimber.h"
 #include "bridge.h"
 #include <stdbool.h>
+#include <pthread.h>
 
 typedef struct {
     Object super;
@@ -9,11 +10,26 @@ typedef struct {
     int carsOneBridge;
     bool movingCarsNorth;
     Bridge *bridgeObj;
+    pthread_mutex_t *northMtx;
+    pthread_mutex_t *southMtx;
+    pthread_mutex_t *bridgeMtx;
 } Simulation;
 
-#define initSimulation(bridgeRef) \ 
-    {initObject(), 0, 0, 0, true, bridgeRef}
+#define initSimulation(bridgeRef, noMtx, soMtx, brMtx) \ 
+    {initObject(), 0, 0, 0, true, bridgeRef, noMtx, soMtx, brMtx}
 
-void addNorthCar(Simulation *self);
-void addSouthCar(Simulation *self);
+// Add and Remove
+void switchDirection(Simulation *self);
+
+void addCarBridge(Simulation *self);
+void removeCarBridge(Simulation *self);
+
+void addCarNorth(Simulation *self);
+void removeNorthCars(Simulation *self);
+
+void addCarSouth(Simulation *self);
+void removeSouthCars(Simulation *self);
+
+
+void moveOverCars(Simulation *self, int forAmountOfTime);
 void mainSimulationLoop(Simulation *self);
