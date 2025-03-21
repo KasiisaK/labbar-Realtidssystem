@@ -48,16 +48,14 @@ void removeSouthCars(Simulation *self) {
 }
 
 void moveOverCars(Simulation *self, int forAmountOfTime) {
+    bool northLightGreen = SYNC(self->bridgeObj, getLightState, NULL);
     // Check if time is done
-    if (forAmountOfTime <= 0) {
-        // Swith for next light
-        SYNC(self, switchDirection, NULL);
-        SYNC(self->bridgeObj, switchLightState, NULL);
+    if (forAmountOfTime <= 0) {       
         return;
     }
 
     // Cars going north
-    if (self->movingCarsNorth) {
+    if (northLightGreen) {
         SYNC(self, removeNorthCars, NULL);
     
     // Cars going south

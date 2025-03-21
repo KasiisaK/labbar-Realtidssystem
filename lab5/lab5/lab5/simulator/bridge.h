@@ -14,4 +14,4 @@ typedef struct {
     {initObject(), true}
 
 
-void switchLightState(Bridge *self);
+void getLightState(Bridge *self);
