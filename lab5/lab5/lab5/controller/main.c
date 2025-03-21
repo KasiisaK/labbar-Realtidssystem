@@ -16,7 +16,9 @@ USART usart = initUSART(&trafficLight); // Now usart has the correct reference
 int main() {
 	LCD_init();
 	usart_init(&usart);
+	
 	sei();
+	
 	TINYTIMBER(&trafficLight, start, NULL);
 	TINYTIMBER(&usart, start, NULL);
 	return 0;
