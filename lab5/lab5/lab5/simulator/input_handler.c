@@ -3,6 +3,7 @@
 void getUserInput(Input_handler *self) {
     scanf("%c", &(self->input));
     procesInput(self, self->input);
+    AFTER(MSEC(50), self, getUserInput, NULL);
 }
 
 void procesInput(Input_handler *self, char input) {
@@ -10,15 +11,15 @@ void procesInput(Input_handler *self, char input) {
     {
     // Enqueues a new car in northbound direction
     case 'n':
-        /* code */
+        ASYNC(self->simObject, addCarNorth, NULL);
         break;
     // Enqueues a new car in southbound direction
     case 's':
-        /* code */
+    ASYNC(self->simObject, addCarSouth, NULL);
         break;
     // Exits the simulator
     case 'e':
-        /* code */
+        exit(0);
         break;
     default:
         break;

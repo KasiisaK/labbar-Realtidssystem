@@ -1,5 +1,6 @@
 #include "TinyTimber.h"
 #include "simulation.h"
+#include <pthread.h>
 
 typedef struct {
     Object super;

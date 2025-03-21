@@ -5,21 +5,45 @@ void switchDirection(Simulation *self) {
     self->movingCarsNorth = !self->movingCarsNorth;
 }
 
+// Bridge
+void addCarBridge(Simulation *self) {
+    pthread_mutex_lock(&(self->bridgeMtx));
+    (self->carsOneBridge)++;
+    pthread_mutex_unlock(&(self->bridgeMtx));
+}
 void removeCarBridge(Simulation *self) {
     if (self->carsOneBridge > 0) {
+        pthread_mutex_lock(&(self->bridgeMtx));
         (self->carsOneBridge)--;
+        pthread_mutex_unlock(&(self->bridgeMtx));
     }
 }
 
+// North
+void addCarNorth(Simulation *self) {
+    pthread_mutex_lock(&(self->northMtx));
+    (self->northCarQueue)++;
+    pthread_mutex_unlock(&(self->northMtx));
+}
 void removeNorthCars(Simulation *self) {
     if (self->northCarQueue > 0) {
+        pthread_mutex_lock(&(self->northMtx));
         (self->northCarQueue)--;
+        pthread_mutex_unlock(&(self->northMtx));
     }
 }
 
+// South
+void addCarSouth(Simulation *self) {
+    pthread_mutex_lock(&(self->southMtx));
+    (self->southCarQueue)++;
+    pthread_mutex_unlock(&(self->southMtx));
+}
 void removeSouthCars(Simulation *self) {
     if (self->southCarQueue > 0) {
+        pthread_mutex_lock(&(self->southMtx));
         (self->southCarQueue)--;
+        pthread_mutex_unlock(&(self->southMtx));
     }
 }
 
@@ -35,13 +59,13 @@ void moveOverCars(Simulation *self, int forAmountOfTime) {
     // Cars going north
     if (self->movingCarsNorth) {
         SYNC(self, removeNorthCars, NULL);
-        (self->carsOneBridge)++;
     
     // Cars going south
     } else {
         SYNC(self, removeSouthCars, NULL);
-        (self->carsOneBridge)++;
     }
+    // Add car on bridge after removing south/north
+    ASYNC(self, addCarBridge, NULL);
 
     // Loop every second and decreas the time 
     AFTER(SEC(1), self, moveOverCars, forAmountOfTime - 1);

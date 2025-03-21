@@ -1,6 +1,7 @@
 #include <avr/io.h>
 #include <pthread.h>
 
+#include "TinyTimber.h"
 #include "input_handler.h"
 #include "bridge.h"
 #include "simulation.h"
@@ -16,20 +17,27 @@ void sysInit(){
 }
 
 void USART_Init(unsigned int ubrr) {
-// Set baud rate
-UBRRH0 = (unsigned char)(ubrr>>8);
-UBRRL0 = (unsigned char)ubrr;
-// Enable receiver and transmitter
-UCSR0B = (1<<RXEN0)|(1<<TXEN0);
-// Set frame format: 8data, 2stop bit
-UCSRnC = (0<<USBS0)|(3<<UCSZ00);
+    //Power Reduction Register
+    PRR |= (0 << PRUSART0);
+
+    // Set baud rate
+    UBRRH0 = (unsigned char)(ubrr>>8);
+    UBRRL0 = (unsigned char)ubrr;
+    // Enable receiver and transmitter
+    UCSR0B = (1<<RXEN0)|(1<<TXEN0);
+    // Set frame format: 8data, 2stop bit
+    UCSRnC = (0<<USBS0)|(3<<UCSZ00);
 }
 
 
 void main() {
+    // Mutexs
+    static pthread_mutex_t northCar = PTHREAD_MUTEX_INITIALIZER;
+    static pthread_mutex_t southCar = PTHREAD_MUTEX_INITIALIZER;
+    static pthread_mutex_t bridgeCar = PTHREAD_MUTEX_INITIALIZER;
     // Objects
     Bridge bridge = initBridge();
-    Simulation simulation = initSimulation(&bridge);
+    Simulation simulation = initSimulation(&bridge, &northCar, &southCar, &bridgeCar);
     Input_handler inputHandler = initInput_handler(&simulation);
 
     sysInit();
