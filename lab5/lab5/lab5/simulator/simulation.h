@@ -31,5 +31,4 @@ void addCarSouth(Simulation *self);
 void removeSouthCars(Simulation *self);
 
 
-void moveOverCars(Simulation *self, int forAmountOfTime);
 void mainSimulationLoop(Simulation *self);

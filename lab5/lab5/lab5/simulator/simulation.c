@@ -47,47 +47,21 @@ void removeSouthCars(Simulation *self) {
     }
 }
 
-void moveOverCars(Simulation *self, int forAmountOfTime) {
-    bool northLightGreen = SYNC(self->bridgeObj, getLightState, NULL);
-    // Check if time is done
-    if (forAmountOfTime <= 0) {       
-        return;
-    }
-
-    // Cars going north
-    if (northLightGreen) {
-        SYNC(self, removeNorthCars, NULL);
+void mainSimulationLoop(Simulation *self) {
     
-    // Cars going south
-    } else {
+    //kanske get metod och mutex?
+    if (SYNC(self->bridgeObj, getNorthLightStatus, NULL)) {
+        SYNC(self, removeNorthCars, NULL);
+    }
+    if (SYNC(self->bridgeObj, getSouthLightStatus, NULL)) {
         SYNC(self, removeSouthCars, NULL);
     }
-    // Add car on bridge after removing south/north
-    ASYNC(self, addCarBridge, NULL);
+    SYNC(self, addCarBridge, NULL);
 
-    // Loop every second and decreas the time 
-    AFTER(SEC(1), self, moveOverCars, forAmountOfTime - 1);
-
-    // Remove car after 5 second (time to pass)
+    // Remove car from bridge after 5 sec 
     AFTER(SEC(5), self, removeCarBridge, NULL);
-}
 
-void mainSimulationLoop(Simulation *self) {
-    // Calculate light on/off dynamicaly, how many more in north/south side, and deafult to 0 if divison by 0
-    pthread_mutex_lock(&(self->northCarQueue));
-    pthread_mutex_lock(&(self->southMtx));
-    int northCarTime = (self->southCarQueue == 0) ? self->northCarQueue : (self->northCarQueue / self->southCarQueue);
-    int southCarTime= (self->northCarQueue == 0) ? self->southCarQueue : (self->southCarQueue / self->northCarQueue);
-    pthread_mutex_unlock(&(self->southMtx));
-    pthread_mutex_unlock(&(self->northCarQueue));
-
-    // Start movement in one direction
-    SYNC(self, moveOverCars, northCarTime);
-
-    // Wait (5 sec (passing time) + northCarTime) before switching direction
-    AFTER(SEC(5) + northCarTime, self, moveOverCars, southCarTime);
-
-    // Wait more (+ southCarTime) time before looping
-    AFTER(SEC(5) + northCarTime + southCarTime, self, mainSimulationLoop, NULL);
+    // A car passed every second so call loop every second
+    AFTER(SEC(1), self, mainSimulationLoop, NULL);
 }
 

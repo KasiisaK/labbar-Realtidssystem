@@ -1,8 +1,12 @@
 #include "bridge.h"
 #include <stdbool.h>
 
-bool getLightState(Bridge *self) {
+bool getNorthLightStatus(Bridge *self) {
     return self->northTraficLightOn;
+}
+
+bool getSouthLightStatus(Bridge *self) {
+    return self->southTraficLightOn;
 }
 
 void changeLightState(Bridge *self) {
@@ -20,11 +24,11 @@ void changeLightState(Bridge *self) {
     
     // Bit 2: Southbound green light status
     if (status & (1 << 2)) {
-        self->northTraficLightOn = false;
+        self->southTraficLightOn = true;
     }
     
     // Bit 3: Southbound red light status
     if (status & (1 << 3)) {
-        self->northTraficLightOn = true;
+        self->southTraficLightOn = false;
     }
 }
