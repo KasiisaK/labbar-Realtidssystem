@@ -1,25 +1,26 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "TinyTimber.h"
-#include "GUI.h"
+#include "gui.h"
 #include "USART.h"
-#include "traffic_light.h" // ADD THIS LINE
+#include "traffic_light.h"
+#include "backend.h"
 
-// Declare objects AFTER including headers
-GUI gui = initGUI();
-USART usart = initUSART(NULL); // Placeholder (fixed later)
-TrafficLight trafficLight = initTrafficLight(&gui, &usart);
-
-// Reassign usart with TrafficLight reference
-trafficLight.usart = &usart; // Now usart has the correct reference
+// Declare objects
+GUI gui = initGUI(); 
+Backend backend;
+USART usart = initUSART(&backend);
+TrafficLight trafficLight = initTrafficLight(&gui, &backend);
 
 int main() {
 	LCD_init();
+	backend_init(&backend);
 	usart_init(&usart);
 	
 	sei();
 	
 	TINYTIMBER(&trafficLight, start, NULL);
 	TINYTIMBER(&usart, start, NULL);
+	
 	return 0;
 }
