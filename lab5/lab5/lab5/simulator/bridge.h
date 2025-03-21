@@ -8,10 +8,14 @@
 typedef struct {
     Object super;
     bool northTraficLightOn;
+    bool southTraficLightOn;
 } Bridge;
 
 #define initBridge() \
-    {initObject(), true}
+    {initObject(), true, false}
 
 
-void switchLightState(Bridge *self);
+bool getNorthLightStatus(Bridge *self);
+bool getSouthLightStatus(Bridge *self);
+
+void changeLightState(Bridge *self);

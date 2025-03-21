@@ -5,6 +5,7 @@
 #include "input_handler.h"
 #include "bridge.h"
 #include "simulation.h"
+#include "USART.h"
 
 #define FOSC 1843200// Clock Speed
 #define BAUD 9600
@@ -39,14 +40,20 @@ void main() {
     Bridge bridge = initBridge();
     Simulation simulation = initSimulation(&bridge, &northCar, &southCar, &bridgeCar);
     Input_handler inputHandler = initInput_handler(&simulation);
+	USART usart = initUSART(&inputHandler, &simulation);
+	
+	// Give simulation USART referance later 
+	simulation.usartRef = &usart;
 
     sysInit();
     USART_Init(MYUBRR);
 
     pthread_t inputThread;
     pthread_t simulationThread;
+	pthread_t usartThread;
 
     pthread_create(inputThread, NULL, getUserInput, NULL);
     pthread_create(simulationThread, NULL, mainSimulationLoop, NULL);
+	pthread_create(usartThread, NULL, usartMainLoop, NULL);
 
 }
