@@ -10,21 +10,21 @@ void changeLightState(Bridge *self) {
 
     // Bit 0: Northbound green light status
     if (status & (1 << 0)) {
-        // Northbound green
+        self->northTraficLightOn = true;
     }
     
     // Bit 1: Northbound red light status
     if (status & (1 << 1)) {
-        // Northbound red
+        self->northTraficLightOn = false;
     }
     
     // Bit 2: Southbound green light status
     if (status & (1 << 2)) {
-        // Southbound green
+        self->northTraficLightOn = false;
     }
     
     // Bit 3: Southbound red light status
     if (status & (1 << 3)) {
-        // Southbound red
+        self->northTraficLightOn = true;
     }
 }
