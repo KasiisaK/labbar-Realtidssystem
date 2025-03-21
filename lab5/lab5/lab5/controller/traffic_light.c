@@ -16,17 +16,17 @@ void updateDisplay(TrafficLight *self) {
 void updateLamps(TrafficLight *self, uint8_t sensor) {
 	uint8_t new_state = 0;
 	switch (sensor) {
-		case ???:  // Northbound arrival
+		case ???:  
 			self->north_queue++;
 			break;
-		case ???:  // Northbound entry
+		case ???:  
 			if (self->lamp_state & 0x01) {
 				self->north_queue--;
 				self->cars_on_bridge++;
 				ASYNC(self, releaseCar, 0, SEC(5));
 			}
 		break;
-		// Add cases for southbound (bits 2-3)
+		
 	}
 	updateLamps(self);
 }
