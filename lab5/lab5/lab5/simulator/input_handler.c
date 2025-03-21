@@ -15,7 +15,7 @@ void procesInput(Input_handler *self, char input) {
         break;
     // Enqueues a new car in southbound direction
     case 's':
-    ASYNC(self->simObject, addCarSouth, NULL);
+		ASYNC(self->simObject, addCarSouth, NULL);
         break;
     // Exits the simulator
     case 'e':
