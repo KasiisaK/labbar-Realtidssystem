@@ -1,6 +1,5 @@
 #include <pthread.h>
 
-#include "TinyTimber.h"
 #include "input_handler.h"
 #include "bridge.h"
 #include "simulation.h"
@@ -53,6 +52,5 @@ void main() {
 
     pthread_create(inputThread, NULL, getUserInput, NULL);
     pthread_create(simulationThread, NULL, mainSimulationLoop, NULL);
-	//pthread_create(usartThread, NULL, usartMainLoop, NULL);
-	return TINYTIMBER(&usartThread, usartMainLoop, NULL);
+	pthread_create(usartThread, NULL, usartMainLoop, NULL);
 }

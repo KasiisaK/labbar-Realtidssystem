@@ -1,4 +1,3 @@
-#include "TinyTimber.h"
 #include <stdbool.h>
 #include <pthread.h>
 
@@ -6,13 +5,12 @@
 // means only one light is need if dealy is added in the logic later
 
 typedef struct {
-    Object super;
     bool northTraficLightOn;
     bool southTraficLightOn;
 } Bridge;
 
 #define initBridge() \
-    {initObject(), true, false}
+    {true, false}
 
 
 bool getNorthLightStatus(Bridge *self);

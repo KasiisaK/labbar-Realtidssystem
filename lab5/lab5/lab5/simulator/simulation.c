@@ -70,7 +70,7 @@ void removeSouthCars(Simulation *self) {
 }
 
 void procesUSARTData(Simulation *self) {
-	unsigned char usartData = SYNC(self->usartRef, getUSARTData, NULL);
+	unsigned char usartData = getUSARTData(self->usartRef);
 
 	// Northbound light handling
 	if (usartData & 0b1000)
@@ -94,21 +94,21 @@ void procesUSARTData(Simulation *self) {
 
 void mainSimulationLoop(Simulation *self) {
     // Get North/South Light status from USART
-	SYNC(self, procesUSARTData, NULL)
+	procesUSARTData(self->usartRef); //vetej
 	
     // North Cars
-    if (SYNC(self->bridgeObj, getNorthLightStatus, NULL)) {
+    if (getNorthLightStatus(self->usartRef)) {
 		// Remove from queue, add to bridge
-        SYNC(self, removeNorthCars, NULL);
-		SYNC(self, addNorthCarBridge, NULL);
+        removeNorthCars(self);
+		addNorthCarBridge(self);
 		// Remove car from bridge after 5 sec
 		AFTER(SEC(5), self, removeNorthCarBridge, NULL);
     }
 	// South Cars
     if (SYNC(self->bridgeObj, getSouthLightStatus, NULL)) {
 		// Remove from queue, add to bridge
-        SYNC(self, removeSouthCars, NULL);
-		SYNC(self, addSouthCarBridge, NULL);
+        removeSouthCars(self);
+		addSouthCarBridge(self);
 		// Remove car from bridge after 5 sec
 		AFTER(SEC(5), self, removeSouthCarBridge, NULL);
     }     
