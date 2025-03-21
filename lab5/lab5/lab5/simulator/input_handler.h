@@ -1,15 +1,13 @@
-#include "TinyTimber.h"
 #include "simulation.h"
 #include <pthread.h>
 
 typedef struct {
-    Object super;
     char input;
     Simulation *simObject;
 } Input_handler;
 
 #define initInput_handler(simRef) \ 
-    {initObject(), NULL, simRef}
+    {NULL, simRef}
 
     
 void getUserInput(Input_handler *self);

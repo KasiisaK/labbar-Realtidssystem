@@ -1,10 +1,9 @@
-#include "TinyTimber.h"
 #include "bridge.h"
+#include "USART.h"
 #include <stdbool.h>
 #include <pthread.h>
 
 typedef struct {
-    Object super;
     int southCarQueue;
     int northCarQueue;
     int carsGoingSouth;
@@ -20,7 +19,7 @@ typedef struct {
 } Simulation;
 
 #define initSimulation(bridgeRef, noMtx, soMtx, brMtx) \ 
-    {initObject(), 0, 0, 0, 0, true, false, bridgeRef, noMtx, soMtx, brMtx, 0b0000, NULL} // Temp NULL
+    {0, 0, 0, 0, true, false, bridgeRef, noMtx, soMtx, brMtx, 0b0000, NULL} // Temp NULL
 
 // Data get for USART
 unsigned char getData(Simulation *self);
