@@ -70,7 +70,7 @@ void removeSouthCars(Simulation *self) {
 }
 
 void procesUSARTData(Simulation *self) {
-	unsigned char usartData = SYNC(USARTRef, getUSARTData, NULL);
+	unsigned char usartData = SYNC(self->usartRef, getUSARTData, NULL);
 
 	// Northbound light handling
 	if (usartData & 0b1000)

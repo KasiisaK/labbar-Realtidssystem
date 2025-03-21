@@ -54,6 +54,6 @@ void main() {
 
     pthread_create(inputThread, NULL, getUserInput, NULL);
     pthread_create(simulationThread, NULL, mainSimulationLoop, NULL);
-	pthread_create(usartThread, NULL, usartMainLoop, NULL);
-
+	//pthread_create(usartThread, NULL, usartMainLoop, NULL);
+	return TINYTIMBER(&usartThread, usartMainLoop, NULL);
 }
