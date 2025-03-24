@@ -16,9 +16,20 @@ void usart_init(USART *self) {
 	UCSR0C = (1 << UCSZ01) | (1 << UCSZ00);
 }
 
-void usart_send(USART *self, uint8_t data) {
-	while (!(UCSR0A & (1 << UDRE0)));
+void USART_Transmit(unsigned char data) {
+	/* Wait for empty transmit buffer */
+	while ( !( UCSR0A & (1<<UDRE0)) )
+	;
+	/* Put data into buffer, sends the data */
 	UDR0 = data;
+}
+
+unsigned char USART_Receive(void) {
+	/* Wait for data to be received */
+	while ( !(UCSR0A & (1<<RXC0)) )
+	;
+	/* Get and return received data from buffer */
+	return UDR0;
 }
 
 ISR(USART_RX_vect) {

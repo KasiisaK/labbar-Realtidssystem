@@ -2,15 +2,15 @@
 # Automatically-generated file. Do not edit or delete the file
 ################################################################################
 
-backend.c
+bridge.c
 
-gui.c
+input_handler.c
 
 main.c
 
-TinyTimber.c
+simulation.c
 
-traffic_light.c
+TinyTimber.c
 
 USART.c
 

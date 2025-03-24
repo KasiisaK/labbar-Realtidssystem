@@ -120,6 +120,12 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="backend.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="backend.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="gui.c">
       <SubType>compile</SubType>
     </Compile>

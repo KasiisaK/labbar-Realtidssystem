@@ -14,7 +14,6 @@
 typedef struct {
 	Object super;
 	TrafficLight *trafficLight;
-	void (*send)(struct USART *self, uint8_t data);
 } USART;
 
 void usart_init(USART *self);
