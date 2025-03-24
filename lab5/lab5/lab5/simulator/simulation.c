@@ -53,7 +53,8 @@ void addNorthCarBridge(Simulation *self) {
 	self->output |= NORTH_BR_ARVL;
 	pthread_mutex_unlock(&(self->bridgeMtx));
 }
-void removeNorthCarBridge(Simulation *self) {
+void* removeNorthCarBridge(void* arg) {
+	Simulation* self = (Simulation*)arg;
 	// Remove car after 5 sec
 	usleep(5000000);
 	if (self->carsGoingNorth > 0) {
@@ -61,6 +62,7 @@ void removeNorthCarBridge(Simulation *self) {
 		(self->carsGoingNorth)--;
 		pthread_mutex_unlock(&(self->bridgeMtx));
 	}
+	return NULL;
 }
 // Bridge South
 void addSouthCarBridge(Simulation *self) {

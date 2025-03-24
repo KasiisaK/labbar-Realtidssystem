@@ -2,6 +2,8 @@
 
 #include <fcntl.h>
 #include <termios.h>
+#include <stdio.h>   // For perror
+#include <stdlib.h>  // For exit
 
 #include "bridge.h"
 #include "PCReader.h"
@@ -76,7 +78,7 @@ void main() {
     pthread_t simulationThread;
     pthread_t readThread;
 
-    pthread_create(&inputThread, NULL, (void *)getUserInput, &inputHandler);
-    pthread_create(&simulationThread, NULL, (void *)mainSimulationLoop, &simulation);
-    pthread_create(&readThread, NULL, (void *)readerMainLoop, &read);
+    pthread_create(&inputThread, NULL, getUserInput, &inputHandler);
+    pthread_create(&simulationThread, NULL, mainSimulationLoop, &simulation);
+    pthread_create(&readThread, NULL, readerMainLoop, &read);
 }

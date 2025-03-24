@@ -1,3 +1,6 @@
+#ifndef SIMULATION_H
+#define SIMULATION_H
+
 #include "bridge.h"
 #include "PCReader.h"
 #include <stdbool.h>
@@ -16,7 +19,7 @@ typedef struct {
     int port_fd; // For wirting to AVR
 } Simulation;
 
-#define initSimulation(bridgeRef, redRef, portRef) \ 
+#define initSimulation(bridgeRef, redRef, portRef) \
     {0, 0, 0, 0, bridgeRef, PTHREAD_MUTEX_INITIALIZER, PTHREAD_MUTEX_INITIALIZER, PTHREAD_MUTEX_INITIALIZER, 0b0000, redRef, portRef}
 
 void printState(Simulation *self);
@@ -39,3 +42,5 @@ void removeSouthCars(Simulation *self);
 
 void procesUSARTData(Simulation *self);
 void mainSimulationLoop(Simulation *self);
+
+#endif

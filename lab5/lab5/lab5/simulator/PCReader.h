@@ -1,3 +1,6 @@
+#ifndef PCREADER_H
+#define PCREADER_H
+
 #include <pthread.h>
 
 typedef struct {
@@ -6,9 +9,11 @@ typedef struct {
     pthread_mutex_t readMtx;
 } Reader;
 
-#define initPCReader(port) \ 
+#define initPCReader(port) \
     {0, port, PTHREAD_MUTEX_INITIALIZER}
 
 
 unsigned char getUSARTData(Reader *self);
 void readerMainLoop(Reader *self);
+
+#endif

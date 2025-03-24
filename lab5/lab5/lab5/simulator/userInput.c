@@ -1,5 +1,7 @@
 #include "userInput.h"
 #include <unistd.h> // usleep()
+#include <stdio.h>   // For scanf/printf
+#include <stdlib.h>  // For exit
 
 void getUserInput(Input *self) {
     while (1) {
