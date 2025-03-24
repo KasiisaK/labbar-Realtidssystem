@@ -1,6 +1,7 @@
 #include "simulation.h"
 #include <stdbool.h>
 #include <termios.h>
+#include <stdio.h>
 #include <pthread.h>
 #include <unistd.h> // usleep()
 
@@ -155,7 +156,8 @@ void mainSimulationLoop(Simulation *self) {
 			pthread_detach(carLeaving);
 		}     
 		// Send data to AVR
-		write(self->port_fd, &(getData(self)), 1);
+		unsigned char data = getData(self);
+		write(self->port_fd, &data, 1);
 		printState(self);
 
 		// A car passed every second so call loop every second

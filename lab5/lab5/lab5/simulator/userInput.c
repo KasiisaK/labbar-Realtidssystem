@@ -3,13 +3,15 @@
 #include <stdio.h>   // For scanf/printf
 #include <stdlib.h>  // For exit
 
-void getUserInput(Input *self) {
+void* getUserInput(void* arg) {
+    Input* self = (Input*)arg;
     while (1) {
         char input;
-        scanf(" %c", &input);
+        scanf(" %c", &input); // Space skips whitespace
         procesInput(self, input);
-        usleep(1000); // 1 ms
+        usleep(1000);
     }
+    return NULL;
 }
 
 void procesInput(Input *self, char input) {

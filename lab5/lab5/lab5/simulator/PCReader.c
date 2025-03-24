@@ -2,6 +2,7 @@
 #include <pthread.h>
 #include <fcntl.h>
 #include <termios.h>
+#include <stdio.h>
 #include <unistd.h> // usleep()
 
 unsigned char getUSARTData(Reader *self) {
