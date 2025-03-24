@@ -1,13 +1,16 @@
-#include "input_handler.h"
+#include "userInput.h"
+#include <unistd.h> // usleep()
 
-void getUserInput(Input_handler *self) {
-    char input;
-    scanf("%c", input);
-    procesInput(self, input);
-    getUserInput(self);
+void getUserInput(Input *self) {
+    while (1) {
+        char input;
+        scanf(" %c", &input);
+        procesInput(self, input);
+        usleep(1000); // 1 ms
+    }
 }
 
-void procesInput(Input_handler *self, char input) {
+void procesInput(Input *self, char input) {
     switch (input)
     {
     // Enqueues a new car in northbound direction

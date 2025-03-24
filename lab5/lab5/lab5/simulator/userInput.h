@@ -1,16 +1,15 @@
 #include "simulation.h"
-#include <pthread.h>
 
 typedef struct {
     char input;
     Simulation *simObject;
-} Input_handler;
+} Input;
 
 #define initInput_handler(simRef) \ 
     {NULL, simRef}
 
     
-void getUserInput(Input_handler *self);
-void procesInput(Input_handler *self, char input);
+void getUserInput(Input *self);
+void procesInput(Input *self, char input);
 
 
