@@ -55,16 +55,17 @@ void addNorthCarBridge(Simulation *self) {
 	pthread_mutex_unlock(&(self->bridgeMtx));
 }
 void* removeNorthCarBridge(void* arg) {
-	Simulation* self = (Simulation*)arg;
-	// Remove car after 5 sec
+    Simulation* self = (Simulation*)arg;
+    // Remove car after 5 sec
 	usleep(5000000);
 	if (self->carsGoingNorth > 0) {
 		pthread_mutex_lock(&(self->bridgeMtx));
 		(self->carsGoingNorth)--;
 		pthread_mutex_unlock(&(self->bridgeMtx));
 	}
-	return NULL;
+    return NULL;
 }
+
 // Bridge South
 void addSouthCarBridge(Simulation *self) {
     pthread_mutex_lock(&(self->bridgeMtx));
@@ -72,14 +73,15 @@ void addSouthCarBridge(Simulation *self) {
 	self->output |= SOUTH_BR_ARVL;
     pthread_mutex_unlock(&(self->bridgeMtx));
 }
-void removeSouthCarBridge(Simulation *self) {
-	// Remove car after 5 sec
-	usleep(5000000);
+void* removeSouthCarBridge(void* arg) {
+    Simulation* self = (Simulation*)arg;
+    usleep(5000000);
     if (self->carsGoingSouth > 0) {
         pthread_mutex_lock(&(self->bridgeMtx));
         (self->carsGoingSouth)--;
         pthread_mutex_unlock(&(self->bridgeMtx));
     }
+    return NULL;
 }
 
 // North
@@ -130,8 +132,9 @@ void procesUSARTData(Simulation *self) {
 	}
 }
 
-void mainSimulationLoop(Simulation *self) {
-	while(1) {
+void* mainSimulationLoop(void* arg) {  // Changed signature
+    Simulation* self = (Simulation*)arg;
+    while(1) {
         // Get North/South Light status from USART
 		procesUSARTData(self);
 		
@@ -163,5 +166,5 @@ void mainSimulationLoop(Simulation *self) {
 		// A car passed every second so call loop every second
 		usleep(1000000);
     }
+    return NULL;
 }
-

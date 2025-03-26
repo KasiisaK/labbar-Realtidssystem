@@ -12,8 +12,7 @@ typedef struct {
 #define initPCReader(port) \
     {0, port, PTHREAD_MUTEX_INITIALIZER}
 
-
 unsigned char getUSARTData(Reader *self);
-void readerMainLoop(Reader *self);
+void* readerMainLoop(void* arg);  // Changed signature
 
 #endif

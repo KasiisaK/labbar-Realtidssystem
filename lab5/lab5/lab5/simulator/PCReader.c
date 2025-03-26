@@ -13,7 +13,8 @@ unsigned char getUSARTData(Reader *self) {
 }
 
 
-void readerMainLoop(Reader *self) {
+void* readerMainLoop(void* arg) {
+    Reader* self = (Reader*)arg;
     // Continusly get data from USART and store in usartData
     while(1) { 
         unsigned char buf;
@@ -27,4 +28,4 @@ void readerMainLoop(Reader *self) {
         }
         usleep(1000); // Non-blocking poll
     }
-} 
+}

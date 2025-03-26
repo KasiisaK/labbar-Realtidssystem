@@ -29,9 +29,7 @@ unsigned char getData(Simulation *self);
 
 // Add and Remove
 void addNorthCarBridge(Simulation *self);
-void removeNorthCarBridge(Simulation *self);
 void addSouthCarBridge(Simulation *self);
-void removeSouthCarBridge(Simulation *self);
 
 void addCarNorth(Simulation *self);
 void removeNorthCars(Simulation *self);
@@ -41,6 +39,9 @@ void removeSouthCars(Simulation *self);
 
 
 void procesUSARTData(Simulation *self);
-void mainSimulationLoop(Simulation *self);
+
+void* removeNorthCarBridge(void* arg);
+void* removeSouthCarBridge(void* arg);
+void* mainSimulationLoop(void* arg);
 
 #endif

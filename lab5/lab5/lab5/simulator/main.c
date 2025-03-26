@@ -78,7 +78,13 @@ void main() {
     pthread_t simulationThread;
     pthread_t readThread;
 
-    pthread_create(&inputThread, NULL, getUserInput, &inputHandler);
-    pthread_create(&simulationThread, NULL, mainSimulationLoop, &simulation);
-    pthread_create(&readThread, NULL, readerMainLoop, &read);
+    pthread_create(&inputThread, NULL, (void*)getUserInput, &inputHandler);
+    pthread_create(&simulationThread, NULL, (void*)mainSimulationLoop, &simulation);
+    pthread_create(&readThread, NULL, (void*)readerMainLoop, &read);
+
+    pthread_join(inputThread, NULL);
+    pthread_join(simulationThread, NULL);
+    pthread_join(readThread, NULL);
+
+    return 0;
 }

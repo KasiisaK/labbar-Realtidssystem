@@ -9,11 +9,9 @@ typedef struct {
 } Input;
 
 #define initInput_handler(simRef) \
-    {'0', simRef}
+    {'\0', simRef}  // Initialize with null character
 
-    
-void getUserInput(Input *self);
+void* getUserInput(void* arg);  // Changed signature
 void procesInput(Input *self, char input);
 
 #endif
-
