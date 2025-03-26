@@ -115,7 +115,8 @@ void removeSouthCars(Simulation *self) {
 }
 
 // Update bridge class based on AVR USART data
-void procesUSARTData(Simulation *self) {
+void* procesUSARTData(void *arg) {
+	Simulation* self = (Simulation*)arg;
 	unsigned char usartData = getUSARTData(self->readerRef);
 
 	if (usartData & (1 << 0)){

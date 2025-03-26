@@ -65,7 +65,7 @@ void terminosInit(int *port) {
 }
 
 
-void main() {
+int main() {
     terminosInit(&serialPort);
     // Objects
     Bridge bridge = initBridge(); // North/south trafic lights
@@ -78,9 +78,9 @@ void main() {
     pthread_t simulationThread;
     pthread_t readThread;
 
-    pthread_create(&inputThread, NULL, (void*)getUserInput, &inputHandler);
-    pthread_create(&simulationThread, NULL, (void*)mainSimulationLoop, &simulation);
-    pthread_create(&readThread, NULL, (void*)readerMainLoop, &read);
+    pthread_create(&inputThread, NULL, (void*(*)(void*))getUserInput, &inputHandler);
+    pthread_create(&simulationThread, NULL, (void*(*)(void*))mainSimulationLoop, &simulation);
+    pthread_create(&readThread, NULL, (void*(*)(void*))readerMainLoop, &read);
 
     pthread_join(inputThread, NULL);
     pthread_join(simulationThread, NULL);

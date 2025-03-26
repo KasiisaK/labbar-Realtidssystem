@@ -38,7 +38,7 @@ void addCarSouth(Simulation *self);
 void removeSouthCars(Simulation *self);
 
 
-void procesUSARTData(Simulation *self);
+void* procesUSARTData(void *arg);
 
 void* removeNorthCarBridge(void* arg);
 void* removeSouthCarBridge(void* arg);
