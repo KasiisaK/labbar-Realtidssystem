@@ -48,6 +48,14 @@ int northLightRed;
 int southLightGreen;
 int southLightRed;
 
+// Functions
+void terminosInit();
+void printState();
+void getUserInput();
+void removeCarAfterFiveSec(char direction);
+void simulation();
+void mainProgramLoop();
+
 void terminosInit() {
     serialPort = open("/dev/terS0", O_RDWR);
     struct termios ter;
