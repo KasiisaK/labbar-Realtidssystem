@@ -48,13 +48,18 @@ int northLightRed;
 int southLightGreen;
 int southLightRed;
 
+// Struct for thread argument in removeCar
+typedef struct {
+    char direction;
+} ThreadArg;
+
 // Functions
 void terminosInit();
 void printState();
-void getUserInput();
-void removeCarAfterFiveSec(char direction);
+void* getUserInput(void* arg);
+void* removeCarAfterFiveSec(void* arg);
 void simulation();
-void mainProgramLoop();
+void* mainProgramLoop(void* arg);
 
 void terminosInit() {
     serialPort = open("/dev/terS0", O_RDWR);
@@ -108,7 +113,7 @@ void printState() {
 	pthread_mutex_unlock(&carBridgeMtx);
 }
 
-void getUserInput() {
+void* getUserInput(void* arg) {
     char input;
     while (1) {
         scanf("%c", &input);
@@ -133,9 +138,10 @@ void getUserInput() {
             break;
         }
     }
+    return NULL
 }
 
-void mainProgramLoop() {
+void* mainProgramLoop(void* arg) {
     while (1) {
         // Clear screen
         unsigned char buf;
@@ -151,9 +157,15 @@ void mainProgramLoop() {
         printState();
         usleep(1000000); // Reapet every sec
     }
+    return NULL;
 }
 
-void removeCarAfterFiveSec(char direction) {
+void* removeCarAfterFiveSec(void* arg) {
+    // Get direction arg from struct
+    ThreadArg* targ = (ThreadArg*)arg;
+    char direction = targ->direction;
+    free(arg);
+
     usleep(5000000); // 5 sec delay
     switch (direction)
     {
@@ -170,20 +182,25 @@ void removeCarAfterFiveSec(char direction) {
     default:
         break;
     }
+    return NULL
 }
 
 void simulation() {
     pthread_t carLeavingThread; // Leave after 5 sec
+    ThreadArg* arg;
 
     // Handle north logic
     if (northLightGreen && northCarQue > 0) {
         pthread_mutex_lock(&carBridgeMtx);
         pthread_mutex_lock(&northCarMtx);
+        // Set argument
+        arg = malloc(sizeof(ThreadArg));
+        arg->direction = 'n';
         // Remove que add to bridge
         northCarQue--;
         northBrigCar++;
-        pthread_create(&carLeavingThread, NULL, removeCarAfterFiveSec, 'n');
-        pthread_detach(&carLeavingThread);
+        pthread_create(&carLeavingThread, NULL, removeCarAfterFiveSec, arg);
+        pthread_detach(carLeavingThread);
 
         pthread_mutex_unlock(&northCarMtx);
         pthread_mutex_unlock(&carBridgeMtx);
@@ -192,18 +209,21 @@ void simulation() {
     if (southLightGreen && southCarQue > 0) {
         pthread_mutex_lock(&carBridgeMtx);
         pthread_mutex_lock(&southCarMtx);
+        // Set arguent
+        arg = malloc(sizeof(ThreadArg));
+        arg->direction = 's';
         // Remove que add to bridge
         southCarQue--;
         southBrigCar++;
-        pthread_create(&carLeavingThread, NULL, removeCarAfterFiveSec, 's');
-        pthread_detach(&carLeavingThread);
+        pthread_create(&carLeavingThread, NULL, removeCarAfterFiveSec, arg);
+        pthread_detach(carLeavingThread);
         
         pthread_mutex_unlock(&southCarMtx);
         pthread_mutex_unlock(&carBridgeMtx);
     }
 }
 
-void main() {
+int main() {
     terminosInit();
 
     pthread_t mainLoop;
@@ -214,4 +234,6 @@ void main() {
 
     pthread_join(mainLoop, NULL);
     pthread_join(userInputLoop, NULL);
+
+    return 0;
 }
