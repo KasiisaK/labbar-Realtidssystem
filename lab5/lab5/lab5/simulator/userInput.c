@@ -7,7 +7,7 @@ void* getUserInput(void* arg) {
     Input* self = (Input*)arg;
     while (1) {
         char input;
-        scanf(" %c", &input); // Space skips whitespace
+        scanf(" %c", &input);
         procesInput(self, input);
         usleep(1000);
     }

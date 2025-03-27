@@ -10,6 +10,8 @@
         "pcreader.h": "c",
         "pcwriter.h": "c",
         "bridge.h": "c",
-        "pthread.h": "c"
+        "pthread.h": "c",
+        "stdio.h": "c",
+        "userinput.h": "c"
     }
 }
