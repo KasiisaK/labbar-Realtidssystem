@@ -1,6 +1,7 @@
 #include <pthread.h>
 #include <termios.h>
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <fcntl.h> // open (file manipulation)
 #include <unistd.h> // read/wite
