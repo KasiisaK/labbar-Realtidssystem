@@ -96,7 +96,7 @@ void terminosInit() {
     ter.c_oflag &= ~ONLCR;
 
     if (tcsetattr(serialPort, TCSANOW, &ter) != 0) {
-		printf("Error: Could not apply settings");
+		printf("Error: Could not apply settings\n");
 	}
 }
 
@@ -144,6 +144,7 @@ void* getUserInput(void* arg) {
 void* mainProgramLoop(void* arg) {
     while (1) {
         // Clear screen
+        printf("\e[1;1H\e[2J");
         unsigned char buf;
         int n = read(serialPort, &buf, sizeof(buf));
         printf("USART: %x\n", buf);
