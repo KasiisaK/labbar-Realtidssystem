@@ -7,6 +7,7 @@
 #include <unistd.h> // read/wite
 
 //TODO: macro kanske måste vara: unsigned int southA = 0b0100; för write
+//TODO: ändra /dev/terS0 så blir rätt med "mode"
 
 /*
 Bit 0: Northbound car arrival sensor activated
