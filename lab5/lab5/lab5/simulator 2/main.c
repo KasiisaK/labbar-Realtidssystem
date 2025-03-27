@@ -6,6 +6,8 @@
 #include <fcntl.h> // open (file manipulation)
 #include <unistd.h> // read/wite
 
+//TODO: macro kanske måste vara: unsigned int southA = 0b0100; för write
+
 /*
 Bit 0: Northbound car arrival sensor activated
 Bit 1: Northbound bridge entry sensor activated
@@ -138,7 +140,7 @@ void* getUserInput(void* arg) {
             break;
         
         default:
-            printf("Input was not n, s or e.\n");
+            //printf("Input was not n, s or e.\n");
             break;
         }
     }
