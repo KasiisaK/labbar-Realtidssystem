@@ -138,7 +138,7 @@ void* getUserInput(void* arg) {
             break;
         }
     }
-    return NULL
+    return NULL;
 }
 
 void* mainProgramLoop(void* arg) {
@@ -182,7 +182,7 @@ void* removeCarAfterFiveSec(void* arg) {
     default:
         break;
     }
-    return NULL
+    return NULL;
 }
 
 void simulation() {
