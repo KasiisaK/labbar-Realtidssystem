@@ -120,11 +120,15 @@ void* getUserInput(void* arg) {
         switch (input)
         {
         case 'n':
+            // Write to the AVR
+            write(serialPort, &NORTH_ARVL, sizeof(NORTH_ARVL));
             pthread_mutex_lock(&northCarMtx);
             northCarQue++;
             pthread_mutex_unlock(&northCarMtx);
             break;
         case 's':
+            // Write to the AVR
+            write(serialPort, &SOUTH_ARVL, sizeof(SOUTH_ARVL));
             pthread_mutex_lock(&southCarMtx);
             southCarQue++;
             pthread_mutex_unlock(&southCarMtx);
@@ -205,6 +209,8 @@ void simulation() {
 
         pthread_mutex_unlock(&northCarMtx);
         pthread_mutex_unlock(&carBridgeMtx);
+        // Send info to AVR
+        write(serialPort, &NORTH_BR_ARVL, sizeof(NORTH_BR_ARVL));
     }
     // South logic
     if (southLightGreen && southCarQue > 0) {
@@ -221,6 +227,8 @@ void simulation() {
         
         pthread_mutex_unlock(&southCarMtx);
         pthread_mutex_unlock(&carBridgeMtx);
+        // Send info to AVR
+        write(serialPort, &SOUTH_BR_ARVL, sizeof(SOUTH_BR_ARVL));
     }
 }
 
