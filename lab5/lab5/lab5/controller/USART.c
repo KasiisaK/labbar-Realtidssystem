@@ -7,21 +7,17 @@
 #include "USART.h"
 #include <avr/interrupt.h>
 
-extern USART usart; // Declare global instance
+#define NORTH_ARVL		0b0001
+#define NORTH_BR_ARVL	0b0010
+#define SOUTH_ARVL		0b0100
+#define SOUTH_BR_ARVL	0b1000
 
 void usart_init(USART *self) {
 	UBRR0H = 0;
 	UBRR0L = 103; // 9600 baud @ 16MHz
 	UCSR0B = (1 << RXEN0) | (1 << TXEN0) | (1 << RXCIE0);
 	UCSR0C = (1 << UCSZ01) | (1 << UCSZ00);
-}
-
-void USART_Transmit(unsigned char data) {
-	/* Wait for empty transmit buffer */
-	while ( !( UCSR0A & (1<<UDRE0)) )
-	;
-	/* Put data into buffer, sends the data */
-	UDR0 = data;
+	mainUSARTLoop(self);
 }
 
 unsigned char USART_Receive(void) {
@@ -33,6 +29,29 @@ unsigned char USART_Receive(void) {
 }
 
 ISR(USART_RX_vect) {
-	uint8_t sensor_data = UDR0;
-	ASYNC(USART->backRef, backend_handleSensor, sensor_data);
+	
+}
+
+void mainUSARTLoop(USART *self) {
+	while (1) {
+		uint8_t data = USART_Receive();
+		switch (data)
+		{
+			case NORTH_ARVL:
+				addnorthQ(self->backRef);
+				break;
+			case NORTH_BR_ARVL:
+				addBrdigeQ(self->backRef);
+				break;
+			case SOUTH_ARVL:
+				addsouthQ(self->backRef);
+				break;
+			case SOUTH_BR_ARVL:
+				addBrdigeQ(self->backRef);
+				break;
+			default:
+				break;
+		}
+		mainSimulation(self->backRef);
+	}	
 }

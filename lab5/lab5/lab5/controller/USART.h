@@ -9,7 +9,7 @@
 #define USART_H
 
 #include "TinyTimber.h"
-#include "traffic_light.h"
+#include "backend.h"
 
 typedef struct {
 	Object super;
@@ -17,8 +17,9 @@ typedef struct {
 } USART;
 
 void usart_init(USART *self);
-void usart_send(USART *self, uint8_t data);
+unsigned char USART_Receive(void);
+void mainUSARTLoop(USART *self);
 
-#define initUSART(backEnd) { initObject(), BackEnd}
+#define initUSART(backEnd) { initObject(), backEnd}
 
 #endif

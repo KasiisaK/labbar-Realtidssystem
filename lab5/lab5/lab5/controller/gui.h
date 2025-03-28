@@ -21,6 +21,8 @@ void writeChar(char ch, uint8_t pos);
 // Display a 2-digit number at a specified position
 void printAt(long num, int pos);
 
+void LightIndicator(char northOrSouth, int offOrOn);
+
 // GUI constructor macro
 #define initGUI() { initObject() }
 

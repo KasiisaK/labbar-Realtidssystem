@@ -26,9 +26,16 @@ typedef struct {
 
 #define backendInit() {initObject(), 0, 0, 0, 0, 0, 0, 0}
 
-void backend_init(Backend *self);
-void backend_handleSensor(Backend *self, uint8_t sensor);
-uint8_t backend_updateLamps(Backend *self);
-void backend_calculatePriority(Backend *self);
+void addnorthQ(Backend *self);
+void addsouthQ(Backend *self);
+void addBrdigeQ(Backend *self);
+
+void setNorthLightGreen(Backend *self);
+void setSouthLightGreen(Backend *self);
+
+void mainSimulation(Backend *self);
+
+void USART_Transmit(Backend *self, unsigned char data);
+void updateDisplay(Backend *self);
 
 #endif

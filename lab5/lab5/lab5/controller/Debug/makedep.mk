@@ -10,7 +10,5 @@ main.c
 
 TinyTimber.c
 
-traffic_light.c
-
 USART.c
 

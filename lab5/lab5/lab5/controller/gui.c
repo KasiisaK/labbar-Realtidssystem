@@ -100,3 +100,19 @@ void printAt(long num, int pos) {
 	pos++;
 	writeChar(num % 10 + '0', pos);
 }
+
+void LightIndicator(char northOrSouth, int offOrOn) {
+	switch (offOrOn)
+	{
+		case 1:
+			if (northOrSouth == 'n') LCDDR0 |= 0b00000100;
+			if (northOrSouth == 's') LCDDR0 |= 0b01000000;
+			break;
+		case 0:
+			if (northOrSouth == 'n') LCDDR0 &= ~(0b00000100);
+			if (northOrSouth == 's') LCDDR0 &= ~(0b01000000);
+			break;
+		default:
+			break;
+	}
+}
