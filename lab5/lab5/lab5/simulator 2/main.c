@@ -68,6 +68,10 @@ void terminosInit() {
     serialPort = open("/dev/ttys2", O_RDWR);
     struct termios ter;
 
+    if (serialPort == 0){
+        printf("0");
+    }
+
     if (tcgetattr(serialPort, &ter) != 0) {
         printf("Error: Could not open port.\n");
     } 
