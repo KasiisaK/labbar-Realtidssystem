@@ -151,7 +151,7 @@ void* getUserInput(void* arg) {
 void* mainProgramLoop(void* arg) {
     while (1) {
         // Clear screen
-        printf("\e[1;1H\e[2J");
+        //printf("\e[1;1H\e[2J");
         unsigned char buf;
         int n = read(serialPort, &buf, sizeof(buf));
         printf("USART: %x\n", buf);
