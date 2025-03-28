@@ -19,15 +19,15 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
   7 .debug_abbrev 00000fb0  00000000  00000000  00004a6c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   000015a5  00000000  00000000  00005a1c  2**0
+  8 .debug_line   0000149d  00000000  00000000  00005a1c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  00000b94  00000000  00000000  00006fc4  2**2
+  9 .debug_frame  00000b94  00000000  00000000  00006ebc  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00000a5f  00000000  00000000  00007b58  2**0
+ 10 .debug_str    000009fb  00000000  00000000  00007a50  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00002731  00000000  00000000  000085b7  2**0
+ 11 .debug_loc    00002731  00000000  00000000  0000844b  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 000001f0  00000000  00000000  0000ace8  2**0
+ 12 .debug_ranges 000001f0  00000000  00000000  0000ab7c  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -984,6 +984,12 @@ int main() {
      5fe:	08 95       	ret
 
 00000600 <initialize>:
+        char status;
+        DISABLE(status);
+        otable[i] = obj;
+        mtable[i] = m;
+        obj->wantedBy = INSTALLED_TAG;  // Mark object as subject to synchronization by interrupt disabling
+        ENABLE(status);
      600:	cf 93       	push	r28
      602:	df 93       	push	r29
      604:	00 d0       	rcall	.+0      	; 0x606 <initialize+0x6>
@@ -3661,16 +3667,27 @@ int main() {
     1e1a:	92 cf       	rjmp	.-220    	; 0x1d40 <run>
 
 00001e1c <tinytimber>:
+    }
+}
+
+int tinytimber(Object *obj, Method m, int arg) {
     1e1c:	8c 01       	movw	r16, r24
     1e1e:	7b 01       	movw	r14, r22
     1e20:	6a 01       	movw	r12, r20
+    char status;
+    DISABLE(status);
     1e22:	8f b7       	in	r24, 0x3f	; 63
     1e24:	f8 94       	cli
+    initialize();
     1e26:	0e 94 00 03 	call	0x600	; 0x600 <initialize>
+    ENABLE(1);
     1e2a:	78 94       	sei
+    if (m != NULL)
     1e2c:	e1 14       	cp	r14, r1
     1e2e:	f1 04       	cpc	r15, r1
     1e30:	41 f0       	breq	.+16     	; 0x1e42 <tinytimber+0x26>
+        //m(obj, arg);
+		ASYNC(obj,m,arg);
     1e32:	20 e0       	ldi	r18, 0x00	; 0
     1e34:	30 e0       	ldi	r19, 0x00	; 0
     1e36:	a9 01       	movw	r20, r18
@@ -3678,10 +3695,20 @@ int main() {
     1e3a:	70 e0       	ldi	r23, 0x00	; 0
     1e3c:	cb 01       	movw	r24, r22
     1e3e:	0e 94 02 0d 	call	0x1a04	; 0x1a04 <async>
+    DISABLE(status);
     1e42:	8f b7       	in	r24, 0x3f	; 63
     1e44:	f8 94       	cli
+        }
+    }
+}
+
+static void idle(void) {
+    schedule();
     1e46:	0e 94 8b 03 	call	0x716	; 0x716 <schedule>
+    ENABLE(1);
     1e4a:	78 94       	sei
+    while (1) {
+        SLEEP();
     1e4c:	81 e0       	ldi	r24, 0x01	; 1
     1e4e:	83 bf       	out	0x33, r24	; 51
     1e50:	88 95       	sleep
