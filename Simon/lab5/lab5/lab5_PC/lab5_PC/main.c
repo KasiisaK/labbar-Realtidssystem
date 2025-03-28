@@ -180,22 +180,6 @@ void* leavingBridge(void* id){
 	pthread_mutex_unlock(&carsOnBridge_m);
 }
 
-
-/*
-void* enterBridgeNorth(void* id) {
-	usleep(5000000); //4994510);
-	pthread_mutex_lock(&carsOnBridge_m);
-	carsOnBridge--;
-	pthread_mutex_unlock(&carsOnBridge_m);
-	//printf("Cars on bridgeXXXXX: %d\r\n", carsOnBridge);
-}
-
-void* enterBridgeSouth(void* id) {
-	usleep(5000000);
-	carsOnBridge--;
-	//printf("Cars on bridgeXXXXX: %d\r\n", carsOnBridge);
-}*/
-
 int main(void){
 	initCom();
 	

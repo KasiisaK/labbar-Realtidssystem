@@ -1,48 +1,94 @@
 #include "simulation.h"
 #include <stdbool.h>
+#include <termios.h>
+#include <stdio.h>
+#include <pthread.h>
+#include <unistd.h> // usleep()
 
-// Get output for USART to send to avr
+/*
+Bit 0: Northbound car arrival sensor activated
+Bit 1: Northbound bridge entry sensor activated
+Bit 2: Southbound car arrival sensor activated
+Bit 3: Southbound bridge entry sensor activated
+*/
+#define NORTH_ARVL		0b0001
+#define NORTH_BR_ARVL	0b0010
+#define SOUTH_ARVL		0b0100
+#define SOUTH_BR_ARVL	0b1000
+
+/*
+Bit 0: Northbound green light status
+Bit 1: Northbound red light status
+Bit 2: Southbound green light status
+Bit 3: Southbound red light status
+*/
+#define NORTH_GREEN 0b0001
+#define NORTH_RED	0b0010
+#define SOUTH_GREEN 0b0100
+#define SOUTH_RED   0b1000
+
+// Print out simulation state
+void printState(Simulation *self) {
+	pthread_mutex_lock(&(self->northMtx));
+	pthread_mutex_lock(&(self->southMtx));
+	pthread_mutex_lock(&(self->bridgeMtx));
+	printf("North cars que: %d, North cars bridge %d.\n", self->northCarQueue, self->carsGoingNorth);
+	printf("South cars que: %d, South cars bridge %d.\n", self->southCarQueue, self->carsGoingSouth);
+	printf("North light status: %d, South light status: %d", getNorthLightStatus(self->bridgeObj), getSouthLightStatus(self->bridgeObj));
+	pthread_mutex_unlock(&(self->bridgeMtx));
+	pthread_mutex_unlock(&(self->southMtx));
+	pthread_mutex_unlock(&(self->northMtx));
+}
+
+// Get output data to send to avr
 unsigned char getData(Simulation *self) {
-	return self->output;
+	unsigned char data = self->output;
+	self->output = 0b0000; // Reset data once retrived 
+	return data;
 }
 
 // Bridge North
 void addNorthCarBridge(Simulation *self) {
 	pthread_mutex_lock(&(self->bridgeMtx));
 	(self->carsGoingNorth)++;
-	// Bit 1: Northbound bridge entry sensor activated
-	self->output |= 0b0100;
+	self->output |= NORTH_BR_ARVL;
 	pthread_mutex_unlock(&(self->bridgeMtx));
 }
-void removeNorthCarBridge(Simulation *self) {
+void* removeNorthCarBridge(void* arg) {
+    Simulation* self = (Simulation*)arg;
+    // Remove car after 5 sec
+	usleep(5000000);
 	if (self->carsGoingNorth > 0) {
 		pthread_mutex_lock(&(self->bridgeMtx));
 		(self->carsGoingNorth)--;
 		pthread_mutex_unlock(&(self->bridgeMtx));
 	}
+    return NULL;
 }
+
 // Bridge South
 void addSouthCarBridge(Simulation *self) {
     pthread_mutex_lock(&(self->bridgeMtx));
     (self->carsGoingSouth)++;
-	// Bit 3: Southbound bridge entry sensor activated
-	self->output |= 0b0001;
+	self->output |= SOUTH_BR_ARVL;
     pthread_mutex_unlock(&(self->bridgeMtx));
 }
-void removeSouthCarBridge(Simulation *self) {
+void* removeSouthCarBridge(void* arg) {
+    Simulation* self = (Simulation*)arg;
+    usleep(5000000);
     if (self->carsGoingSouth > 0) {
         pthread_mutex_lock(&(self->bridgeMtx));
         (self->carsGoingSouth)--;
         pthread_mutex_unlock(&(self->bridgeMtx));
     }
+    return NULL;
 }
 
 // North
 void addCarNorth(Simulation *self) {
     pthread_mutex_lock(&(self->northMtx));
     (self->northCarQueue)++;
-	// Bit 0: Northbound car arrival sensor activated
-	self->output |= 0b1000;
+	self->output |= NORTH_ARVL;
     pthread_mutex_unlock(&(self->northMtx));
 }
 void removeNorthCars(Simulation *self) {
@@ -57,8 +103,7 @@ void removeNorthCars(Simulation *self) {
 void addCarSouth(Simulation *self) {
     pthread_mutex_lock(&(self->southMtx));
     (self->southCarQueue)++;
-	// Bit 2: Southbound car arrival sensor activated
-	self->output |= 0b0010;
+	self->output |= SOUTH_ARVL;
     pthread_mutex_unlock(&(self->southMtx));
 }
 void removeSouthCars(Simulation *self) {
@@ -69,53 +114,58 @@ void removeSouthCars(Simulation *self) {
     }
 }
 
-void procesUSARTData(Simulation *self) {
-	unsigned char usartData = getUSARTData(self->usartRef);
+// Update bridge class based on AVR USART data
+void* procesUSARTData(void *arg) {
+	Simulation* self = (Simulation*)arg;
+	unsigned char usartData = getUSARTData(self->readerRef);
 
-	// Northbound light handling
-	if (usartData & 0b1000)
-		// Green light
-		self->movingCarsNorth = true;  
-		} else if (usartData & 0b0100) {
-		// Red light
-		self->movingCarsNorth = false;
+	if (usartData & (1 << 0)){
+		changeLightState(self->bridgeObj, NORTH_GREEN);
 	}
-
-	// Southbound light handling
-	if (usartData & 0b0010) {
-		// Green light
-		self->movingCarsSouth = true;
-		} else if (usartData & 0b0001) {
-		// Red light
-		self->movingCarsSouth = false; 
+	if (usartData & (1 << 1)){
+		changeLightState(self->bridgeObj, NORTH_RED);
 	}
-
+	if (usartData & (1 << 2)){
+		changeLightState(self->bridgeObj, SOUTH_GREEN);
+	}
+	if (usartData & (1 << 3)){
+		changeLightState(self->bridgeObj, SOUTH_RED);
+	}
 }
 
-void mainSimulationLoop(Simulation *self) {
-    // Get North/South Light status from USART
-	procesUSARTData(self->usartRef); //vetej
-	
-    // North Cars
-    if (getNorthLightStatus(self->usartRef)) {
-		// Remove from queue, add to bridge
-        removeNorthCars(self);
-		addNorthCarBridge(self);
-		// Remove car from bridge after 5 sec
-		AFTER(SEC(5), self, removeNorthCarBridge, NULL);
+void* mainSimulationLoop(void* arg) {  // Changed signature
+    Simulation* self = (Simulation*)arg;
+    while(1) {
+        // Get North/South Light status from USART
+		procesUSARTData(self);
+		
+		pthread_t carLeaving; // Schedule removal of cars in new thread
+
+		// North Cars
+		if (getNorthLightStatus(self->bridgeObj)) {
+			// Remove from queue, add to bridge
+			removeNorthCars(self);
+			addNorthCarBridge(self);
+			// Remove car from bridge after 5 sec
+			pthread_create(&carLeaving, NULL, (void *)removeNorthCarBridge, self);
+			pthread_detach(carLeaving);
+		}
+		// South Cars
+		if (getSouthLightStatus(self->bridgeObj)) {
+			// Remove from queue, add to bridge
+			removeSouthCars(self);
+			addSouthCarBridge(self);
+			// Remove car from bridge after 5 sec
+			pthread_create(&carLeaving, NULL, (void *)removeSouthCarBridge, self);
+			pthread_detach(carLeaving);
+		}     
+		// Send data to AVR
+		unsigned char data = getData(self);
+		write(self->port_fd, &data, 1);
+		printState(self);
+
+		// A car passed every second so call loop every second
+		usleep(1000000);
     }
-	// South Cars
-    if (SYNC(self->bridgeObj, getSouthLightStatus, NULL)) {
-		// Remove from queue, add to bridge
-        removeSouthCars(self);
-		addSouthCarBridge(self);
-		// Remove car from bridge after 5 sec
-		AFTER(SEC(5), self, removeSouthCarBridge, NULL);
-    }     
-
-	// Reset output for next loop
-	self->output = 0b0000;
-    // A car passed every second so call loop every second
-    AFTER(SEC(1), self, mainSimulationLoop, NULL);
+    return NULL;
 }
-

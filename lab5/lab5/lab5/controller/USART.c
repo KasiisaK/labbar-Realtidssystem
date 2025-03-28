@@ -34,5 +34,5 @@ unsigned char USART_Receive(void) {
 
 ISR(USART_RX_vect) {
 	uint8_t sensor_data = UDR0;
-	ASYNC(usart.trafficLight, handleSensor, sensor_data);
+	ASYNC(USART->backRef, backend_handleSensor, sensor_data);
 }

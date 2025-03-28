@@ -13,12 +13,12 @@
 
 typedef struct {
 	Object super;
-	TrafficLight *trafficLight;
+	Backend *backRef;
 } USART;
 
 void usart_init(USART *self);
 void usart_send(USART *self, uint8_t data);
 
-#define initUSART(tl) { initObject(), tl, usart_send }
+#define initUSART(backEnd) { initObject(), BackEnd}
 
 #endif

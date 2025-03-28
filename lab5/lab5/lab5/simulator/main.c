@@ -1,56 +1,90 @@
 #include <pthread.h>
 
-#include "input_handler.h"
+#include <fcntl.h>
+#include <termios.h>
+#include <stdio.h>   // For perror
+#include <stdlib.h>  // For exit
+
 #include "bridge.h"
+#include "PCReader.h"
+#include "userInput.h"
 #include "simulation.h"
-#include "USART.h"
 
-#define FOSC 1843200// Clock Speed
-#define BAUD 9600
-#define MYUBRR FOSC/16/BAUD-1
 
-void sysInit(){
-    // Clock Prescale Register "maximum speed"
-	CLKPR = 0b10000000; // Clock Prescaler Change Enable
-	CLKPR = 0b00000000; // Set 0 for sysclock
+
+int serialPort;
+
+void terminosInit(int *port) {
+    // Open port
+    *port = open("/dev/ttyS0", O_RDWR);
+    if (*port < 0) {
+        perror("Error opening serial port");
+        exit(1);
+    }
+    
+    // Configure termios settings
+    struct termios tty;
+    if(tcgetattr(*port, &tty) != 0) {
+        perror("Error getting termios settings");
+        exit(1);
+    }
+
+    // Set baud rate (9600 baud)
+    cfsetispeed(&tty, B9600);
+    cfsetospeed(&tty, B9600);
+
+    // N81 configuration
+    tty.c_cflag &= ~PARENB;
+    tty.c_cflag &= ~CSTOPB;
+    tty.c_cflag &= ~CSIZE;
+    tty.c_cflag |= CS8;
+
+    // Disable flow control
+    tty.c_cflag &= ~CRTSCTS;
+    
+    // Non-canonical mode
+    tty.c_lflag &= ~ICANON;
+    tty.c_lflag &= ~ECHO;
+    tty.c_lflag &= ~ECHOE;
+    tty.c_lflag &= ~ECHONL;
+    tty.c_lflag &= ~ISIG;
+    
+    // Input modes
+    tty.c_iflag &= ~(IXON | IXOFF | IXANY);
+    tty.c_iflag &= ~(IGNBRK|BRKINT|PARMRK|ISTRIP|INLCR|IGNCR|ICRNL);
+    
+    // Output modes
+    tty.c_oflag &= ~OPOST;
+    tty.c_oflag &= ~ONLCR;
+    
+    // Apply settings
+    if (tcsetattr(*port, TCSANOW, &tty) != 0) {
+        perror("Error applying termios settings");
+        exit(1);
+    }
 }
 
-void USART_Init(unsigned int ubrr) {
-    //Power Reduction Register
-    PRR |= (0 << PRUSART0);
 
-    // Set baud rate
-    UBRRH0 = (unsigned char)(ubrr>>8);
-    UBRRL0 = (unsigned char)ubrr;
-    // Enable receiver and transmitter
-    UCSR0B = (1<<RXEN0)|(1<<TXEN0);
-    // Set frame format: 8data, 2stop bit
-    UCSRnC = (0<<USBS0)|(3<<UCSZ00);
-}
-
-
-void main() {
-    // Mutexs
-    static pthread_mutex_t northCar = PTHREAD_MUTEX_INITIALIZER;
-    static pthread_mutex_t southCar = PTHREAD_MUTEX_INITIALIZER;
-    static pthread_mutex_t bridgeCar = PTHREAD_MUTEX_INITIALIZER;
+int main() {
+    terminosInit(&serialPort);
     // Objects
-    Bridge bridge = initBridge();
-    Simulation simulation = initSimulation(&bridge, &northCar, &southCar, &bridgeCar);
-    Input_handler inputHandler = initInput_handler(&simulation);
-	USART usart = initUSART(&inputHandler, &simulation);
-	
-	// Give simulation USART referance later 
-	simulation.usartRef = &usart;
+    Bridge bridge = initBridge(); // North/south trafic lights
+    Reader read = initPCReader(serialPort); // Reads data from AVR
+    Simulation simulation = initSimulation(&bridge, &read, serialPort); // Main simulation
+    Input inputHandler = initInput_handler(&simulation); // Takes input from user (n, s, e)
 
-    sysInit();
-    USART_Init(MYUBRR);
-
+    // Threads
     pthread_t inputThread;
     pthread_t simulationThread;
-	pthread_t usartThread;
+    pthread_t readThread;
 
-    pthread_create(inputThread, NULL, getUserInput, NULL);
-    pthread_create(simulationThread, NULL, mainSimulationLoop, NULL);
-	pthread_create(usartThread, NULL, usartMainLoop, NULL);
+    pthread_create(&inputThread, NULL, (void*(*)(void*))getUserInput, &inputHandler);
+    pthread_create(&simulationThread, NULL, (void*(*)(void*))mainSimulationLoop, &simulation);
+    pthread_create(&readThread, NULL, (void*(*)(void*))readerMainLoop, &read);
+
+    pthread_join(inputThread, NULL);
+    pthread_join(simulationThread, NULL);
+    pthread_join(readThread, NULL);
+
+    return 0;
 }
