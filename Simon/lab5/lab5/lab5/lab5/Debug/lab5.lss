@@ -128,12 +128,6 @@ Disassembly of section .text:
       d2:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
 
 000000d6 <start>:
- */ 
-
-#include "Backend.h"
-
-
-void start(Backend *self) {
       d6:	cf 92       	push	r12
       d8:	df 92       	push	r13
       da:	ef 92       	push	r14
@@ -143,7 +137,6 @@ void start(Backend *self) {
       e2:	cf 93       	push	r28
       e4:	df 93       	push	r29
       e6:	ec 01       	movw	r28, r24
-	ASYNC(self->gui, update, 0);
       e8:	0c 81       	ldd	r16, Y+4	; 0x04
       ea:	1d 81       	ldd	r17, Y+5	; 0x05
       ec:	c1 2c       	mov	r12, r1
@@ -159,7 +152,6 @@ void start(Backend *self) {
      100:	70 e0       	ldi	r23, 0x00	; 0
      102:	cb 01       	movw	r24, r22
      104:	0e 94 e7 15 	call	0x2bce	; 0x2bce <async>
-	ASYNC(self->road, updateSignal, 0);
      108:	0e 81       	ldd	r16, Y+6	; 0x06
      10a:	1f 81       	ldd	r17, Y+7	; 0x07
      10c:	9d e8       	ldi	r25, 0x8D	; 141
@@ -173,12 +165,6 @@ void start(Backend *self) {
      11c:	70 e0       	ldi	r23, 0x00	; 0
      11e:	cb 01       	movw	r24, r22
      120:	0e 94 e7 15 	call	0x2bce	; 0x2bce <async>
-	}*/
-	
-	//ASYNC(self, write, 0);
-	//ASYNC(self, write, 0);
-	//ASYNC(self, write, 0);
-}
      124:	df 91       	pop	r29
      126:	cf 91       	pop	r28
      128:	1f 91       	pop	r17
@@ -190,9 +176,6 @@ void start(Backend *self) {
      134:	08 95       	ret
 
 00000136 <receiveN>:
-
-
-void receiveN(Backend *self) {
      136:	cf 92       	push	r12
      138:	df 92       	push	r13
      13a:	ef 92       	push	r14
@@ -202,7 +185,6 @@ void receiveN(Backend *self) {
      142:	cf 93       	push	r28
      144:	df 93       	push	r29
      146:	ec 01       	movw	r28, r24
-	SYNC(self->road, newNorthBound, 0);
      148:	40 e0       	ldi	r20, 0x00	; 0
      14a:	50 e0       	ldi	r21, 0x00	; 0
      14c:	66 eb       	ldi	r22, 0xB6	; 182
@@ -210,7 +192,6 @@ void receiveN(Backend *self) {
      150:	8e 81       	ldd	r24, Y+6	; 0x06
      152:	9f 81       	ldd	r25, Y+7	; 0x07
      154:	0e 94 57 17 	call	0x2eae	; 0x2eae <sync>
-	ASYNC(self->gui, update, 0);
      158:	0c 81       	ldd	r16, Y+4	; 0x04
      15a:	1d 81       	ldd	r17, Y+5	; 0x05
      15c:	c1 2c       	mov	r12, r1
@@ -226,7 +207,6 @@ void receiveN(Backend *self) {
      170:	70 e0       	ldi	r23, 0x00	; 0
      172:	cb 01       	movw	r24, r22
      174:	0e 94 e7 15 	call	0x2bce	; 0x2bce <async>
-}
      178:	df 91       	pop	r29
      17a:	cf 91       	pop	r28
      17c:	1f 91       	pop	r17
@@ -238,7 +218,6 @@ void receiveN(Backend *self) {
      188:	08 95       	ret
 
 0000018a <receiveS>:
-void receiveS(Backend *self){
      18a:	cf 92       	push	r12
      18c:	df 92       	push	r13
      18e:	ef 92       	push	r14
@@ -248,7 +227,6 @@ void receiveS(Backend *self){
      196:	cf 93       	push	r28
      198:	df 93       	push	r29
      19a:	ec 01       	movw	r28, r24
-	SYNC(self->road, newSouthBound, 0);
      19c:	40 e0       	ldi	r20, 0x00	; 0
      19e:	50 e0       	ldi	r21, 0x00	; 0
      1a0:	60 ee       	ldi	r22, 0xE0	; 224
@@ -256,7 +234,6 @@ void receiveS(Backend *self){
      1a4:	8e 81       	ldd	r24, Y+6	; 0x06
      1a6:	9f 81       	ldd	r25, Y+7	; 0x07
      1a8:	0e 94 57 17 	call	0x2eae	; 0x2eae <sync>
-	ASYNC(self->gui, update, 0);
      1ac:	0c 81       	ldd	r16, Y+4	; 0x04
      1ae:	1d 81       	ldd	r17, Y+5	; 0x05
      1b0:	c1 2c       	mov	r12, r1
@@ -272,7 +249,6 @@ void receiveS(Backend *self){
      1c4:	70 e0       	ldi	r23, 0x00	; 0
      1c6:	cb 01       	movw	r24, r22
      1c8:	0e 94 e7 15 	call	0x2bce	; 0x2bce <async>
-}
      1cc:	df 91       	pop	r29
      1ce:	cf 91       	pop	r28
      1d0:	1f 91       	pop	r17
@@ -284,8 +260,6 @@ void receiveS(Backend *self){
      1dc:	08 95       	ret
 
 000001de <receiveNtoB>:
-
-void receiveNtoB(Backend *self){
      1de:	cf 92       	push	r12
      1e0:	df 92       	push	r13
      1e2:	ef 92       	push	r14
@@ -295,7 +269,6 @@ void receiveNtoB(Backend *self){
      1ea:	cf 93       	push	r28
      1ec:	df 93       	push	r29
      1ee:	ec 01       	movw	r28, r24
-	SYNC(self->road, northToBridge, 0);
      1f0:	40 e0       	ldi	r20, 0x00	; 0
      1f2:	50 e0       	ldi	r21, 0x00	; 0
      1f4:	62 e1       	ldi	r22, 0x12	; 18
@@ -303,7 +276,6 @@ void receiveNtoB(Backend *self){
      1f8:	8e 81       	ldd	r24, Y+6	; 0x06
      1fa:	9f 81       	ldd	r25, Y+7	; 0x07
      1fc:	0e 94 57 17 	call	0x2eae	; 0x2eae <sync>
-	ASYNC(self->gui, update, 0);
      200:	0c 81       	ldd	r16, Y+4	; 0x04
      202:	1d 81       	ldd	r17, Y+5	; 0x05
      204:	c1 2c       	mov	r12, r1
@@ -319,8 +291,6 @@ void receiveNtoB(Backend *self){
      218:	70 e0       	ldi	r23, 0x00	; 0
      21a:	cb 01       	movw	r24, r22
      21c:	0e 94 e7 15 	call	0x2bce	; 0x2bce <async>
-	
-	AFTER(SEC(5), self->road, exitBridge, 0);
      220:	0e 81       	ldd	r16, Y+6	; 0x06
      222:	1f 81       	ldd	r17, Y+7	; 0x07
      224:	9e e2       	ldi	r25, 0x2E	; 46
@@ -335,7 +305,6 @@ void receiveNtoB(Backend *self){
      236:	82 e0       	ldi	r24, 0x02	; 2
      238:	90 e0       	ldi	r25, 0x00	; 0
      23a:	0e 94 e7 15 	call	0x2bce	; 0x2bce <async>
-	AFTER(SEC(5), self->gui, update, 0);
      23e:	0c 81       	ldd	r16, Y+4	; 0x04
      240:	1d 81       	ldd	r17, Y+5	; 0x05
      242:	25 e9       	ldi	r18, 0x95	; 149
@@ -350,7 +319,6 @@ void receiveNtoB(Backend *self){
      254:	82 e0       	ldi	r24, 0x02	; 2
      256:	90 e0       	ldi	r25, 0x00	; 0
      258:	0e 94 e7 15 	call	0x2bce	; 0x2bce <async>
-}
      25c:	df 91       	pop	r29
      25e:	cf 91       	pop	r28
      260:	1f 91       	pop	r17
@@ -362,7 +330,6 @@ void receiveNtoB(Backend *self){
      26c:	08 95       	ret
 
 0000026e <receiveStoB>:
-void receiveStoB(Backend *self){
      26e:	cf 92       	push	r12
      270:	df 92       	push	r13
      272:	ef 92       	push	r14
@@ -372,7 +339,6 @@ void receiveStoB(Backend *self){
      27a:	cf 93       	push	r28
      27c:	df 93       	push	r29
      27e:	ec 01       	movw	r28, r24
-	SYNC(self->road, southToBridge, 0);
      280:	40 e0       	ldi	r20, 0x00	; 0
      282:	50 e0       	ldi	r21, 0x00	; 0
      284:	6e e1       	ldi	r22, 0x1E	; 30
@@ -380,7 +346,6 @@ void receiveStoB(Backend *self){
      288:	8e 81       	ldd	r24, Y+6	; 0x06
      28a:	9f 81       	ldd	r25, Y+7	; 0x07
      28c:	0e 94 57 17 	call	0x2eae	; 0x2eae <sync>
-	ASYNC(self->gui, update, 0);
      290:	0c 81       	ldd	r16, Y+4	; 0x04
      292:	1d 81       	ldd	r17, Y+5	; 0x05
      294:	c1 2c       	mov	r12, r1
@@ -396,8 +361,6 @@ void receiveStoB(Backend *self){
      2a8:	70 e0       	ldi	r23, 0x00	; 0
      2aa:	cb 01       	movw	r24, r22
      2ac:	0e 94 e7 15 	call	0x2bce	; 0x2bce <async>
-	
-	AFTER(SEC(5), self->road, exitBridge, 0);
      2b0:	0e 81       	ldd	r16, Y+6	; 0x06
      2b2:	1f 81       	ldd	r17, Y+7	; 0x07
      2b4:	9e e2       	ldi	r25, 0x2E	; 46
@@ -412,7 +375,6 @@ void receiveStoB(Backend *self){
      2c6:	82 e0       	ldi	r24, 0x02	; 2
      2c8:	90 e0       	ldi	r25, 0x00	; 0
      2ca:	0e 94 e7 15 	call	0x2bce	; 0x2bce <async>
-	AFTER(SEC(5), self->gui, update, 0);
      2ce:	0c 81       	ldd	r16, Y+4	; 0x04
      2d0:	1d 81       	ldd	r17, Y+5	; 0x05
      2d2:	25 e9       	ldi	r18, 0x95	; 149
@@ -427,7 +389,6 @@ void receiveStoB(Backend *self){
      2e4:	82 e0       	ldi	r24, 0x02	; 2
      2e6:	90 e0       	ldi	r25, 0x00	; 0
      2e8:	0e 94 e7 15 	call	0x2bce	; 0x2bce <async>
-}
      2ec:	df 91       	pop	r29
      2ee:	cf 91       	pop	r28
      2f0:	1f 91       	pop	r17
@@ -439,31 +400,10 @@ void receiveStoB(Backend *self){
      2fc:	08 95       	ret
 
 000002fe <writeChar>:
-int none[] = {0b0000, 0b0000, 0b0000, 0b0000};
-
-
-void writeChar(char ch, int pos){
-	int bitshift, rbitshift;
-	if(pos % 2 == 0){
      2fe:	60 ff       	sbrs	r22, 0
      300:	3e c0       	rjmp	.+124    	; 0x37e <writeChar+0x80>
-		bitshift = 0;
-		rbitshift = 4;
-		}else{
-		bitshift = 4;
-		rbitshift = 0;
      302:	30 e0       	ldi	r19, 0x00	; 0
-	int bitshift, rbitshift;
-	if(pos % 2 == 0){
-		bitshift = 0;
-		rbitshift = 4;
-		}else{
-		bitshift = 4;
      304:	24 e0       	ldi	r18, 0x04	; 4
-		rbitshift = 0;
-	}
-
-	switch(pos){
      306:	64 30       	cpi	r22, 0x04	; 4
      308:	71 05       	cpc	r23, r1
      30a:	f4 f5       	brge	.+124    	; 0x388 <writeChar+0x8a>
@@ -473,8 +413,6 @@ void writeChar(char ch, int pos){
      312:	71 c0       	rjmp	.+226    	; 0x3f6 <writeChar+0xf8>
      314:	77 fd       	sbrc	r23, 7
      316:	a2 c0       	rjmp	.+324    	; 0x45c <__DATA_REGION_LENGTH__+0x5c>
-		case 0: case 1:
-		switch(ch){
      318:	90 e0       	ldi	r25, 0x00	; 0
      31a:	fc 01       	movw	r30, r24
      31c:	f0 97       	sbiw	r30, 0x30	; 48
@@ -482,12 +420,6 @@ void writeChar(char ch, int pos){
      320:	f1 05       	cpc	r31, r1
      322:	08 f4       	brcc	.+2      	; 0x326 <writeChar+0x28>
      324:	61 c1       	rjmp	.+706    	; 0x5e8 <__stack+0xe9>
-			LCDDR5 = (LCDDR5 & (0b1111<<rbitshift))  | nine[1]<<bitshift;
-			LCDDR10= (LCDDR10 & (0b1111<<rbitshift)) | nine[2]<<bitshift;
-			LCDDR15= (LCDDR15 & (0b1111<<rbitshift)) | nine[3]<<bitshift;
-			break;
-			default:
-			LCDDR0 = none[0]<<bitshift;
      326:	80 91 8a 01 	lds	r24, 0x018A	; 0x80018a <__data_end>
      32a:	90 91 8b 01 	lds	r25, 0x018B	; 0x80018b <__data_end+0x1>
      32e:	02 2e       	mov	r0, r18
@@ -496,7 +428,6 @@ void writeChar(char ch, int pos){
      334:	0a 94       	dec	r0
      336:	ea f7       	brpl	.-6      	; 0x332 <writeChar+0x34>
      338:	80 93 ec 00 	sts	0x00EC, r24	; 0x8000ec <__TEXT_REGION_LENGTH__+0x7fc0ec>
-			LCDDR5 = none[1]<<bitshift;
      33c:	80 91 8c 01 	lds	r24, 0x018C	; 0x80018c <__data_end+0x2>
      340:	90 91 8d 01 	lds	r25, 0x018D	; 0x80018d <__data_end+0x3>
      344:	02 2e       	mov	r0, r18
@@ -505,7 +436,6 @@ void writeChar(char ch, int pos){
      34a:	0a 94       	dec	r0
      34c:	ea f7       	brpl	.-6      	; 0x348 <writeChar+0x4a>
      34e:	80 93 f1 00 	sts	0x00F1, r24	; 0x8000f1 <__TEXT_REGION_LENGTH__+0x7fc0f1>
-			LCDDR10= none[2]<<bitshift;
      352:	80 91 8e 01 	lds	r24, 0x018E	; 0x80018e <__data_end+0x4>
      356:	90 91 8f 01 	lds	r25, 0x018F	; 0x80018f <__data_end+0x5>
      35a:	02 2e       	mov	r0, r18
@@ -514,7 +444,6 @@ void writeChar(char ch, int pos){
      360:	0a 94       	dec	r0
      362:	ea f7       	brpl	.-6      	; 0x35e <writeChar+0x60>
      364:	80 93 f6 00 	sts	0x00F6, r24	; 0x8000f6 <__TEXT_REGION_LENGTH__+0x7fc0f6>
-			LCDDR15= none[3]<<bitshift;
      368:	80 91 90 01 	lds	r24, 0x0190	; 0x800190 <__data_end+0x6>
      36c:	90 91 91 01 	lds	r25, 0x0191	; 0x800191 <__data_end+0x7>
      370:	01 c0       	rjmp	.+2      	; 0x374 <writeChar+0x76>
@@ -522,28 +451,9 @@ void writeChar(char ch, int pos){
      374:	2a 95       	dec	r18
      376:	ea f7       	brpl	.-6      	; 0x372 <writeChar+0x74>
      378:	80 93 fb 00 	sts	0x00FB, r24	; 0x8000fb <__TEXT_REGION_LENGTH__+0x7fc0fb>
-			break;
      37c:	08 95       	ret
-
-void writeChar(char ch, int pos){
-	int bitshift, rbitshift;
-	if(pos % 2 == 0){
-		bitshift = 0;
-		rbitshift = 4;
      37e:	34 e0       	ldi	r19, 0x04	; 4
-
-
-void writeChar(char ch, int pos){
-	int bitshift, rbitshift;
-	if(pos % 2 == 0){
-		bitshift = 0;
      380:	20 e0       	ldi	r18, 0x00	; 0
-		}else{
-		bitshift = 4;
-		rbitshift = 0;
-	}
-
-	switch(pos){
      382:	64 30       	cpi	r22, 0x04	; 4
      384:	71 05       	cpc	r23, r1
      386:	14 f2       	brlt	.-124    	; 0x30c <writeChar+0xe>
@@ -551,12 +461,6 @@ void writeChar(char ch, int pos){
      38a:	71 05       	cpc	r23, r1
      38c:	0c f0       	brlt	.+2      	; 0x390 <writeChar+0x92>
      38e:	66 c0       	rjmp	.+204    	; 0x45c <__DATA_REGION_LENGTH__+0x5c>
-			LCDDR16= none[3]<<bitshift;
-			break;
-		}
-		break;
-		case 4: case 5:
-		switch(ch){
      390:	90 e0       	ldi	r25, 0x00	; 0
      392:	fc 01       	movw	r30, r24
      394:	f0 97       	sbiw	r30, 0x30	; 48
@@ -564,12 +468,6 @@ void writeChar(char ch, int pos){
      398:	f1 05       	cpc	r31, r1
      39a:	08 f4       	brcc	.+2      	; 0x39e <writeChar+0xa0>
      39c:	0d c1       	rjmp	.+538    	; 0x5b8 <__stack+0xb9>
-			LCDDR7 = (LCDDR7 & (0b1111<<rbitshift))  | nine[1]<<bitshift;
-			LCDDR12= (LCDDR12 & (0b1111<<rbitshift)) | nine[2]<<bitshift;
-			LCDDR17= (LCDDR17 & (0b1111<<rbitshift)) | nine[3]<<bitshift;
-			break;
-			default:
-			LCDDR2 = none[0]<<bitshift;
      39e:	80 91 8a 01 	lds	r24, 0x018A	; 0x80018a <__data_end>
      3a2:	90 91 8b 01 	lds	r25, 0x018B	; 0x80018b <__data_end+0x1>
      3a6:	02 2e       	mov	r0, r18
@@ -578,7 +476,6 @@ void writeChar(char ch, int pos){
      3ac:	0a 94       	dec	r0
      3ae:	ea f7       	brpl	.-6      	; 0x3aa <writeChar+0xac>
      3b0:	80 93 ee 00 	sts	0x00EE, r24	; 0x8000ee <__TEXT_REGION_LENGTH__+0x7fc0ee>
-			LCDDR7 = none[1]<<bitshift;
      3b4:	80 91 8c 01 	lds	r24, 0x018C	; 0x80018c <__data_end+0x2>
      3b8:	90 91 8d 01 	lds	r25, 0x018D	; 0x80018d <__data_end+0x3>
      3bc:	02 2e       	mov	r0, r18
@@ -587,7 +484,6 @@ void writeChar(char ch, int pos){
      3c2:	0a 94       	dec	r0
      3c4:	ea f7       	brpl	.-6      	; 0x3c0 <writeChar+0xc2>
      3c6:	80 93 f3 00 	sts	0x00F3, r24	; 0x8000f3 <__TEXT_REGION_LENGTH__+0x7fc0f3>
-			LCDDR12= none[2]<<bitshift;
      3ca:	80 91 8e 01 	lds	r24, 0x018E	; 0x80018e <__data_end+0x4>
      3ce:	90 91 8f 01 	lds	r25, 0x018F	; 0x80018f <__data_end+0x5>
      3d2:	02 2e       	mov	r0, r18
@@ -596,7 +492,6 @@ void writeChar(char ch, int pos){
      3d8:	0a 94       	dec	r0
      3da:	ea f7       	brpl	.-6      	; 0x3d6 <writeChar+0xd8>
      3dc:	80 93 f8 00 	sts	0x00F8, r24	; 0x8000f8 <__TEXT_REGION_LENGTH__+0x7fc0f8>
-			LCDDR17= none[3]<<bitshift;
      3e0:	80 91 90 01 	lds	r24, 0x0190	; 0x800190 <__data_end+0x6>
      3e4:	90 91 91 01 	lds	r25, 0x0191	; 0x800191 <__data_end+0x7>
      3e8:	01 c0       	rjmp	.+2      	; 0x3ec <writeChar+0xee>
@@ -604,14 +499,7 @@ void writeChar(char ch, int pos){
      3ec:	2a 95       	dec	r18
      3ee:	ea f7       	brpl	.-6      	; 0x3ea <writeChar+0xec>
      3f0:	80 93 fd 00 	sts	0x00FD, r24	; 0x8000fd <__TEXT_REGION_LENGTH__+0x7fc0fd>
-			break;
      3f4:	08 95       	ret
-			LCDDR15= none[3]<<bitshift;
-			break;
-		}
-		break;
-		case 2: case 3:
-		switch(ch){
      3f6:	90 e0       	ldi	r25, 0x00	; 0
      3f8:	fc 01       	movw	r30, r24
      3fa:	f0 97       	sbiw	r30, 0x30	; 48
@@ -619,12 +507,6 @@ void writeChar(char ch, int pos){
      3fe:	f1 05       	cpc	r31, r1
      400:	08 f4       	brcc	.+2      	; 0x404 <__DATA_REGION_LENGTH__+0x4>
      402:	e6 c0       	rjmp	.+460    	; 0x5d0 <__stack+0xd1>
-			LCDDR6 = (LCDDR6 & (0b1111<<rbitshift))  | nine[1]<<bitshift;
-			LCDDR11= (LCDDR11 & (0b1111<<rbitshift)) | nine[2]<<bitshift;
-			LCDDR16= (LCDDR16 & (0b1111<<rbitshift)) | nine[3]<<bitshift;
-			break;
-			default:
-			LCDDR1 = none[0]<<bitshift;
      404:	80 91 8a 01 	lds	r24, 0x018A	; 0x80018a <__data_end>
      408:	90 91 8b 01 	lds	r25, 0x018B	; 0x80018b <__data_end+0x1>
      40c:	02 2e       	mov	r0, r18
@@ -633,7 +515,6 @@ void writeChar(char ch, int pos){
      412:	0a 94       	dec	r0
      414:	ea f7       	brpl	.-6      	; 0x410 <__DATA_REGION_LENGTH__+0x10>
      416:	80 93 ed 00 	sts	0x00ED, r24	; 0x8000ed <__TEXT_REGION_LENGTH__+0x7fc0ed>
-			LCDDR6 = none[1]<<bitshift;
      41a:	80 91 8c 01 	lds	r24, 0x018C	; 0x80018c <__data_end+0x2>
      41e:	90 91 8d 01 	lds	r25, 0x018D	; 0x80018d <__data_end+0x3>
      422:	02 2e       	mov	r0, r18
@@ -642,7 +523,6 @@ void writeChar(char ch, int pos){
      428:	0a 94       	dec	r0
      42a:	ea f7       	brpl	.-6      	; 0x426 <__DATA_REGION_LENGTH__+0x26>
      42c:	80 93 f2 00 	sts	0x00F2, r24	; 0x8000f2 <__TEXT_REGION_LENGTH__+0x7fc0f2>
-			LCDDR11= none[2]<<bitshift;
      430:	80 91 8e 01 	lds	r24, 0x018E	; 0x80018e <__data_end+0x4>
      434:	90 91 8f 01 	lds	r25, 0x018F	; 0x80018f <__data_end+0x5>
      438:	02 2e       	mov	r0, r18
@@ -651,7 +531,6 @@ void writeChar(char ch, int pos){
      43e:	0a 94       	dec	r0
      440:	ea f7       	brpl	.-6      	; 0x43c <__DATA_REGION_LENGTH__+0x3c>
      442:	80 93 f7 00 	sts	0x00F7, r24	; 0x8000f7 <__TEXT_REGION_LENGTH__+0x7fc0f7>
-			LCDDR16= none[3]<<bitshift;
      446:	80 91 90 01 	lds	r24, 0x0190	; 0x800190 <__data_end+0x6>
      44a:	90 91 91 01 	lds	r25, 0x0191	; 0x800191 <__data_end+0x7>
      44e:	01 c0       	rjmp	.+2      	; 0x452 <__DATA_REGION_LENGTH__+0x52>
@@ -659,68 +538,48 @@ void writeChar(char ch, int pos){
      452:	2a 95       	dec	r18
      454:	ea f7       	brpl	.-6      	; 0x450 <__DATA_REGION_LENGTH__+0x50>
      456:	80 93 fc 00 	sts	0x00FC, r24	; 0x8000fc <__TEXT_REGION_LENGTH__+0x7fc0fc>
-			break;
      45a:	08 95       	ret
-			LCDDR17= none[3]<<bitshift;
-			break;
-		}
-		break;
-		default:	//reset display
-		LCDDR0 = LCDDR0 & 0b01000100;
      45c:	80 91 ec 00 	lds	r24, 0x00EC	; 0x8000ec <__TEXT_REGION_LENGTH__+0x7fc0ec>
      460:	84 74       	andi	r24, 0x44	; 68
      462:	80 93 ec 00 	sts	0x00EC, r24	; 0x8000ec <__TEXT_REGION_LENGTH__+0x7fc0ec>
-		LCDDR5 = LCDDR5 & none[1];
      466:	80 91 f1 00 	lds	r24, 0x00F1	; 0x8000f1 <__TEXT_REGION_LENGTH__+0x7fc0f1>
      46a:	30 91 8c 01 	lds	r19, 0x018C	; 0x80018c <__data_end+0x2>
      46e:	83 23       	and	r24, r19
      470:	80 93 f1 00 	sts	0x00F1, r24	; 0x8000f1 <__TEXT_REGION_LENGTH__+0x7fc0f1>
-		LCDDR10= LCDDR10& none[2];
      474:	80 91 f6 00 	lds	r24, 0x00F6	; 0x8000f6 <__TEXT_REGION_LENGTH__+0x7fc0f6>
      478:	90 91 8e 01 	lds	r25, 0x018E	; 0x80018e <__data_end+0x4>
      47c:	89 23       	and	r24, r25
      47e:	80 93 f6 00 	sts	0x00F6, r24	; 0x8000f6 <__TEXT_REGION_LENGTH__+0x7fc0f6>
-		LCDDR15= LCDDR15& none[3];
      482:	40 91 fb 00 	lds	r20, 0x00FB	; 0x8000fb <__TEXT_REGION_LENGTH__+0x7fc0fb>
      486:	80 91 90 01 	lds	r24, 0x0190	; 0x800190 <__data_end+0x6>
      48a:	48 23       	and	r20, r24
      48c:	40 93 fb 00 	sts	0x00FB, r20	; 0x8000fb <__TEXT_REGION_LENGTH__+0x7fc0fb>
-		LCDDR1 = LCDDR1 & none[0];
      490:	50 91 ed 00 	lds	r21, 0x00ED	; 0x8000ed <__TEXT_REGION_LENGTH__+0x7fc0ed>
      494:	40 91 8a 01 	lds	r20, 0x018A	; 0x80018a <__data_end>
      498:	45 23       	and	r20, r21
      49a:	40 93 ed 00 	sts	0x00ED, r20	; 0x8000ed <__TEXT_REGION_LENGTH__+0x7fc0ed>
-		LCDDR6 = LCDDR6 & none[1];
      49e:	40 91 f2 00 	lds	r20, 0x00F2	; 0x8000f2 <__TEXT_REGION_LENGTH__+0x7fc0f2>
      4a2:	43 23       	and	r20, r19
      4a4:	40 93 f2 00 	sts	0x00F2, r20	; 0x8000f2 <__TEXT_REGION_LENGTH__+0x7fc0f2>
-		LCDDR11= LCDDR11& none[2];
      4a8:	40 91 f7 00 	lds	r20, 0x00F7	; 0x8000f7 <__TEXT_REGION_LENGTH__+0x7fc0f7>
      4ac:	49 23       	and	r20, r25
      4ae:	40 93 f7 00 	sts	0x00F7, r20	; 0x8000f7 <__TEXT_REGION_LENGTH__+0x7fc0f7>
-		LCDDR16= LCDDR16& none[3];
      4b2:	40 91 fc 00 	lds	r20, 0x00FC	; 0x8000fc <__TEXT_REGION_LENGTH__+0x7fc0fc>
      4b6:	48 23       	and	r20, r24
      4b8:	40 93 fc 00 	sts	0x00FC, r20	; 0x8000fc <__TEXT_REGION_LENGTH__+0x7fc0fc>
-		LCDDR2 = LCDDR2 & none[0];
      4bc:	50 91 ee 00 	lds	r21, 0x00EE	; 0x8000ee <__TEXT_REGION_LENGTH__+0x7fc0ee>
      4c0:	40 91 8a 01 	lds	r20, 0x018A	; 0x80018a <__data_end>
      4c4:	45 23       	and	r20, r21
      4c6:	40 93 ee 00 	sts	0x00EE, r20	; 0x8000ee <__TEXT_REGION_LENGTH__+0x7fc0ee>
-		LCDDR7 = LCDDR7 & none[1];
      4ca:	40 91 f3 00 	lds	r20, 0x00F3	; 0x8000f3 <__TEXT_REGION_LENGTH__+0x7fc0f3>
      4ce:	34 23       	and	r19, r20
      4d0:	30 93 f3 00 	sts	0x00F3, r19	; 0x8000f3 <__TEXT_REGION_LENGTH__+0x7fc0f3>
-		LCDDR12= LCDDR12& none[2];
      4d4:	30 91 f8 00 	lds	r19, 0x00F8	; 0x8000f8 <__TEXT_REGION_LENGTH__+0x7fc0f8>
      4d8:	93 23       	and	r25, r19
      4da:	90 93 f8 00 	sts	0x00F8, r25	; 0x8000f8 <__TEXT_REGION_LENGTH__+0x7fc0f8>
-		LCDDR17= LCDDR17& none[3];
      4de:	90 91 fd 00 	lds	r25, 0x00FD	; 0x8000fd <__TEXT_REGION_LENGTH__+0x7fc0fd>
      4e2:	89 23       	and	r24, r25
      4e4:	80 93 fd 00 	sts	0x00FD, r24	; 0x8000fd <__TEXT_REGION_LENGTH__+0x7fc0fd>
-		//LCDDR0 = LCDDR0 & none[0]<<bitshift;
-		LCDDR5 = LCDDR5 & none[1]<<bitshift;
      4e8:	80 91 f1 00 	lds	r24, 0x00F1	; 0x8000f1 <__TEXT_REGION_LENGTH__+0x7fc0f1>
      4ec:	60 91 8c 01 	lds	r22, 0x018C	; 0x80018c <__data_end+0x2>
      4f0:	70 91 8d 01 	lds	r23, 0x018D	; 0x80018d <__data_end+0x3>
@@ -731,7 +590,6 @@ void writeChar(char ch, int pos){
      4fc:	ea f7       	brpl	.-6      	; 0x4f8 <__DATA_REGION_LENGTH__+0xf8>
      4fe:	86 23       	and	r24, r22
      500:	80 93 f1 00 	sts	0x00F1, r24	; 0x8000f1 <__TEXT_REGION_LENGTH__+0x7fc0f1>
-		LCDDR10= LCDDR10& none[2]<<bitshift;
      504:	80 91 f6 00 	lds	r24, 0x00F6	; 0x8000f6 <__TEXT_REGION_LENGTH__+0x7fc0f6>
      508:	40 91 8e 01 	lds	r20, 0x018E	; 0x80018e <__data_end+0x4>
      50c:	50 91 8f 01 	lds	r21, 0x018F	; 0x80018f <__data_end+0x5>
@@ -742,7 +600,6 @@ void writeChar(char ch, int pos){
      518:	ea f7       	brpl	.-6      	; 0x514 <__stack+0x15>
      51a:	84 23       	and	r24, r20
      51c:	80 93 f6 00 	sts	0x00F6, r24	; 0x8000f6 <__TEXT_REGION_LENGTH__+0x7fc0f6>
-		LCDDR15= LCDDR15& none[3]<<bitshift;
      520:	30 91 fb 00 	lds	r19, 0x00FB	; 0x8000fb <__TEXT_REGION_LENGTH__+0x7fc0fb>
      524:	80 91 90 01 	lds	r24, 0x0190	; 0x800190 <__data_end+0x6>
      528:	90 91 91 01 	lds	r25, 0x0191	; 0x800191 <__data_end+0x7>
@@ -754,7 +611,6 @@ void writeChar(char ch, int pos){
      536:	93 2f       	mov	r25, r19
      538:	98 23       	and	r25, r24
      53a:	90 93 fb 00 	sts	0x00FB, r25	; 0x8000fb <__TEXT_REGION_LENGTH__+0x7fc0fb>
-		LCDDR1 = LCDDR1 & none[0]<<bitshift;
      53e:	90 91 ed 00 	lds	r25, 0x00ED	; 0x8000ed <__TEXT_REGION_LENGTH__+0x7fc0ed>
      542:	e0 91 8a 01 	lds	r30, 0x018A	; 0x80018a <__data_end>
      546:	f0 91 8b 01 	lds	r31, 0x018B	; 0x80018b <__data_end+0x1>
@@ -765,19 +621,15 @@ void writeChar(char ch, int pos){
      552:	ea f7       	brpl	.-6      	; 0x54e <__stack+0x4f>
      554:	e9 23       	and	r30, r25
      556:	e0 93 ed 00 	sts	0x00ED, r30	; 0x8000ed <__TEXT_REGION_LENGTH__+0x7fc0ed>
-		LCDDR6 = LCDDR6 & none[1]<<bitshift;
      55a:	90 91 f2 00 	lds	r25, 0x00F2	; 0x8000f2 <__TEXT_REGION_LENGTH__+0x7fc0f2>
      55e:	96 23       	and	r25, r22
      560:	90 93 f2 00 	sts	0x00F2, r25	; 0x8000f2 <__TEXT_REGION_LENGTH__+0x7fc0f2>
-		LCDDR11= LCDDR11& none[2]<<bitshift;
      564:	90 91 f7 00 	lds	r25, 0x00F7	; 0x8000f7 <__TEXT_REGION_LENGTH__+0x7fc0f7>
      568:	94 23       	and	r25, r20
      56a:	90 93 f7 00 	sts	0x00F7, r25	; 0x8000f7 <__TEXT_REGION_LENGTH__+0x7fc0f7>
-		LCDDR16= LCDDR16& none[3]<<bitshift;
      56e:	90 91 fc 00 	lds	r25, 0x00FC	; 0x8000fc <__TEXT_REGION_LENGTH__+0x7fc0fc>
      572:	98 23       	and	r25, r24
      574:	90 93 fc 00 	sts	0x00FC, r25	; 0x8000fc <__TEXT_REGION_LENGTH__+0x7fc0fc>
-		LCDDR2 = LCDDR2 & none[0]<<bitshift;
      578:	90 91 ee 00 	lds	r25, 0x00EE	; 0x8000ee <__TEXT_REGION_LENGTH__+0x7fc0ee>
      57c:	e0 91 8a 01 	lds	r30, 0x018A	; 0x80018a <__data_end>
      580:	f0 91 8b 01 	lds	r31, 0x018B	; 0x80018b <__data_end+0x1>
@@ -790,33 +642,18 @@ void writeChar(char ch, int pos){
      590:	9d 01       	movw	r18, r26
      592:	29 23       	and	r18, r25
      594:	20 93 ee 00 	sts	0x00EE, r18	; 0x8000ee <__TEXT_REGION_LENGTH__+0x7fc0ee>
-		LCDDR7 = LCDDR7 & none[1]<<bitshift;
      598:	90 91 f3 00 	lds	r25, 0x00F3	; 0x8000f3 <__TEXT_REGION_LENGTH__+0x7fc0f3>
      59c:	69 23       	and	r22, r25
      59e:	60 93 f3 00 	sts	0x00F3, r22	; 0x8000f3 <__TEXT_REGION_LENGTH__+0x7fc0f3>
-		LCDDR12= LCDDR12& none[2]<<bitshift;
      5a2:	90 91 f8 00 	lds	r25, 0x00F8	; 0x8000f8 <__TEXT_REGION_LENGTH__+0x7fc0f8>
      5a6:	49 23       	and	r20, r25
      5a8:	40 93 f8 00 	sts	0x00F8, r20	; 0x8000f8 <__TEXT_REGION_LENGTH__+0x7fc0f8>
-		LCDDR17= LCDDR17& none[3]<<bitshift;
      5ac:	90 91 fd 00 	lds	r25, 0x00FD	; 0x8000fd <__TEXT_REGION_LENGTH__+0x7fc0fd>
      5b0:	89 23       	and	r24, r25
      5b2:	80 93 fd 00 	sts	0x00FD, r24	; 0x8000fd <__TEXT_REGION_LENGTH__+0x7fc0fd>
      5b6:	08 95       	ret
-			LCDDR16= none[3]<<bitshift;
-			break;
-		}
-		break;
-		case 4: case 5:
-		switch(ch){
      5b8:	e2 5d       	subi	r30, 0xD2	; 210
      5ba:	ff 4f       	sbci	r31, 0xFF	; 255
-			LCDDR7 = (LCDDR7 & (0b1111<<rbitshift))  | eight[1]<<bitshift;
-			LCDDR12= (LCDDR12 & (0b1111<<rbitshift)) | eight[2]<<bitshift;
-			LCDDR17= (LCDDR17 & (0b1111<<rbitshift)) | eight[3]<<bitshift;
-			break;
-			case '9':
-			LCDDR2 = ((LCDDR2 & (0b1111<<rbitshift))  | nine[0]<<bitshift);
      5bc:	60 91 ee 00 	lds	r22, 0x00EE	; 0x8000ee <__TEXT_REGION_LENGTH__+0x7fc0ee>
      5c0:	8f e0       	ldi	r24, 0x0F	; 15
      5c2:	90 e0       	ldi	r25, 0x00	; 0
@@ -824,27 +661,9 @@ void writeChar(char ch, int pos){
      5c6:	88 0f       	add	r24, r24
      5c8:	3a 95       	dec	r19
      5ca:	ea f7       	brpl	.-6      	; 0x5c6 <__stack+0xc7>
-			LCDDR16= none[3]<<bitshift;
-			break;
-		}
-		break;
-		case 4: case 5:
-		switch(ch){
      5cc:	0c 94 10 19 	jmp	0x3220	; 0x3220 <__tablejump2__>
-			LCDDR15= none[3]<<bitshift;
-			break;
-		}
-		break;
-		case 2: case 3:
-		switch(ch){
      5d0:	e8 5c       	subi	r30, 0xC8	; 200
      5d2:	ff 4f       	sbci	r31, 0xFF	; 255
-			LCDDR6 = (LCDDR6 & (0b1111<<rbitshift))  | eight[1]<<bitshift;
-			LCDDR11= (LCDDR11 & (0b1111<<rbitshift)) | eight[2]<<bitshift;
-			LCDDR16= (LCDDR16 & (0b1111<<rbitshift)) | eight[3]<<bitshift;
-			break;
-			case '9':
-			LCDDR1 = (LCDDR1 & (0b1111<<rbitshift))  | nine[0]<<bitshift;
      5d4:	60 91 ed 00 	lds	r22, 0x00ED	; 0x8000ed <__TEXT_REGION_LENGTH__+0x7fc0ed>
      5d8:	8f e0       	ldi	r24, 0x0F	; 15
      5da:	90 e0       	ldi	r25, 0x00	; 0
@@ -852,27 +671,9 @@ void writeChar(char ch, int pos){
      5de:	88 0f       	add	r24, r24
      5e0:	3a 95       	dec	r19
      5e2:	ea f7       	brpl	.-6      	; 0x5de <__stack+0xdf>
-			LCDDR15= none[3]<<bitshift;
-			break;
-		}
-		break;
-		case 2: case 3:
-		switch(ch){
      5e4:	0c 94 10 19 	jmp	0x3220	; 0x3220 <__tablejump2__>
-		rbitshift = 0;
-	}
-
-	switch(pos){
-		case 0: case 1:
-		switch(ch){
      5e8:	ee 5b       	subi	r30, 0xBE	; 190
      5ea:	ff 4f       	sbci	r31, 0xFF	; 255
-			LCDDR5 = (LCDDR5 & (0b1111<<rbitshift))  | eight[1]<<bitshift;
-			LCDDR10= (LCDDR10 & (0b1111<<rbitshift)) | eight[2]<<bitshift;
-			LCDDR15= (LCDDR15 & (0b1111<<rbitshift)) | eight[3]<<bitshift;
-			break;
-			case '9':
-			LCDDR0 = ((LCDDR0 & (0b1111<<rbitshift))  | nine[0]<<bitshift);
      5ec:	60 91 ec 00 	lds	r22, 0x00EC	; 0x8000ec <__TEXT_REGION_LENGTH__+0x7fc0ec>
      5f0:	8f e0       	ldi	r24, 0x0F	; 15
      5f2:	90 e0       	ldi	r25, 0x00	; 0
@@ -881,19 +682,7 @@ void writeChar(char ch, int pos){
      5f8:	88 0f       	add	r24, r24
      5fa:	0a 94       	dec	r0
      5fc:	ea f7       	brpl	.-6      	; 0x5f8 <__stack+0xf9>
-		rbitshift = 0;
-	}
-
-	switch(pos){
-		case 0: case 1:
-		switch(ch){
      5fe:	0c 94 10 19 	jmp	0x3220	; 0x3220 <__tablejump2__>
-		}
-		break;
-		case 4: case 5:
-		switch(ch){
-			case '0':
-			LCDDR2 = ((LCDDR2 & (0b1111<<rbitshift)) | zero[0]<<bitshift);
      602:	40 91 48 01 	lds	r20, 0x0148	; 0x800148 <zero>
      606:	50 91 49 01 	lds	r21, 0x0149	; 0x800149 <zero+0x1>
      60a:	02 2e       	mov	r0, r18
@@ -905,7 +694,6 @@ void writeChar(char ch, int pos){
      616:	98 23       	and	r25, r24
      618:	49 2b       	or	r20, r25
      61a:	40 93 ee 00 	sts	0x00EE, r20	; 0x8000ee <__TEXT_REGION_LENGTH__+0x7fc0ee>
-			LCDDR7 = (LCDDR7 & (0b1111<<rbitshift)) | zero[1]<<bitshift;
      61e:	90 91 f3 00 	lds	r25, 0x00F3	; 0x8000f3 <__TEXT_REGION_LENGTH__+0x7fc0f3>
      622:	40 91 4a 01 	lds	r20, 0x014A	; 0x80014a <zero+0x2>
      626:	50 91 4b 01 	lds	r21, 0x014B	; 0x80014b <zero+0x3>
@@ -917,7 +705,6 @@ void writeChar(char ch, int pos){
      634:	98 23       	and	r25, r24
      636:	49 2b       	or	r20, r25
      638:	40 93 f3 00 	sts	0x00F3, r20	; 0x8000f3 <__TEXT_REGION_LENGTH__+0x7fc0f3>
-			LCDDR12= (LCDDR12 & (0b1111<<rbitshift)) | zero[2]<<bitshift;
      63c:	90 91 f8 00 	lds	r25, 0x00F8	; 0x8000f8 <__TEXT_REGION_LENGTH__+0x7fc0f8>
      640:	40 91 4c 01 	lds	r20, 0x014C	; 0x80014c <zero+0x4>
      644:	50 91 4d 01 	lds	r21, 0x014D	; 0x80014d <zero+0x5>
@@ -929,16 +716,9 @@ void writeChar(char ch, int pos){
      652:	98 23       	and	r25, r24
      654:	49 2b       	or	r20, r25
      656:	40 93 f8 00 	sts	0x00F8, r20	; 0x8000f8 <__TEXT_REGION_LENGTH__+0x7fc0f8>
-			LCDDR17= (LCDDR17 & (0b1111<<rbitshift)) | zero[3]<<bitshift;
      65a:	90 91 fd 00 	lds	r25, 0x00FD	; 0x8000fd <__TEXT_REGION_LENGTH__+0x7fc0fd>
      65e:	40 91 4e 01 	lds	r20, 0x014E	; 0x80014e <zero+0x6>
      662:	50 91 4f 01 	lds	r21, 0x014F	; 0x80014f <zero+0x7>
-			break;
-			case '8':
-			LCDDR2 = ((LCDDR2 & (0b1111<<rbitshift))  | eight[0]<<bitshift);
-			LCDDR7 = (LCDDR7 & (0b1111<<rbitshift))  | eight[1]<<bitshift;
-			LCDDR12= (LCDDR12 & (0b1111<<rbitshift)) | eight[2]<<bitshift;
-			LCDDR17= (LCDDR17 & (0b1111<<rbitshift)) | eight[3]<<bitshift;
      666:	ba 01       	movw	r22, r20
      668:	02 c0       	rjmp	.+4      	; 0x66e <__stack+0x16f>
      66a:	66 0f       	add	r22, r22
@@ -948,10 +728,7 @@ void writeChar(char ch, int pos){
      672:	89 23       	and	r24, r25
      674:	86 2b       	or	r24, r22
      676:	80 93 fd 00 	sts	0x00FD, r24	; 0x8000fd <__TEXT_REGION_LENGTH__+0x7fc0fd>
-			break;
      67a:	08 95       	ret
-			case '9':
-			LCDDR2 = ((LCDDR2 & (0b1111<<rbitshift))  | nine[0]<<bitshift);
      67c:	40 91 00 01 	lds	r20, 0x0100	; 0x800100 <__DATA_REGION_ORIGIN__>
      680:	50 91 01 01 	lds	r21, 0x0101	; 0x800101 <__DATA_REGION_ORIGIN__+0x1>
      684:	02 2e       	mov	r0, r18
@@ -963,7 +740,6 @@ void writeChar(char ch, int pos){
      690:	98 23       	and	r25, r24
      692:	49 2b       	or	r20, r25
      694:	40 93 ee 00 	sts	0x00EE, r20	; 0x8000ee <__TEXT_REGION_LENGTH__+0x7fc0ee>
-			LCDDR7 = (LCDDR7 & (0b1111<<rbitshift))  | nine[1]<<bitshift;
      698:	90 91 f3 00 	lds	r25, 0x00F3	; 0x8000f3 <__TEXT_REGION_LENGTH__+0x7fc0f3>
      69c:	40 91 02 01 	lds	r20, 0x0102	; 0x800102 <__DATA_REGION_ORIGIN__+0x2>
      6a0:	50 91 03 01 	lds	r21, 0x0103	; 0x800103 <__DATA_REGION_ORIGIN__+0x3>
@@ -975,7 +751,6 @@ void writeChar(char ch, int pos){
      6ae:	98 23       	and	r25, r24
      6b0:	49 2b       	or	r20, r25
      6b2:	40 93 f3 00 	sts	0x00F3, r20	; 0x8000f3 <__TEXT_REGION_LENGTH__+0x7fc0f3>
-			LCDDR12= (LCDDR12 & (0b1111<<rbitshift)) | nine[2]<<bitshift;
      6b6:	90 91 f8 00 	lds	r25, 0x00F8	; 0x8000f8 <__TEXT_REGION_LENGTH__+0x7fc0f8>
      6ba:	40 91 04 01 	lds	r20, 0x0104	; 0x800104 <__DATA_REGION_ORIGIN__+0x4>
      6be:	50 91 05 01 	lds	r21, 0x0105	; 0x800105 <__DATA_REGION_ORIGIN__+0x5>
@@ -987,7 +762,6 @@ void writeChar(char ch, int pos){
      6cc:	98 23       	and	r25, r24
      6ce:	49 2b       	or	r20, r25
      6d0:	40 93 f8 00 	sts	0x00F8, r20	; 0x8000f8 <__TEXT_REGION_LENGTH__+0x7fc0f8>
-			LCDDR17= (LCDDR17 & (0b1111<<rbitshift)) | nine[3]<<bitshift;
      6d4:	90 91 fd 00 	lds	r25, 0x00FD	; 0x8000fd <__TEXT_REGION_LENGTH__+0x7fc0fd>
      6d8:	40 91 06 01 	lds	r20, 0x0106	; 0x800106 <__DATA_REGION_ORIGIN__+0x6>
      6dc:	50 91 07 01 	lds	r21, 0x0107	; 0x800107 <__DATA_REGION_ORIGIN__+0x7>
@@ -1000,14 +774,7 @@ void writeChar(char ch, int pos){
      6ec:	89 23       	and	r24, r25
      6ee:	8a 2b       	or	r24, r26
      6f0:	80 93 fd 00 	sts	0x00FD, r24	; 0x8000fd <__TEXT_REGION_LENGTH__+0x7fc0fd>
-			break;
      6f4:	08 95       	ret
-			LCDDR7 = (LCDDR7 & (0b1111<<rbitshift))  | three[1]<<bitshift;
-			LCDDR12= (LCDDR12 & (0b1111<<rbitshift)) | three[2]<<bitshift;
-			LCDDR17= (LCDDR17 & (0b1111<<rbitshift)) | three[3]<<bitshift;
-			break;
-			case '4':
-			LCDDR2 = ((LCDDR2 & (0b1111<<rbitshift))  | four[0]<<bitshift);
      6f6:	40 91 28 01 	lds	r20, 0x0128	; 0x800128 <four>
      6fa:	50 91 29 01 	lds	r21, 0x0129	; 0x800129 <four+0x1>
      6fe:	02 2e       	mov	r0, r18
@@ -1019,7 +786,6 @@ void writeChar(char ch, int pos){
      70a:	98 23       	and	r25, r24
      70c:	49 2b       	or	r20, r25
      70e:	40 93 ee 00 	sts	0x00EE, r20	; 0x8000ee <__TEXT_REGION_LENGTH__+0x7fc0ee>
-			LCDDR7 = (LCDDR7 & (0b1111<<rbitshift))  | four[1]<<bitshift;
      712:	90 91 f3 00 	lds	r25, 0x00F3	; 0x8000f3 <__TEXT_REGION_LENGTH__+0x7fc0f3>
      716:	40 91 2a 01 	lds	r20, 0x012A	; 0x80012a <four+0x2>
      71a:	50 91 2b 01 	lds	r21, 0x012B	; 0x80012b <four+0x3>
@@ -1031,7 +797,6 @@ void writeChar(char ch, int pos){
      728:	98 23       	and	r25, r24
      72a:	49 2b       	or	r20, r25
      72c:	40 93 f3 00 	sts	0x00F3, r20	; 0x8000f3 <__TEXT_REGION_LENGTH__+0x7fc0f3>
-			LCDDR12= (LCDDR12 & (0b1111<<rbitshift)) | four[2]<<bitshift;
      730:	90 91 f8 00 	lds	r25, 0x00F8	; 0x8000f8 <__TEXT_REGION_LENGTH__+0x7fc0f8>
      734:	40 91 2c 01 	lds	r20, 0x012C	; 0x80012c <four+0x4>
      738:	50 91 2d 01 	lds	r21, 0x012D	; 0x80012d <four+0x5>
@@ -1043,17 +808,10 @@ void writeChar(char ch, int pos){
      746:	98 23       	and	r25, r24
      748:	49 2b       	or	r20, r25
      74a:	40 93 f8 00 	sts	0x00F8, r20	; 0x8000f8 <__TEXT_REGION_LENGTH__+0x7fc0f8>
-			LCDDR17= (LCDDR17 & (0b1111<<rbitshift)) | four[3]<<bitshift;
      74e:	90 91 fd 00 	lds	r25, 0x00FD	; 0x8000fd <__TEXT_REGION_LENGTH__+0x7fc0fd>
      752:	40 91 2e 01 	lds	r20, 0x012E	; 0x80012e <four+0x6>
      756:	50 91 2f 01 	lds	r21, 0x012F	; 0x80012f <four+0x7>
      75a:	85 cf       	rjmp	.-246    	; 0x666 <__stack+0x167>
-			LCDDR7 = (LCDDR7 & (0b1111<<rbitshift))  | two[1]<<bitshift;
-			LCDDR12= (LCDDR12 & (0b1111<<rbitshift)) | two[2]<<bitshift;
-			LCDDR17= (LCDDR17 & (0b1111<<rbitshift)) | two[3]<<bitshift;
-			break;
-			case '3':
-			LCDDR2 = ((LCDDR2 & (0b1111<<rbitshift))  | three[0]<<bitshift);
      75c:	40 91 30 01 	lds	r20, 0x0130	; 0x800130 <three>
      760:	50 91 31 01 	lds	r21, 0x0131	; 0x800131 <three+0x1>
      764:	02 2e       	mov	r0, r18
@@ -1065,7 +823,6 @@ void writeChar(char ch, int pos){
      770:	98 23       	and	r25, r24
      772:	49 2b       	or	r20, r25
      774:	40 93 ee 00 	sts	0x00EE, r20	; 0x8000ee <__TEXT_REGION_LENGTH__+0x7fc0ee>
-			LCDDR7 = (LCDDR7 & (0b1111<<rbitshift))  | three[1]<<bitshift;
      778:	90 91 f3 00 	lds	r25, 0x00F3	; 0x8000f3 <__TEXT_REGION_LENGTH__+0x7fc0f3>
      77c:	40 91 32 01 	lds	r20, 0x0132	; 0x800132 <three+0x2>
      780:	50 91 33 01 	lds	r21, 0x0133	; 0x800133 <three+0x3>
@@ -1077,7 +834,6 @@ void writeChar(char ch, int pos){
      78e:	98 23       	and	r25, r24
      790:	49 2b       	or	r20, r25
      792:	40 93 f3 00 	sts	0x00F3, r20	; 0x8000f3 <__TEXT_REGION_LENGTH__+0x7fc0f3>
-			LCDDR12= (LCDDR12 & (0b1111<<rbitshift)) | three[2]<<bitshift;
      796:	90 91 f8 00 	lds	r25, 0x00F8	; 0x8000f8 <__TEXT_REGION_LENGTH__+0x7fc0f8>
      79a:	40 91 34 01 	lds	r20, 0x0134	; 0x800134 <three+0x4>
      79e:	50 91 35 01 	lds	r21, 0x0135	; 0x800135 <three+0x5>
@@ -1089,17 +845,10 @@ void writeChar(char ch, int pos){
      7ac:	98 23       	and	r25, r24
      7ae:	49 2b       	or	r20, r25
      7b0:	40 93 f8 00 	sts	0x00F8, r20	; 0x8000f8 <__TEXT_REGION_LENGTH__+0x7fc0f8>
-			LCDDR17= (LCDDR17 & (0b1111<<rbitshift)) | three[3]<<bitshift;
      7b4:	90 91 fd 00 	lds	r25, 0x00FD	; 0x8000fd <__TEXT_REGION_LENGTH__+0x7fc0fd>
      7b8:	40 91 36 01 	lds	r20, 0x0136	; 0x800136 <three+0x6>
      7bc:	50 91 37 01 	lds	r21, 0x0137	; 0x800137 <three+0x7>
      7c0:	8f cf       	rjmp	.-226    	; 0x6e0 <__stack+0x1e1>
-			LCDDR7 = (LCDDR7 & (0b1111<<rbitshift))  | one[1]<<bitshift;
-			LCDDR12= (LCDDR12 & (0b1111<<rbitshift)) | one[2]<<bitshift;
-			LCDDR17= (LCDDR17 & (0b1111<<rbitshift)) | one[3]<<bitshift;
-			break;
-			case '2':
-			LCDDR2 = ((LCDDR2 & (0b1111<<rbitshift))  | two[0]<<bitshift);
      7c2:	40 91 38 01 	lds	r20, 0x0138	; 0x800138 <two>
      7c6:	50 91 39 01 	lds	r21, 0x0139	; 0x800139 <two+0x1>
      7ca:	02 2e       	mov	r0, r18
@@ -1111,7 +860,6 @@ void writeChar(char ch, int pos){
      7d6:	98 23       	and	r25, r24
      7d8:	49 2b       	or	r20, r25
      7da:	40 93 ee 00 	sts	0x00EE, r20	; 0x8000ee <__TEXT_REGION_LENGTH__+0x7fc0ee>
-			LCDDR7 = (LCDDR7 & (0b1111<<rbitshift))  | two[1]<<bitshift;
      7de:	90 91 f3 00 	lds	r25, 0x00F3	; 0x8000f3 <__TEXT_REGION_LENGTH__+0x7fc0f3>
      7e2:	40 91 3a 01 	lds	r20, 0x013A	; 0x80013a <two+0x2>
      7e6:	50 91 3b 01 	lds	r21, 0x013B	; 0x80013b <two+0x3>
@@ -1123,7 +871,6 @@ void writeChar(char ch, int pos){
      7f4:	98 23       	and	r25, r24
      7f6:	49 2b       	or	r20, r25
      7f8:	40 93 f3 00 	sts	0x00F3, r20	; 0x8000f3 <__TEXT_REGION_LENGTH__+0x7fc0f3>
-			LCDDR12= (LCDDR12 & (0b1111<<rbitshift)) | two[2]<<bitshift;
      7fc:	90 91 f8 00 	lds	r25, 0x00F8	; 0x8000f8 <__TEXT_REGION_LENGTH__+0x7fc0f8>
      800:	40 91 3c 01 	lds	r20, 0x013C	; 0x80013c <two+0x4>
      804:	50 91 3d 01 	lds	r21, 0x013D	; 0x80013d <two+0x5>
@@ -1135,17 +882,10 @@ void writeChar(char ch, int pos){
      812:	98 23       	and	r25, r24
      814:	49 2b       	or	r20, r25
      816:	40 93 f8 00 	sts	0x00F8, r20	; 0x8000f8 <__TEXT_REGION_LENGTH__+0x7fc0f8>
-			LCDDR17= (LCDDR17 & (0b1111<<rbitshift)) | two[3]<<bitshift;
      81a:	90 91 fd 00 	lds	r25, 0x00FD	; 0x8000fd <__TEXT_REGION_LENGTH__+0x7fc0fd>
      81e:	40 91 3e 01 	lds	r20, 0x013E	; 0x80013e <two+0x6>
      822:	50 91 3f 01 	lds	r21, 0x013F	; 0x80013f <two+0x7>
      826:	1f cf       	rjmp	.-450    	; 0x666 <__stack+0x167>
-			LCDDR7 = (LCDDR7 & (0b1111<<rbitshift)) | zero[1]<<bitshift;
-			LCDDR12= (LCDDR12 & (0b1111<<rbitshift)) | zero[2]<<bitshift;
-			LCDDR17= (LCDDR17 & (0b1111<<rbitshift)) | zero[3]<<bitshift;
-			break;
-			case '1':
-			LCDDR2 = ((LCDDR2 & (0b1111<<rbitshift))  | one[0]<<bitshift);
      828:	40 91 40 01 	lds	r20, 0x0140	; 0x800140 <one>
      82c:	50 91 41 01 	lds	r21, 0x0141	; 0x800141 <one+0x1>
      830:	02 2e       	mov	r0, r18
@@ -1157,7 +897,6 @@ void writeChar(char ch, int pos){
      83c:	98 23       	and	r25, r24
      83e:	49 2b       	or	r20, r25
      840:	40 93 ee 00 	sts	0x00EE, r20	; 0x8000ee <__TEXT_REGION_LENGTH__+0x7fc0ee>
-			LCDDR7 = (LCDDR7 & (0b1111<<rbitshift))  | one[1]<<bitshift;
      844:	90 91 f3 00 	lds	r25, 0x00F3	; 0x8000f3 <__TEXT_REGION_LENGTH__+0x7fc0f3>
      848:	40 91 42 01 	lds	r20, 0x0142	; 0x800142 <one+0x2>
      84c:	50 91 43 01 	lds	r21, 0x0143	; 0x800143 <one+0x3>
@@ -1169,7 +908,6 @@ void writeChar(char ch, int pos){
      85a:	98 23       	and	r25, r24
      85c:	49 2b       	or	r20, r25
      85e:	40 93 f3 00 	sts	0x00F3, r20	; 0x8000f3 <__TEXT_REGION_LENGTH__+0x7fc0f3>
-			LCDDR12= (LCDDR12 & (0b1111<<rbitshift)) | one[2]<<bitshift;
      862:	90 91 f8 00 	lds	r25, 0x00F8	; 0x8000f8 <__TEXT_REGION_LENGTH__+0x7fc0f8>
      866:	40 91 44 01 	lds	r20, 0x0144	; 0x800144 <one+0x4>
      86a:	50 91 45 01 	lds	r21, 0x0145	; 0x800145 <one+0x5>
@@ -1181,17 +919,10 @@ void writeChar(char ch, int pos){
      878:	98 23       	and	r25, r24
      87a:	49 2b       	or	r20, r25
      87c:	40 93 f8 00 	sts	0x00F8, r20	; 0x8000f8 <__TEXT_REGION_LENGTH__+0x7fc0f8>
-			LCDDR17= (LCDDR17 & (0b1111<<rbitshift)) | one[3]<<bitshift;
      880:	90 91 fd 00 	lds	r25, 0x00FD	; 0x8000fd <__TEXT_REGION_LENGTH__+0x7fc0fd>
      884:	40 91 46 01 	lds	r20, 0x0146	; 0x800146 <one+0x6>
      888:	50 91 47 01 	lds	r21, 0x0147	; 0x800147 <one+0x7>
      88c:	29 cf       	rjmp	.-430    	; 0x6e0 <__stack+0x1e1>
-			LCDDR6 = (LCDDR6 & (0b1111<<rbitshift))  | one[1]<<bitshift;
-			LCDDR11= (LCDDR11 & (0b1111<<rbitshift)) | one[2]<<bitshift;
-			LCDDR16= (LCDDR16 & (0b1111<<rbitshift)) | one[3]<<bitshift;
-			break;
-			case '2':
-			LCDDR1 = (LCDDR1 & (0b1111<<rbitshift))  | two[0]<<bitshift;
      88e:	40 91 38 01 	lds	r20, 0x0138	; 0x800138 <two>
      892:	50 91 39 01 	lds	r21, 0x0139	; 0x800139 <two+0x1>
      896:	02 2e       	mov	r0, r18
@@ -1203,7 +934,6 @@ void writeChar(char ch, int pos){
      8a2:	98 23       	and	r25, r24
      8a4:	49 2b       	or	r20, r25
      8a6:	40 93 ed 00 	sts	0x00ED, r20	; 0x8000ed <__TEXT_REGION_LENGTH__+0x7fc0ed>
-			LCDDR6 = (LCDDR6 & (0b1111<<rbitshift))  | two[1]<<bitshift;
      8aa:	90 91 f2 00 	lds	r25, 0x00F2	; 0x8000f2 <__TEXT_REGION_LENGTH__+0x7fc0f2>
      8ae:	40 91 3a 01 	lds	r20, 0x013A	; 0x80013a <two+0x2>
      8b2:	50 91 3b 01 	lds	r21, 0x013B	; 0x80013b <two+0x3>
@@ -1215,7 +945,6 @@ void writeChar(char ch, int pos){
      8c0:	98 23       	and	r25, r24
      8c2:	49 2b       	or	r20, r25
      8c4:	40 93 f2 00 	sts	0x00F2, r20	; 0x8000f2 <__TEXT_REGION_LENGTH__+0x7fc0f2>
-			LCDDR11= (LCDDR11 & (0b1111<<rbitshift)) | two[2]<<bitshift;
      8c8:	90 91 f7 00 	lds	r25, 0x00F7	; 0x8000f7 <__TEXT_REGION_LENGTH__+0x7fc0f7>
      8cc:	40 91 3c 01 	lds	r20, 0x013C	; 0x80013c <two+0x4>
      8d0:	50 91 3d 01 	lds	r21, 0x013D	; 0x80013d <two+0x5>
@@ -1227,16 +956,9 @@ void writeChar(char ch, int pos){
      8de:	98 23       	and	r25, r24
      8e0:	49 2b       	or	r20, r25
      8e2:	40 93 f7 00 	sts	0x00F7, r20	; 0x8000f7 <__TEXT_REGION_LENGTH__+0x7fc0f7>
-			LCDDR16= (LCDDR16 & (0b1111<<rbitshift)) | two[3]<<bitshift;
      8e6:	90 91 fc 00 	lds	r25, 0x00FC	; 0x8000fc <__TEXT_REGION_LENGTH__+0x7fc0fc>
      8ea:	40 91 3e 01 	lds	r20, 0x013E	; 0x80013e <two+0x6>
      8ee:	50 91 3f 01 	lds	r21, 0x013F	; 0x80013f <two+0x7>
-			break;
-			case '8':
-			LCDDR1 = (LCDDR1 & (0b1111<<rbitshift))  | eight[0]<<bitshift;
-			LCDDR6 = (LCDDR6 & (0b1111<<rbitshift))  | eight[1]<<bitshift;
-			LCDDR11= (LCDDR11 & (0b1111<<rbitshift)) | eight[2]<<bitshift;
-			LCDDR16= (LCDDR16 & (0b1111<<rbitshift)) | eight[3]<<bitshift;
      8f2:	ba 01       	movw	r22, r20
      8f4:	02 c0       	rjmp	.+4      	; 0x8fa <__stack+0x3fb>
      8f6:	66 0f       	add	r22, r22
@@ -1246,14 +968,7 @@ void writeChar(char ch, int pos){
      8fe:	89 23       	and	r24, r25
      900:	86 2b       	or	r24, r22
      902:	80 93 fc 00 	sts	0x00FC, r24	; 0x8000fc <__TEXT_REGION_LENGTH__+0x7fc0fc>
-			break;
      906:	08 95       	ret
-			LCDDR6 = (LCDDR6 & (0b1111<<rbitshift)) | zero[1]<<bitshift;
-			LCDDR11= (LCDDR11 & (0b1111<<rbitshift)) | zero[2]<<bitshift;
-			LCDDR16= (LCDDR16 & (0b1111<<rbitshift)) | zero[3]<<bitshift;
-			break;
-			case '1':
-			LCDDR1 = (LCDDR1 & (0b1111<<rbitshift))  | one[0]<<bitshift;
      908:	40 91 40 01 	lds	r20, 0x0140	; 0x800140 <one>
      90c:	50 91 41 01 	lds	r21, 0x0141	; 0x800141 <one+0x1>
      910:	02 2e       	mov	r0, r18
@@ -1265,7 +980,6 @@ void writeChar(char ch, int pos){
      91c:	98 23       	and	r25, r24
      91e:	49 2b       	or	r20, r25
      920:	40 93 ed 00 	sts	0x00ED, r20	; 0x8000ed <__TEXT_REGION_LENGTH__+0x7fc0ed>
-			LCDDR6 = (LCDDR6 & (0b1111<<rbitshift))  | one[1]<<bitshift;
      924:	90 91 f2 00 	lds	r25, 0x00F2	; 0x8000f2 <__TEXT_REGION_LENGTH__+0x7fc0f2>
      928:	40 91 42 01 	lds	r20, 0x0142	; 0x800142 <one+0x2>
      92c:	50 91 43 01 	lds	r21, 0x0143	; 0x800143 <one+0x3>
@@ -1277,7 +991,6 @@ void writeChar(char ch, int pos){
      93a:	98 23       	and	r25, r24
      93c:	49 2b       	or	r20, r25
      93e:	40 93 f2 00 	sts	0x00F2, r20	; 0x8000f2 <__TEXT_REGION_LENGTH__+0x7fc0f2>
-			LCDDR11= (LCDDR11 & (0b1111<<rbitshift)) | one[2]<<bitshift;
      942:	90 91 f7 00 	lds	r25, 0x00F7	; 0x8000f7 <__TEXT_REGION_LENGTH__+0x7fc0f7>
      946:	40 91 44 01 	lds	r20, 0x0144	; 0x800144 <one+0x4>
      94a:	50 91 45 01 	lds	r21, 0x0145	; 0x800145 <one+0x5>
@@ -1289,16 +1002,9 @@ void writeChar(char ch, int pos){
      958:	98 23       	and	r25, r24
      95a:	49 2b       	or	r20, r25
      95c:	40 93 f7 00 	sts	0x00F7, r20	; 0x8000f7 <__TEXT_REGION_LENGTH__+0x7fc0f7>
-			LCDDR16= (LCDDR16 & (0b1111<<rbitshift)) | one[3]<<bitshift;
      960:	90 91 fc 00 	lds	r25, 0x00FC	; 0x8000fc <__TEXT_REGION_LENGTH__+0x7fc0fc>
      964:	40 91 46 01 	lds	r20, 0x0146	; 0x800146 <one+0x6>
      968:	50 91 47 01 	lds	r21, 0x0147	; 0x800147 <one+0x7>
-			break;
-			case '9':
-			LCDDR1 = (LCDDR1 & (0b1111<<rbitshift))  | nine[0]<<bitshift;
-			LCDDR6 = (LCDDR6 & (0b1111<<rbitshift))  | nine[1]<<bitshift;
-			LCDDR11= (LCDDR11 & (0b1111<<rbitshift)) | nine[2]<<bitshift;
-			LCDDR16= (LCDDR16 & (0b1111<<rbitshift)) | nine[3]<<bitshift;
      96c:	da 01       	movw	r26, r20
      96e:	02 c0       	rjmp	.+4      	; 0x974 <__stack+0x475>
      970:	aa 0f       	add	r26, r26
@@ -1308,14 +1014,7 @@ void writeChar(char ch, int pos){
      978:	89 23       	and	r24, r25
      97a:	8a 2b       	or	r24, r26
      97c:	80 93 fc 00 	sts	0x00FC, r24	; 0x8000fc <__TEXT_REGION_LENGTH__+0x7fc0fc>
-			break;
      980:	08 95       	ret
-		}
-		break;
-		case 2: case 3:
-		switch(ch){
-			case '0':
-			LCDDR1 = (LCDDR1 & (0b1111<<rbitshift)) | zero[0]<<bitshift;
      982:	40 91 48 01 	lds	r20, 0x0148	; 0x800148 <zero>
      986:	50 91 49 01 	lds	r21, 0x0149	; 0x800149 <zero+0x1>
      98a:	02 2e       	mov	r0, r18
@@ -1327,7 +1026,6 @@ void writeChar(char ch, int pos){
      996:	98 23       	and	r25, r24
      998:	49 2b       	or	r20, r25
      99a:	40 93 ed 00 	sts	0x00ED, r20	; 0x8000ed <__TEXT_REGION_LENGTH__+0x7fc0ed>
-			LCDDR6 = (LCDDR6 & (0b1111<<rbitshift)) | zero[1]<<bitshift;
      99e:	90 91 f2 00 	lds	r25, 0x00F2	; 0x8000f2 <__TEXT_REGION_LENGTH__+0x7fc0f2>
      9a2:	40 91 4a 01 	lds	r20, 0x014A	; 0x80014a <zero+0x2>
      9a6:	50 91 4b 01 	lds	r21, 0x014B	; 0x80014b <zero+0x3>
@@ -1339,7 +1037,6 @@ void writeChar(char ch, int pos){
      9b4:	98 23       	and	r25, r24
      9b6:	49 2b       	or	r20, r25
      9b8:	40 93 f2 00 	sts	0x00F2, r20	; 0x8000f2 <__TEXT_REGION_LENGTH__+0x7fc0f2>
-			LCDDR11= (LCDDR11 & (0b1111<<rbitshift)) | zero[2]<<bitshift;
      9bc:	90 91 f7 00 	lds	r25, 0x00F7	; 0x8000f7 <__TEXT_REGION_LENGTH__+0x7fc0f7>
      9c0:	40 91 4c 01 	lds	r20, 0x014C	; 0x80014c <zero+0x4>
      9c4:	50 91 4d 01 	lds	r21, 0x014D	; 0x80014d <zero+0x5>
@@ -1351,17 +1048,10 @@ void writeChar(char ch, int pos){
      9d2:	98 23       	and	r25, r24
      9d4:	49 2b       	or	r20, r25
      9d6:	40 93 f7 00 	sts	0x00F7, r20	; 0x8000f7 <__TEXT_REGION_LENGTH__+0x7fc0f7>
-			LCDDR16= (LCDDR16 & (0b1111<<rbitshift)) | zero[3]<<bitshift;
      9da:	90 91 fc 00 	lds	r25, 0x00FC	; 0x8000fc <__TEXT_REGION_LENGTH__+0x7fc0fc>
      9de:	40 91 4e 01 	lds	r20, 0x014E	; 0x80014e <zero+0x6>
      9e2:	50 91 4f 01 	lds	r21, 0x014F	; 0x80014f <zero+0x7>
      9e6:	85 cf       	rjmp	.-246    	; 0x8f2 <__stack+0x3f3>
-			LCDDR6 = (LCDDR6 & (0b1111<<rbitshift))  | eight[1]<<bitshift;
-			LCDDR11= (LCDDR11 & (0b1111<<rbitshift)) | eight[2]<<bitshift;
-			LCDDR16= (LCDDR16 & (0b1111<<rbitshift)) | eight[3]<<bitshift;
-			break;
-			case '9':
-			LCDDR1 = (LCDDR1 & (0b1111<<rbitshift))  | nine[0]<<bitshift;
      9e8:	40 91 00 01 	lds	r20, 0x0100	; 0x800100 <__DATA_REGION_ORIGIN__>
      9ec:	50 91 01 01 	lds	r21, 0x0101	; 0x800101 <__DATA_REGION_ORIGIN__+0x1>
      9f0:	02 2e       	mov	r0, r18
@@ -1373,7 +1063,6 @@ void writeChar(char ch, int pos){
      9fc:	98 23       	and	r25, r24
      9fe:	49 2b       	or	r20, r25
      a00:	40 93 ed 00 	sts	0x00ED, r20	; 0x8000ed <__TEXT_REGION_LENGTH__+0x7fc0ed>
-			LCDDR6 = (LCDDR6 & (0b1111<<rbitshift))  | nine[1]<<bitshift;
      a04:	90 91 f2 00 	lds	r25, 0x00F2	; 0x8000f2 <__TEXT_REGION_LENGTH__+0x7fc0f2>
      a08:	40 91 02 01 	lds	r20, 0x0102	; 0x800102 <__DATA_REGION_ORIGIN__+0x2>
      a0c:	50 91 03 01 	lds	r21, 0x0103	; 0x800103 <__DATA_REGION_ORIGIN__+0x3>
@@ -1385,7 +1074,6 @@ void writeChar(char ch, int pos){
      a1a:	98 23       	and	r25, r24
      a1c:	49 2b       	or	r20, r25
      a1e:	40 93 f2 00 	sts	0x00F2, r20	; 0x8000f2 <__TEXT_REGION_LENGTH__+0x7fc0f2>
-			LCDDR11= (LCDDR11 & (0b1111<<rbitshift)) | nine[2]<<bitshift;
      a22:	90 91 f7 00 	lds	r25, 0x00F7	; 0x8000f7 <__TEXT_REGION_LENGTH__+0x7fc0f7>
      a26:	40 91 04 01 	lds	r20, 0x0104	; 0x800104 <__DATA_REGION_ORIGIN__+0x4>
      a2a:	50 91 05 01 	lds	r21, 0x0105	; 0x800105 <__DATA_REGION_ORIGIN__+0x5>
@@ -1397,17 +1085,10 @@ void writeChar(char ch, int pos){
      a38:	98 23       	and	r25, r24
      a3a:	49 2b       	or	r20, r25
      a3c:	40 93 f7 00 	sts	0x00F7, r20	; 0x8000f7 <__TEXT_REGION_LENGTH__+0x7fc0f7>
-			LCDDR16= (LCDDR16 & (0b1111<<rbitshift)) | nine[3]<<bitshift;
      a40:	90 91 fc 00 	lds	r25, 0x00FC	; 0x8000fc <__TEXT_REGION_LENGTH__+0x7fc0fc>
      a44:	40 91 06 01 	lds	r20, 0x0106	; 0x800106 <__DATA_REGION_ORIGIN__+0x6>
      a48:	50 91 07 01 	lds	r21, 0x0107	; 0x800107 <__DATA_REGION_ORIGIN__+0x7>
      a4c:	8f cf       	rjmp	.-226    	; 0x96c <__stack+0x46d>
-			LCDDR7 = (LCDDR7 & (0b1111<<rbitshift))  | seven[1]<<bitshift;
-			LCDDR12= (LCDDR12 & (0b1111<<rbitshift)) | seven[2]<<bitshift;
-			LCDDR17= (LCDDR17 & (0b1111<<rbitshift)) | seven[3]<<bitshift;
-			break;
-			case '8':
-			LCDDR2 = ((LCDDR2 & (0b1111<<rbitshift))  | eight[0]<<bitshift);
      a4e:	40 91 08 01 	lds	r20, 0x0108	; 0x800108 <eight>
      a52:	50 91 09 01 	lds	r21, 0x0109	; 0x800109 <eight+0x1>
      a56:	02 2e       	mov	r0, r18
@@ -1419,7 +1100,6 @@ void writeChar(char ch, int pos){
      a62:	98 23       	and	r25, r24
      a64:	49 2b       	or	r20, r25
      a66:	40 93 ee 00 	sts	0x00EE, r20	; 0x8000ee <__TEXT_REGION_LENGTH__+0x7fc0ee>
-			LCDDR7 = (LCDDR7 & (0b1111<<rbitshift))  | eight[1]<<bitshift;
      a6a:	90 91 f3 00 	lds	r25, 0x00F3	; 0x8000f3 <__TEXT_REGION_LENGTH__+0x7fc0f3>
      a6e:	40 91 0a 01 	lds	r20, 0x010A	; 0x80010a <eight+0x2>
      a72:	50 91 0b 01 	lds	r21, 0x010B	; 0x80010b <eight+0x3>
@@ -1431,7 +1111,6 @@ void writeChar(char ch, int pos){
      a80:	98 23       	and	r25, r24
      a82:	49 2b       	or	r20, r25
      a84:	40 93 f3 00 	sts	0x00F3, r20	; 0x8000f3 <__TEXT_REGION_LENGTH__+0x7fc0f3>
-			LCDDR12= (LCDDR12 & (0b1111<<rbitshift)) | eight[2]<<bitshift;
      a88:	90 91 f8 00 	lds	r25, 0x00F8	; 0x8000f8 <__TEXT_REGION_LENGTH__+0x7fc0f8>
      a8c:	40 91 0c 01 	lds	r20, 0x010C	; 0x80010c <eight+0x4>
      a90:	50 91 0d 01 	lds	r21, 0x010D	; 0x80010d <eight+0x5>
@@ -1443,17 +1122,10 @@ void writeChar(char ch, int pos){
      a9e:	98 23       	and	r25, r24
      aa0:	49 2b       	or	r20, r25
      aa2:	40 93 f8 00 	sts	0x00F8, r20	; 0x8000f8 <__TEXT_REGION_LENGTH__+0x7fc0f8>
-			LCDDR17= (LCDDR17 & (0b1111<<rbitshift)) | eight[3]<<bitshift;
      aa6:	90 91 fd 00 	lds	r25, 0x00FD	; 0x8000fd <__TEXT_REGION_LENGTH__+0x7fc0fd>
      aaa:	40 91 0e 01 	lds	r20, 0x010E	; 0x80010e <eight+0x6>
      aae:	50 91 0f 01 	lds	r21, 0x010F	; 0x80010f <eight+0x7>
      ab2:	d9 cd       	rjmp	.-1102   	; 0x666 <__stack+0x167>
-			LCDDR7 = (LCDDR7 & (0b1111<<rbitshift))  | six[1]<<bitshift;
-			LCDDR12= (LCDDR12 & (0b1111<<rbitshift)) | six[2]<<bitshift;
-			LCDDR17= (LCDDR17 & (0b1111<<rbitshift)) | six[3]<<bitshift;
-			break;
-			case '7':
-			LCDDR2 = ((LCDDR2 & (0b1111<<rbitshift))  | seven[0]<<bitshift);
      ab4:	40 91 10 01 	lds	r20, 0x0110	; 0x800110 <seven>
      ab8:	50 91 11 01 	lds	r21, 0x0111	; 0x800111 <seven+0x1>
      abc:	02 2e       	mov	r0, r18
@@ -1465,7 +1137,6 @@ void writeChar(char ch, int pos){
      ac8:	98 23       	and	r25, r24
      aca:	49 2b       	or	r20, r25
      acc:	40 93 ee 00 	sts	0x00EE, r20	; 0x8000ee <__TEXT_REGION_LENGTH__+0x7fc0ee>
-			LCDDR7 = (LCDDR7 & (0b1111<<rbitshift))  | seven[1]<<bitshift;
      ad0:	90 91 f3 00 	lds	r25, 0x00F3	; 0x8000f3 <__TEXT_REGION_LENGTH__+0x7fc0f3>
      ad4:	40 91 12 01 	lds	r20, 0x0112	; 0x800112 <seven+0x2>
      ad8:	50 91 13 01 	lds	r21, 0x0113	; 0x800113 <seven+0x3>
@@ -1477,7 +1148,6 @@ void writeChar(char ch, int pos){
      ae6:	98 23       	and	r25, r24
      ae8:	49 2b       	or	r20, r25
      aea:	40 93 f3 00 	sts	0x00F3, r20	; 0x8000f3 <__TEXT_REGION_LENGTH__+0x7fc0f3>
-			LCDDR12= (LCDDR12 & (0b1111<<rbitshift)) | seven[2]<<bitshift;
      aee:	90 91 f8 00 	lds	r25, 0x00F8	; 0x8000f8 <__TEXT_REGION_LENGTH__+0x7fc0f8>
      af2:	40 91 14 01 	lds	r20, 0x0114	; 0x800114 <seven+0x4>
      af6:	50 91 15 01 	lds	r21, 0x0115	; 0x800115 <seven+0x5>
@@ -1489,17 +1159,10 @@ void writeChar(char ch, int pos){
      b04:	98 23       	and	r25, r24
      b06:	49 2b       	or	r20, r25
      b08:	40 93 f8 00 	sts	0x00F8, r20	; 0x8000f8 <__TEXT_REGION_LENGTH__+0x7fc0f8>
-			LCDDR17= (LCDDR17 & (0b1111<<rbitshift)) | seven[3]<<bitshift;
      b0c:	90 91 fd 00 	lds	r25, 0x00FD	; 0x8000fd <__TEXT_REGION_LENGTH__+0x7fc0fd>
      b10:	40 91 16 01 	lds	r20, 0x0116	; 0x800116 <seven+0x6>
      b14:	50 91 17 01 	lds	r21, 0x0117	; 0x800117 <seven+0x7>
      b18:	e3 cd       	rjmp	.-1082   	; 0x6e0 <__stack+0x1e1>
-			LCDDR7 = (LCDDR7 & (0b1111<<rbitshift))  | five[1]<<bitshift;
-			LCDDR12= (LCDDR12 & (0b1111<<rbitshift)) | five[2]<<bitshift;
-			LCDDR17= (LCDDR17 & (0b1111<<rbitshift)) | five[3]<<bitshift;
-			break;
-			case '6':
-			LCDDR2 = ((LCDDR2 & (0b1111<<rbitshift))  | six[0]<<bitshift);
      b1a:	40 91 18 01 	lds	r20, 0x0118	; 0x800118 <six>
      b1e:	50 91 19 01 	lds	r21, 0x0119	; 0x800119 <six+0x1>
      b22:	02 2e       	mov	r0, r18
@@ -1511,7 +1174,6 @@ void writeChar(char ch, int pos){
      b2e:	98 23       	and	r25, r24
      b30:	49 2b       	or	r20, r25
      b32:	40 93 ee 00 	sts	0x00EE, r20	; 0x8000ee <__TEXT_REGION_LENGTH__+0x7fc0ee>
-			LCDDR7 = (LCDDR7 & (0b1111<<rbitshift))  | six[1]<<bitshift;
      b36:	90 91 f3 00 	lds	r25, 0x00F3	; 0x8000f3 <__TEXT_REGION_LENGTH__+0x7fc0f3>
      b3a:	40 91 1a 01 	lds	r20, 0x011A	; 0x80011a <six+0x2>
      b3e:	50 91 1b 01 	lds	r21, 0x011B	; 0x80011b <six+0x3>
@@ -1523,7 +1185,6 @@ void writeChar(char ch, int pos){
      b4c:	98 23       	and	r25, r24
      b4e:	49 2b       	or	r20, r25
      b50:	40 93 f3 00 	sts	0x00F3, r20	; 0x8000f3 <__TEXT_REGION_LENGTH__+0x7fc0f3>
-			LCDDR12= (LCDDR12 & (0b1111<<rbitshift)) | six[2]<<bitshift;
      b54:	90 91 f8 00 	lds	r25, 0x00F8	; 0x8000f8 <__TEXT_REGION_LENGTH__+0x7fc0f8>
      b58:	40 91 1c 01 	lds	r20, 0x011C	; 0x80011c <six+0x4>
      b5c:	50 91 1d 01 	lds	r21, 0x011D	; 0x80011d <six+0x5>
@@ -1535,17 +1196,10 @@ void writeChar(char ch, int pos){
      b6a:	98 23       	and	r25, r24
      b6c:	49 2b       	or	r20, r25
      b6e:	40 93 f8 00 	sts	0x00F8, r20	; 0x8000f8 <__TEXT_REGION_LENGTH__+0x7fc0f8>
-			LCDDR17= (LCDDR17 & (0b1111<<rbitshift)) | six[3]<<bitshift;
      b72:	90 91 fd 00 	lds	r25, 0x00FD	; 0x8000fd <__TEXT_REGION_LENGTH__+0x7fc0fd>
      b76:	40 91 1e 01 	lds	r20, 0x011E	; 0x80011e <six+0x6>
      b7a:	50 91 1f 01 	lds	r21, 0x011F	; 0x80011f <six+0x7>
      b7e:	73 cd       	rjmp	.-1306   	; 0x666 <__stack+0x167>
-			LCDDR7 = (LCDDR7 & (0b1111<<rbitshift))  | four[1]<<bitshift;
-			LCDDR12= (LCDDR12 & (0b1111<<rbitshift)) | four[2]<<bitshift;
-			LCDDR17= (LCDDR17 & (0b1111<<rbitshift)) | four[3]<<bitshift;
-			break;
-			case '5':
-			LCDDR2 = ((LCDDR2 & (0b1111<<rbitshift))  | five[0]<<bitshift);
      b80:	40 91 20 01 	lds	r20, 0x0120	; 0x800120 <five>
      b84:	50 91 21 01 	lds	r21, 0x0121	; 0x800121 <five+0x1>
      b88:	02 2e       	mov	r0, r18
@@ -1557,7 +1211,6 @@ void writeChar(char ch, int pos){
      b94:	98 23       	and	r25, r24
      b96:	49 2b       	or	r20, r25
      b98:	40 93 ee 00 	sts	0x00EE, r20	; 0x8000ee <__TEXT_REGION_LENGTH__+0x7fc0ee>
-			LCDDR7 = (LCDDR7 & (0b1111<<rbitshift))  | five[1]<<bitshift;
      b9c:	90 91 f3 00 	lds	r25, 0x00F3	; 0x8000f3 <__TEXT_REGION_LENGTH__+0x7fc0f3>
      ba0:	40 91 22 01 	lds	r20, 0x0122	; 0x800122 <five+0x2>
      ba4:	50 91 23 01 	lds	r21, 0x0123	; 0x800123 <five+0x3>
@@ -1569,7 +1222,6 @@ void writeChar(char ch, int pos){
      bb2:	98 23       	and	r25, r24
      bb4:	49 2b       	or	r20, r25
      bb6:	40 93 f3 00 	sts	0x00F3, r20	; 0x8000f3 <__TEXT_REGION_LENGTH__+0x7fc0f3>
-			LCDDR12= (LCDDR12 & (0b1111<<rbitshift)) | five[2]<<bitshift;
      bba:	90 91 f8 00 	lds	r25, 0x00F8	; 0x8000f8 <__TEXT_REGION_LENGTH__+0x7fc0f8>
      bbe:	40 91 24 01 	lds	r20, 0x0124	; 0x800124 <five+0x4>
      bc2:	50 91 25 01 	lds	r21, 0x0125	; 0x800125 <five+0x5>
@@ -1581,17 +1233,10 @@ void writeChar(char ch, int pos){
      bd0:	98 23       	and	r25, r24
      bd2:	49 2b       	or	r20, r25
      bd4:	40 93 f8 00 	sts	0x00F8, r20	; 0x8000f8 <__TEXT_REGION_LENGTH__+0x7fc0f8>
-			LCDDR17= (LCDDR17 & (0b1111<<rbitshift)) | five[3]<<bitshift;
      bd8:	90 91 fd 00 	lds	r25, 0x00FD	; 0x8000fd <__TEXT_REGION_LENGTH__+0x7fc0fd>
      bdc:	40 91 26 01 	lds	r20, 0x0126	; 0x800126 <five+0x6>
      be0:	50 91 27 01 	lds	r21, 0x0127	; 0x800127 <five+0x7>
      be4:	7d cd       	rjmp	.-1286   	; 0x6e0 <__stack+0x1e1>
-			LCDDR5 = (LCDDR5 & (0b1111<<rbitshift))  | seven[1]<<bitshift;
-			LCDDR10= (LCDDR10 & (0b1111<<rbitshift)) | seven[2]<<bitshift;
-			LCDDR15= (LCDDR15 & (0b1111<<rbitshift)) | seven[3]<<bitshift;
-			break;
-			case '8':
-			LCDDR0 = ((LCDDR0 & (0b1111<<rbitshift))  | eight[0]<<bitshift);
      be6:	40 91 08 01 	lds	r20, 0x0108	; 0x800108 <eight>
      bea:	50 91 09 01 	lds	r21, 0x0109	; 0x800109 <eight+0x1>
      bee:	02 2e       	mov	r0, r18
@@ -1603,7 +1248,6 @@ void writeChar(char ch, int pos){
      bfa:	98 23       	and	r25, r24
      bfc:	49 2b       	or	r20, r25
      bfe:	40 93 ec 00 	sts	0x00EC, r20	; 0x8000ec <__TEXT_REGION_LENGTH__+0x7fc0ec>
-			LCDDR5 = (LCDDR5 & (0b1111<<rbitshift))  | eight[1]<<bitshift;
      c02:	90 91 f1 00 	lds	r25, 0x00F1	; 0x8000f1 <__TEXT_REGION_LENGTH__+0x7fc0f1>
      c06:	40 91 0a 01 	lds	r20, 0x010A	; 0x80010a <eight+0x2>
      c0a:	50 91 0b 01 	lds	r21, 0x010B	; 0x80010b <eight+0x3>
@@ -1615,7 +1259,6 @@ void writeChar(char ch, int pos){
      c18:	98 23       	and	r25, r24
      c1a:	49 2b       	or	r20, r25
      c1c:	40 93 f1 00 	sts	0x00F1, r20	; 0x8000f1 <__TEXT_REGION_LENGTH__+0x7fc0f1>
-			LCDDR10= (LCDDR10 & (0b1111<<rbitshift)) | eight[2]<<bitshift;
      c20:	90 91 f6 00 	lds	r25, 0x00F6	; 0x8000f6 <__TEXT_REGION_LENGTH__+0x7fc0f6>
      c24:	40 91 0c 01 	lds	r20, 0x010C	; 0x80010c <eight+0x4>
      c28:	50 91 0d 01 	lds	r21, 0x010D	; 0x80010d <eight+0x5>
@@ -1627,16 +1270,9 @@ void writeChar(char ch, int pos){
      c36:	98 23       	and	r25, r24
      c38:	49 2b       	or	r20, r25
      c3a:	40 93 f6 00 	sts	0x00F6, r20	; 0x8000f6 <__TEXT_REGION_LENGTH__+0x7fc0f6>
-			LCDDR15= (LCDDR15 & (0b1111<<rbitshift)) | eight[3]<<bitshift;
      c3e:	90 91 fb 00 	lds	r25, 0x00FB	; 0x8000fb <__TEXT_REGION_LENGTH__+0x7fc0fb>
      c42:	40 91 0e 01 	lds	r20, 0x010E	; 0x80010e <eight+0x6>
      c46:	50 91 0f 01 	lds	r21, 0x010F	; 0x80010f <eight+0x7>
-			break;
-			case '4':
-			LCDDR0 = ((LCDDR0 & (0b1111<<rbitshift))  | four[0]<<bitshift);
-			LCDDR5 = (LCDDR5 & (0b1111<<rbitshift))  | four[1]<<bitshift;
-			LCDDR10= (LCDDR10 & (0b1111<<rbitshift)) | four[2]<<bitshift;
-			LCDDR15= (LCDDR15 & (0b1111<<rbitshift)) | four[3]<<bitshift;
      c4a:	ba 01       	movw	r22, r20
      c4c:	02 c0       	rjmp	.+4      	; 0xc52 <__stack+0x753>
      c4e:	66 0f       	add	r22, r22
@@ -1646,14 +1282,7 @@ void writeChar(char ch, int pos){
      c56:	89 23       	and	r24, r25
      c58:	86 2b       	or	r24, r22
      c5a:	80 93 fb 00 	sts	0x00FB, r24	; 0x8000fb <__TEXT_REGION_LENGTH__+0x7fc0fb>
-			break;
      c5e:	08 95       	ret
-			LCDDR5 = (LCDDR5 & (0b1111<<rbitshift))  | six[1]<<bitshift;
-			LCDDR10= (LCDDR10 & (0b1111<<rbitshift)) | six[2]<<bitshift;
-			LCDDR15= (LCDDR15 & (0b1111<<rbitshift)) | six[3]<<bitshift;
-			break;
-			case '7':
-			LCDDR0 = ((LCDDR0 & (0b1111<<rbitshift))  | seven[0]<<bitshift);
      c60:	40 91 10 01 	lds	r20, 0x0110	; 0x800110 <seven>
      c64:	50 91 11 01 	lds	r21, 0x0111	; 0x800111 <seven+0x1>
      c68:	02 2e       	mov	r0, r18
@@ -1665,7 +1294,6 @@ void writeChar(char ch, int pos){
      c74:	98 23       	and	r25, r24
      c76:	49 2b       	or	r20, r25
      c78:	40 93 ec 00 	sts	0x00EC, r20	; 0x8000ec <__TEXT_REGION_LENGTH__+0x7fc0ec>
-			LCDDR5 = (LCDDR5 & (0b1111<<rbitshift))  | seven[1]<<bitshift;
      c7c:	90 91 f1 00 	lds	r25, 0x00F1	; 0x8000f1 <__TEXT_REGION_LENGTH__+0x7fc0f1>
      c80:	40 91 12 01 	lds	r20, 0x0112	; 0x800112 <seven+0x2>
      c84:	50 91 13 01 	lds	r21, 0x0113	; 0x800113 <seven+0x3>
@@ -1677,7 +1305,6 @@ void writeChar(char ch, int pos){
      c92:	98 23       	and	r25, r24
      c94:	49 2b       	or	r20, r25
      c96:	40 93 f1 00 	sts	0x00F1, r20	; 0x8000f1 <__TEXT_REGION_LENGTH__+0x7fc0f1>
-			LCDDR10= (LCDDR10 & (0b1111<<rbitshift)) | seven[2]<<bitshift;
      c9a:	90 91 f6 00 	lds	r25, 0x00F6	; 0x8000f6 <__TEXT_REGION_LENGTH__+0x7fc0f6>
      c9e:	40 91 14 01 	lds	r20, 0x0114	; 0x800114 <seven+0x4>
      ca2:	50 91 15 01 	lds	r21, 0x0115	; 0x800115 <seven+0x5>
@@ -1689,16 +1316,9 @@ void writeChar(char ch, int pos){
      cb0:	98 23       	and	r25, r24
      cb2:	49 2b       	or	r20, r25
      cb4:	40 93 f6 00 	sts	0x00F6, r20	; 0x8000f6 <__TEXT_REGION_LENGTH__+0x7fc0f6>
-			LCDDR15= (LCDDR15 & (0b1111<<rbitshift)) | seven[3]<<bitshift;
      cb8:	90 91 fb 00 	lds	r25, 0x00FB	; 0x8000fb <__TEXT_REGION_LENGTH__+0x7fc0fb>
      cbc:	40 91 16 01 	lds	r20, 0x0116	; 0x800116 <seven+0x6>
      cc0:	50 91 17 01 	lds	r21, 0x0117	; 0x800117 <seven+0x7>
-			break;
-			case '3':
-			LCDDR0 = ((LCDDR0 & (0b1111<<rbitshift))  | three[0]<<bitshift);
-			LCDDR5 = (LCDDR5 & (0b1111<<rbitshift))  | three[1]<<bitshift;
-			LCDDR10= (LCDDR10 & (0b1111<<rbitshift)) | three[2]<<bitshift;
-			LCDDR15= (LCDDR15 & (0b1111<<rbitshift)) | three[3]<<bitshift;
      cc4:	da 01       	movw	r26, r20
      cc6:	02 c0       	rjmp	.+4      	; 0xccc <__stack+0x7cd>
      cc8:	aa 0f       	add	r26, r26
@@ -1708,14 +1328,7 @@ void writeChar(char ch, int pos){
      cd0:	89 23       	and	r24, r25
      cd2:	8a 2b       	or	r24, r26
      cd4:	80 93 fb 00 	sts	0x00FB, r24	; 0x8000fb <__TEXT_REGION_LENGTH__+0x7fc0fb>
-			break;
      cd8:	08 95       	ret
-			LCDDR5 = (LCDDR5 & (0b1111<<rbitshift))  | five[1]<<bitshift;
-			LCDDR10= (LCDDR10 & (0b1111<<rbitshift)) | five[2]<<bitshift;
-			LCDDR15= (LCDDR15 & (0b1111<<rbitshift)) | five[3]<<bitshift;
-			break;
-			case '6':
-			LCDDR0 = ((LCDDR0 & (0b1111<<rbitshift))  | six[0]<<bitshift);
      cda:	40 91 18 01 	lds	r20, 0x0118	; 0x800118 <six>
      cde:	50 91 19 01 	lds	r21, 0x0119	; 0x800119 <six+0x1>
      ce2:	02 2e       	mov	r0, r18
@@ -1727,7 +1340,6 @@ void writeChar(char ch, int pos){
      cee:	98 23       	and	r25, r24
      cf0:	49 2b       	or	r20, r25
      cf2:	40 93 ec 00 	sts	0x00EC, r20	; 0x8000ec <__TEXT_REGION_LENGTH__+0x7fc0ec>
-			LCDDR5 = (LCDDR5 & (0b1111<<rbitshift))  | six[1]<<bitshift;
      cf6:	90 91 f1 00 	lds	r25, 0x00F1	; 0x8000f1 <__TEXT_REGION_LENGTH__+0x7fc0f1>
      cfa:	40 91 1a 01 	lds	r20, 0x011A	; 0x80011a <six+0x2>
      cfe:	50 91 1b 01 	lds	r21, 0x011B	; 0x80011b <six+0x3>
@@ -1739,7 +1351,6 @@ void writeChar(char ch, int pos){
      d0c:	98 23       	and	r25, r24
      d0e:	49 2b       	or	r20, r25
      d10:	40 93 f1 00 	sts	0x00F1, r20	; 0x8000f1 <__TEXT_REGION_LENGTH__+0x7fc0f1>
-			LCDDR10= (LCDDR10 & (0b1111<<rbitshift)) | six[2]<<bitshift;
      d14:	90 91 f6 00 	lds	r25, 0x00F6	; 0x8000f6 <__TEXT_REGION_LENGTH__+0x7fc0f6>
      d18:	40 91 1c 01 	lds	r20, 0x011C	; 0x80011c <six+0x4>
      d1c:	50 91 1d 01 	lds	r21, 0x011D	; 0x80011d <six+0x5>
@@ -1751,17 +1362,10 @@ void writeChar(char ch, int pos){
      d2a:	98 23       	and	r25, r24
      d2c:	49 2b       	or	r20, r25
      d2e:	40 93 f6 00 	sts	0x00F6, r20	; 0x8000f6 <__TEXT_REGION_LENGTH__+0x7fc0f6>
-			LCDDR15= (LCDDR15 & (0b1111<<rbitshift)) | six[3]<<bitshift;
      d32:	90 91 fb 00 	lds	r25, 0x00FB	; 0x8000fb <__TEXT_REGION_LENGTH__+0x7fc0fb>
      d36:	40 91 1e 01 	lds	r20, 0x011E	; 0x80011e <six+0x6>
      d3a:	50 91 1f 01 	lds	r21, 0x011F	; 0x80011f <six+0x7>
      d3e:	85 cf       	rjmp	.-246    	; 0xc4a <__stack+0x74b>
-			LCDDR5 = (LCDDR5 & (0b1111<<rbitshift))  | four[1]<<bitshift;
-			LCDDR10= (LCDDR10 & (0b1111<<rbitshift)) | four[2]<<bitshift;
-			LCDDR15= (LCDDR15 & (0b1111<<rbitshift)) | four[3]<<bitshift;
-			break;
-			case '5':
-			LCDDR0 = ((LCDDR0 & (0b1111<<rbitshift))  | five[0]<<bitshift);
      d40:	40 91 20 01 	lds	r20, 0x0120	; 0x800120 <five>
      d44:	50 91 21 01 	lds	r21, 0x0121	; 0x800121 <five+0x1>
      d48:	02 2e       	mov	r0, r18
@@ -1773,7 +1377,6 @@ void writeChar(char ch, int pos){
      d54:	98 23       	and	r25, r24
      d56:	49 2b       	or	r20, r25
      d58:	40 93 ec 00 	sts	0x00EC, r20	; 0x8000ec <__TEXT_REGION_LENGTH__+0x7fc0ec>
-			LCDDR5 = (LCDDR5 & (0b1111<<rbitshift))  | five[1]<<bitshift;
      d5c:	90 91 f1 00 	lds	r25, 0x00F1	; 0x8000f1 <__TEXT_REGION_LENGTH__+0x7fc0f1>
      d60:	40 91 22 01 	lds	r20, 0x0122	; 0x800122 <five+0x2>
      d64:	50 91 23 01 	lds	r21, 0x0123	; 0x800123 <five+0x3>
@@ -1785,7 +1388,6 @@ void writeChar(char ch, int pos){
      d72:	98 23       	and	r25, r24
      d74:	49 2b       	or	r20, r25
      d76:	40 93 f1 00 	sts	0x00F1, r20	; 0x8000f1 <__TEXT_REGION_LENGTH__+0x7fc0f1>
-			LCDDR10= (LCDDR10 & (0b1111<<rbitshift)) | five[2]<<bitshift;
      d7a:	90 91 f6 00 	lds	r25, 0x00F6	; 0x8000f6 <__TEXT_REGION_LENGTH__+0x7fc0f6>
      d7e:	40 91 24 01 	lds	r20, 0x0124	; 0x800124 <five+0x4>
      d82:	50 91 25 01 	lds	r21, 0x0125	; 0x800125 <five+0x5>
@@ -1797,17 +1399,10 @@ void writeChar(char ch, int pos){
      d90:	98 23       	and	r25, r24
      d92:	49 2b       	or	r20, r25
      d94:	40 93 f6 00 	sts	0x00F6, r20	; 0x8000f6 <__TEXT_REGION_LENGTH__+0x7fc0f6>
-			LCDDR15= (LCDDR15 & (0b1111<<rbitshift)) | five[3]<<bitshift;
      d98:	90 91 fb 00 	lds	r25, 0x00FB	; 0x8000fb <__TEXT_REGION_LENGTH__+0x7fc0fb>
      d9c:	40 91 26 01 	lds	r20, 0x0126	; 0x800126 <five+0x6>
      da0:	50 91 27 01 	lds	r21, 0x0127	; 0x800127 <five+0x7>
      da4:	8f cf       	rjmp	.-226    	; 0xcc4 <__stack+0x7c5>
-			LCDDR5 = (LCDDR5 & (0b1111<<rbitshift))  | three[1]<<bitshift;
-			LCDDR10= (LCDDR10 & (0b1111<<rbitshift)) | three[2]<<bitshift;
-			LCDDR15= (LCDDR15 & (0b1111<<rbitshift)) | three[3]<<bitshift;
-			break;
-			case '4':
-			LCDDR0 = ((LCDDR0 & (0b1111<<rbitshift))  | four[0]<<bitshift);
      da6:	40 91 28 01 	lds	r20, 0x0128	; 0x800128 <four>
      daa:	50 91 29 01 	lds	r21, 0x0129	; 0x800129 <four+0x1>
      dae:	02 2e       	mov	r0, r18
@@ -1819,7 +1414,6 @@ void writeChar(char ch, int pos){
      dba:	98 23       	and	r25, r24
      dbc:	49 2b       	or	r20, r25
      dbe:	40 93 ec 00 	sts	0x00EC, r20	; 0x8000ec <__TEXT_REGION_LENGTH__+0x7fc0ec>
-			LCDDR5 = (LCDDR5 & (0b1111<<rbitshift))  | four[1]<<bitshift;
      dc2:	90 91 f1 00 	lds	r25, 0x00F1	; 0x8000f1 <__TEXT_REGION_LENGTH__+0x7fc0f1>
      dc6:	40 91 2a 01 	lds	r20, 0x012A	; 0x80012a <four+0x2>
      dca:	50 91 2b 01 	lds	r21, 0x012B	; 0x80012b <four+0x3>
@@ -1831,7 +1425,6 @@ void writeChar(char ch, int pos){
      dd8:	98 23       	and	r25, r24
      dda:	49 2b       	or	r20, r25
      ddc:	40 93 f1 00 	sts	0x00F1, r20	; 0x8000f1 <__TEXT_REGION_LENGTH__+0x7fc0f1>
-			LCDDR10= (LCDDR10 & (0b1111<<rbitshift)) | four[2]<<bitshift;
      de0:	90 91 f6 00 	lds	r25, 0x00F6	; 0x8000f6 <__TEXT_REGION_LENGTH__+0x7fc0f6>
      de4:	40 91 2c 01 	lds	r20, 0x012C	; 0x80012c <four+0x4>
      de8:	50 91 2d 01 	lds	r21, 0x012D	; 0x80012d <four+0x5>
@@ -1843,17 +1436,10 @@ void writeChar(char ch, int pos){
      df6:	98 23       	and	r25, r24
      df8:	49 2b       	or	r20, r25
      dfa:	40 93 f6 00 	sts	0x00F6, r20	; 0x8000f6 <__TEXT_REGION_LENGTH__+0x7fc0f6>
-			LCDDR15= (LCDDR15 & (0b1111<<rbitshift)) | four[3]<<bitshift;
      dfe:	90 91 fb 00 	lds	r25, 0x00FB	; 0x8000fb <__TEXT_REGION_LENGTH__+0x7fc0fb>
      e02:	40 91 2e 01 	lds	r20, 0x012E	; 0x80012e <four+0x6>
      e06:	50 91 2f 01 	lds	r21, 0x012F	; 0x80012f <four+0x7>
      e0a:	1f cf       	rjmp	.-450    	; 0xc4a <__stack+0x74b>
-			LCDDR5 = (LCDDR5 & (0b1111<<rbitshift))  | two[1]<<bitshift;
-			LCDDR10= (LCDDR10 & (0b1111<<rbitshift)) | two[2]<<bitshift;
-			LCDDR15= (LCDDR15 & (0b1111<<rbitshift)) | two[3]<<bitshift;
-			break;
-			case '3':
-			LCDDR0 = ((LCDDR0 & (0b1111<<rbitshift))  | three[0]<<bitshift);
      e0c:	40 91 30 01 	lds	r20, 0x0130	; 0x800130 <three>
      e10:	50 91 31 01 	lds	r21, 0x0131	; 0x800131 <three+0x1>
      e14:	02 2e       	mov	r0, r18
@@ -1865,7 +1451,6 @@ void writeChar(char ch, int pos){
      e20:	98 23       	and	r25, r24
      e22:	49 2b       	or	r20, r25
      e24:	40 93 ec 00 	sts	0x00EC, r20	; 0x8000ec <__TEXT_REGION_LENGTH__+0x7fc0ec>
-			LCDDR5 = (LCDDR5 & (0b1111<<rbitshift))  | three[1]<<bitshift;
      e28:	90 91 f1 00 	lds	r25, 0x00F1	; 0x8000f1 <__TEXT_REGION_LENGTH__+0x7fc0f1>
      e2c:	40 91 32 01 	lds	r20, 0x0132	; 0x800132 <three+0x2>
      e30:	50 91 33 01 	lds	r21, 0x0133	; 0x800133 <three+0x3>
@@ -1877,7 +1462,6 @@ void writeChar(char ch, int pos){
      e3e:	98 23       	and	r25, r24
      e40:	49 2b       	or	r20, r25
      e42:	40 93 f1 00 	sts	0x00F1, r20	; 0x8000f1 <__TEXT_REGION_LENGTH__+0x7fc0f1>
-			LCDDR10= (LCDDR10 & (0b1111<<rbitshift)) | three[2]<<bitshift;
      e46:	90 91 f6 00 	lds	r25, 0x00F6	; 0x8000f6 <__TEXT_REGION_LENGTH__+0x7fc0f6>
      e4a:	40 91 34 01 	lds	r20, 0x0134	; 0x800134 <three+0x4>
      e4e:	50 91 35 01 	lds	r21, 0x0135	; 0x800135 <three+0x5>
@@ -1889,17 +1473,10 @@ void writeChar(char ch, int pos){
      e5c:	98 23       	and	r25, r24
      e5e:	49 2b       	or	r20, r25
      e60:	40 93 f6 00 	sts	0x00F6, r20	; 0x8000f6 <__TEXT_REGION_LENGTH__+0x7fc0f6>
-			LCDDR15= (LCDDR15 & (0b1111<<rbitshift)) | three[3]<<bitshift;
      e64:	90 91 fb 00 	lds	r25, 0x00FB	; 0x8000fb <__TEXT_REGION_LENGTH__+0x7fc0fb>
      e68:	40 91 36 01 	lds	r20, 0x0136	; 0x800136 <three+0x6>
      e6c:	50 91 37 01 	lds	r21, 0x0137	; 0x800137 <three+0x7>
      e70:	29 cf       	rjmp	.-430    	; 0xcc4 <__stack+0x7c5>
-			LCDDR5 = (LCDDR5 & (0b1111<<rbitshift))  | one[1]<<bitshift;
-			LCDDR10= (LCDDR10 & (0b1111<<rbitshift)) | one[2]<<bitshift;
-			LCDDR15= (LCDDR15 & (0b1111<<rbitshift)) | one[3]<<bitshift;
-			break;
-			case '2':
-			LCDDR0 = ((LCDDR0 & (0b1111<<rbitshift))  | two[0]<<bitshift);
      e72:	40 91 38 01 	lds	r20, 0x0138	; 0x800138 <two>
      e76:	50 91 39 01 	lds	r21, 0x0139	; 0x800139 <two+0x1>
      e7a:	02 2e       	mov	r0, r18
@@ -1911,7 +1488,6 @@ void writeChar(char ch, int pos){
      e86:	98 23       	and	r25, r24
      e88:	49 2b       	or	r20, r25
      e8a:	40 93 ec 00 	sts	0x00EC, r20	; 0x8000ec <__TEXT_REGION_LENGTH__+0x7fc0ec>
-			LCDDR5 = (LCDDR5 & (0b1111<<rbitshift))  | two[1]<<bitshift;
      e8e:	90 91 f1 00 	lds	r25, 0x00F1	; 0x8000f1 <__TEXT_REGION_LENGTH__+0x7fc0f1>
      e92:	40 91 3a 01 	lds	r20, 0x013A	; 0x80013a <two+0x2>
      e96:	50 91 3b 01 	lds	r21, 0x013B	; 0x80013b <two+0x3>
@@ -1923,7 +1499,6 @@ void writeChar(char ch, int pos){
      ea4:	98 23       	and	r25, r24
      ea6:	49 2b       	or	r20, r25
      ea8:	40 93 f1 00 	sts	0x00F1, r20	; 0x8000f1 <__TEXT_REGION_LENGTH__+0x7fc0f1>
-			LCDDR10= (LCDDR10 & (0b1111<<rbitshift)) | two[2]<<bitshift;
      eac:	90 91 f6 00 	lds	r25, 0x00F6	; 0x8000f6 <__TEXT_REGION_LENGTH__+0x7fc0f6>
      eb0:	40 91 3c 01 	lds	r20, 0x013C	; 0x80013c <two+0x4>
      eb4:	50 91 3d 01 	lds	r21, 0x013D	; 0x80013d <two+0x5>
@@ -1935,17 +1510,10 @@ void writeChar(char ch, int pos){
      ec2:	98 23       	and	r25, r24
      ec4:	49 2b       	or	r20, r25
      ec6:	40 93 f6 00 	sts	0x00F6, r20	; 0x8000f6 <__TEXT_REGION_LENGTH__+0x7fc0f6>
-			LCDDR15= (LCDDR15 & (0b1111<<rbitshift)) | two[3]<<bitshift;
      eca:	90 91 fb 00 	lds	r25, 0x00FB	; 0x8000fb <__TEXT_REGION_LENGTH__+0x7fc0fb>
      ece:	40 91 3e 01 	lds	r20, 0x013E	; 0x80013e <two+0x6>
      ed2:	50 91 3f 01 	lds	r21, 0x013F	; 0x80013f <two+0x7>
      ed6:	b9 ce       	rjmp	.-654    	; 0xc4a <__stack+0x74b>
-			LCDDR5 = (LCDDR5 & (0b11111<<rbitshift)) | zero[1]<<bitshift;
-			LCDDR10= (LCDDR10 & (0b1111<<rbitshift)) | zero[2]<<bitshift;
-			LCDDR15= (LCDDR15 & (0b1111<<rbitshift)) | zero[3]<<bitshift;
-			break;
-			case '1':
-			LCDDR0 = ((LCDDR0 & (0b1111<<rbitshift))  | one[0]<<bitshift);
      ed8:	40 91 40 01 	lds	r20, 0x0140	; 0x800140 <one>
      edc:	50 91 41 01 	lds	r21, 0x0141	; 0x800141 <one+0x1>
      ee0:	02 2e       	mov	r0, r18
@@ -1957,7 +1525,6 @@ void writeChar(char ch, int pos){
      eec:	98 23       	and	r25, r24
      eee:	49 2b       	or	r20, r25
      ef0:	40 93 ec 00 	sts	0x00EC, r20	; 0x8000ec <__TEXT_REGION_LENGTH__+0x7fc0ec>
-			LCDDR5 = (LCDDR5 & (0b1111<<rbitshift))  | one[1]<<bitshift;
      ef4:	90 91 f1 00 	lds	r25, 0x00F1	; 0x8000f1 <__TEXT_REGION_LENGTH__+0x7fc0f1>
      ef8:	40 91 42 01 	lds	r20, 0x0142	; 0x800142 <one+0x2>
      efc:	50 91 43 01 	lds	r21, 0x0143	; 0x800143 <one+0x3>
@@ -1969,7 +1536,6 @@ void writeChar(char ch, int pos){
      f0a:	98 23       	and	r25, r24
      f0c:	49 2b       	or	r20, r25
      f0e:	40 93 f1 00 	sts	0x00F1, r20	; 0x8000f1 <__TEXT_REGION_LENGTH__+0x7fc0f1>
-			LCDDR10= (LCDDR10 & (0b1111<<rbitshift)) | one[2]<<bitshift;
      f12:	90 91 f6 00 	lds	r25, 0x00F6	; 0x8000f6 <__TEXT_REGION_LENGTH__+0x7fc0f6>
      f16:	40 91 44 01 	lds	r20, 0x0144	; 0x800144 <one+0x4>
      f1a:	50 91 45 01 	lds	r21, 0x0145	; 0x800145 <one+0x5>
@@ -1981,17 +1547,10 @@ void writeChar(char ch, int pos){
      f28:	98 23       	and	r25, r24
      f2a:	49 2b       	or	r20, r25
      f2c:	40 93 f6 00 	sts	0x00F6, r20	; 0x8000f6 <__TEXT_REGION_LENGTH__+0x7fc0f6>
-			LCDDR15= (LCDDR15 & (0b1111<<rbitshift)) | one[3]<<bitshift;
      f30:	90 91 fb 00 	lds	r25, 0x00FB	; 0x8000fb <__TEXT_REGION_LENGTH__+0x7fc0fb>
      f34:	40 91 46 01 	lds	r20, 0x0146	; 0x800146 <one+0x6>
      f38:	50 91 47 01 	lds	r21, 0x0147	; 0x800147 <one+0x7>
      f3c:	c3 ce       	rjmp	.-634    	; 0xcc4 <__stack+0x7c5>
-
-	switch(pos){
-		case 0: case 1:
-		switch(ch){
-			case '0':
-			LCDDR0 = ((LCDDR0 & (0b1111<<rbitshift)) | zero[0]<<bitshift);
      f3e:	40 91 48 01 	lds	r20, 0x0148	; 0x800148 <zero>
      f42:	50 91 49 01 	lds	r21, 0x0149	; 0x800149 <zero+0x1>
      f46:	02 2e       	mov	r0, r18
@@ -2003,7 +1562,6 @@ void writeChar(char ch, int pos){
      f52:	98 23       	and	r25, r24
      f54:	49 2b       	or	r20, r25
      f56:	40 93 ec 00 	sts	0x00EC, r20	; 0x8000ec <__TEXT_REGION_LENGTH__+0x7fc0ec>
-			LCDDR5 = (LCDDR5 & (0b11111<<rbitshift)) | zero[1]<<bitshift;
      f5a:	90 91 f1 00 	lds	r25, 0x00F1	; 0x8000f1 <__TEXT_REGION_LENGTH__+0x7fc0f1>
      f5e:	4f e1       	ldi	r20, 0x1F	; 31
      f60:	50 e0       	ldi	r21, 0x00	; 0
@@ -2021,7 +1579,6 @@ void writeChar(char ch, int pos){
      f7c:	ea f7       	brpl	.-6      	; 0xf78 <__stack+0xa79>
      f7e:	49 2b       	or	r20, r25
      f80:	40 93 f1 00 	sts	0x00F1, r20	; 0x8000f1 <__TEXT_REGION_LENGTH__+0x7fc0f1>
-			LCDDR10= (LCDDR10 & (0b1111<<rbitshift)) | zero[2]<<bitshift;
      f84:	90 91 f6 00 	lds	r25, 0x00F6	; 0x8000f6 <__TEXT_REGION_LENGTH__+0x7fc0f6>
      f88:	40 91 4c 01 	lds	r20, 0x014C	; 0x80014c <zero+0x4>
      f8c:	50 91 4d 01 	lds	r21, 0x014D	; 0x80014d <zero+0x5>
@@ -2033,7 +1590,6 @@ void writeChar(char ch, int pos){
      f9a:	98 23       	and	r25, r24
      f9c:	49 2b       	or	r20, r25
      f9e:	40 93 f6 00 	sts	0x00F6, r20	; 0x8000f6 <__TEXT_REGION_LENGTH__+0x7fc0f6>
-			LCDDR15= (LCDDR15 & (0b1111<<rbitshift)) | zero[3]<<bitshift;
      fa2:	90 91 fb 00 	lds	r25, 0x00FB	; 0x8000fb <__TEXT_REGION_LENGTH__+0x7fc0fb>
      fa6:	40 91 4e 01 	lds	r20, 0x014E	; 0x80014e <zero+0x6>
      faa:	50 91 4f 01 	lds	r21, 0x014F	; 0x80014f <zero+0x7>
@@ -2047,14 +1603,7 @@ void writeChar(char ch, int pos){
      fbc:	89 23       	and	r24, r25
      fbe:	28 2b       	or	r18, r24
      fc0:	20 93 fb 00 	sts	0x00FB, r18	; 0x8000fb <__TEXT_REGION_LENGTH__+0x7fc0fb>
-			break;
      fc4:	08 95       	ret
-			LCDDR5 = (LCDDR5 & (0b1111<<rbitshift))  | eight[1]<<bitshift;
-			LCDDR10= (LCDDR10 & (0b1111<<rbitshift)) | eight[2]<<bitshift;
-			LCDDR15= (LCDDR15 & (0b1111<<rbitshift)) | eight[3]<<bitshift;
-			break;
-			case '9':
-			LCDDR0 = ((LCDDR0 & (0b1111<<rbitshift))  | nine[0]<<bitshift);
      fc6:	40 91 00 01 	lds	r20, 0x0100	; 0x800100 <__DATA_REGION_ORIGIN__>
      fca:	50 91 01 01 	lds	r21, 0x0101	; 0x800101 <__DATA_REGION_ORIGIN__+0x1>
      fce:	02 2e       	mov	r0, r18
@@ -2066,7 +1615,6 @@ void writeChar(char ch, int pos){
      fda:	98 23       	and	r25, r24
      fdc:	49 2b       	or	r20, r25
      fde:	40 93 ec 00 	sts	0x00EC, r20	; 0x8000ec <__TEXT_REGION_LENGTH__+0x7fc0ec>
-			LCDDR5 = (LCDDR5 & (0b1111<<rbitshift))  | nine[1]<<bitshift;
      fe2:	90 91 f1 00 	lds	r25, 0x00F1	; 0x8000f1 <__TEXT_REGION_LENGTH__+0x7fc0f1>
      fe6:	40 91 02 01 	lds	r20, 0x0102	; 0x800102 <__DATA_REGION_ORIGIN__+0x2>
      fea:	50 91 03 01 	lds	r21, 0x0103	; 0x800103 <__DATA_REGION_ORIGIN__+0x3>
@@ -2078,7 +1626,6 @@ void writeChar(char ch, int pos){
      ff8:	98 23       	and	r25, r24
      ffa:	49 2b       	or	r20, r25
      ffc:	40 93 f1 00 	sts	0x00F1, r20	; 0x8000f1 <__TEXT_REGION_LENGTH__+0x7fc0f1>
-			LCDDR10= (LCDDR10 & (0b1111<<rbitshift)) | nine[2]<<bitshift;
     1000:	90 91 f6 00 	lds	r25, 0x00F6	; 0x8000f6 <__TEXT_REGION_LENGTH__+0x7fc0f6>
     1004:	40 91 04 01 	lds	r20, 0x0104	; 0x800104 <__DATA_REGION_ORIGIN__+0x4>
     1008:	50 91 05 01 	lds	r21, 0x0105	; 0x800105 <__DATA_REGION_ORIGIN__+0x5>
@@ -2090,17 +1637,10 @@ void writeChar(char ch, int pos){
     1016:	98 23       	and	r25, r24
     1018:	49 2b       	or	r20, r25
     101a:	40 93 f6 00 	sts	0x00F6, r20	; 0x8000f6 <__TEXT_REGION_LENGTH__+0x7fc0f6>
-			LCDDR15= (LCDDR15 & (0b1111<<rbitshift)) | nine[3]<<bitshift;
     101e:	90 91 fb 00 	lds	r25, 0x00FB	; 0x8000fb <__TEXT_REGION_LENGTH__+0x7fc0fb>
     1022:	40 91 06 01 	lds	r20, 0x0106	; 0x800106 <__DATA_REGION_ORIGIN__+0x6>
     1026:	50 91 07 01 	lds	r21, 0x0107	; 0x800107 <__DATA_REGION_ORIGIN__+0x7>
     102a:	4c ce       	rjmp	.-872    	; 0xcc4 <__stack+0x7c5>
-			LCDDR6 = (LCDDR6 & (0b1111<<rbitshift))  | seven[1]<<bitshift;
-			LCDDR11= (LCDDR11 & (0b1111<<rbitshift)) | seven[2]<<bitshift;
-			LCDDR16= (LCDDR16 & (0b1111<<rbitshift)) | seven[3]<<bitshift;
-			break;
-			case '8':
-			LCDDR1 = (LCDDR1 & (0b1111<<rbitshift))  | eight[0]<<bitshift;
     102c:	40 91 08 01 	lds	r20, 0x0108	; 0x800108 <eight>
     1030:	50 91 09 01 	lds	r21, 0x0109	; 0x800109 <eight+0x1>
     1034:	02 2e       	mov	r0, r18
@@ -2112,7 +1652,6 @@ void writeChar(char ch, int pos){
     1040:	98 23       	and	r25, r24
     1042:	49 2b       	or	r20, r25
     1044:	40 93 ed 00 	sts	0x00ED, r20	; 0x8000ed <__TEXT_REGION_LENGTH__+0x7fc0ed>
-			LCDDR6 = (LCDDR6 & (0b1111<<rbitshift))  | eight[1]<<bitshift;
     1048:	90 91 f2 00 	lds	r25, 0x00F2	; 0x8000f2 <__TEXT_REGION_LENGTH__+0x7fc0f2>
     104c:	40 91 0a 01 	lds	r20, 0x010A	; 0x80010a <eight+0x2>
     1050:	50 91 0b 01 	lds	r21, 0x010B	; 0x80010b <eight+0x3>
@@ -2124,7 +1663,6 @@ void writeChar(char ch, int pos){
     105e:	98 23       	and	r25, r24
     1060:	49 2b       	or	r20, r25
     1062:	40 93 f2 00 	sts	0x00F2, r20	; 0x8000f2 <__TEXT_REGION_LENGTH__+0x7fc0f2>
-			LCDDR11= (LCDDR11 & (0b1111<<rbitshift)) | eight[2]<<bitshift;
     1066:	90 91 f7 00 	lds	r25, 0x00F7	; 0x8000f7 <__TEXT_REGION_LENGTH__+0x7fc0f7>
     106a:	40 91 0c 01 	lds	r20, 0x010C	; 0x80010c <eight+0x4>
     106e:	50 91 0d 01 	lds	r21, 0x010D	; 0x80010d <eight+0x5>
@@ -2136,17 +1674,10 @@ void writeChar(char ch, int pos){
     107c:	98 23       	and	r25, r24
     107e:	49 2b       	or	r20, r25
     1080:	40 93 f7 00 	sts	0x00F7, r20	; 0x8000f7 <__TEXT_REGION_LENGTH__+0x7fc0f7>
-			LCDDR16= (LCDDR16 & (0b1111<<rbitshift)) | eight[3]<<bitshift;
     1084:	90 91 fc 00 	lds	r25, 0x00FC	; 0x8000fc <__TEXT_REGION_LENGTH__+0x7fc0fc>
     1088:	40 91 0e 01 	lds	r20, 0x010E	; 0x80010e <eight+0x6>
     108c:	50 91 0f 01 	lds	r21, 0x010F	; 0x80010f <eight+0x7>
     1090:	30 cc       	rjmp	.-1952   	; 0x8f2 <__stack+0x3f3>
-			LCDDR6 = (LCDDR6 & (0b1111<<rbitshift))  | six[1]<<bitshift;
-			LCDDR11= (LCDDR11 & (0b1111<<rbitshift)) | six[2]<<bitshift;
-			LCDDR16= (LCDDR16 & (0b1111<<rbitshift)) | six[3]<<bitshift;
-			break;
-			case '7':
-			LCDDR1 = (LCDDR1 & (0b1111<<rbitshift))  | seven[0]<<bitshift;
     1092:	40 91 10 01 	lds	r20, 0x0110	; 0x800110 <seven>
     1096:	50 91 11 01 	lds	r21, 0x0111	; 0x800111 <seven+0x1>
     109a:	02 2e       	mov	r0, r18
@@ -2158,7 +1689,6 @@ void writeChar(char ch, int pos){
     10a6:	98 23       	and	r25, r24
     10a8:	49 2b       	or	r20, r25
     10aa:	40 93 ed 00 	sts	0x00ED, r20	; 0x8000ed <__TEXT_REGION_LENGTH__+0x7fc0ed>
-			LCDDR6 = (LCDDR6 & (0b1111<<rbitshift))  | seven[1]<<bitshift;
     10ae:	90 91 f2 00 	lds	r25, 0x00F2	; 0x8000f2 <__TEXT_REGION_LENGTH__+0x7fc0f2>
     10b2:	40 91 12 01 	lds	r20, 0x0112	; 0x800112 <seven+0x2>
     10b6:	50 91 13 01 	lds	r21, 0x0113	; 0x800113 <seven+0x3>
@@ -2170,7 +1700,6 @@ void writeChar(char ch, int pos){
     10c4:	98 23       	and	r25, r24
     10c6:	49 2b       	or	r20, r25
     10c8:	40 93 f2 00 	sts	0x00F2, r20	; 0x8000f2 <__TEXT_REGION_LENGTH__+0x7fc0f2>
-			LCDDR11= (LCDDR11 & (0b1111<<rbitshift)) | seven[2]<<bitshift;
     10cc:	90 91 f7 00 	lds	r25, 0x00F7	; 0x8000f7 <__TEXT_REGION_LENGTH__+0x7fc0f7>
     10d0:	40 91 14 01 	lds	r20, 0x0114	; 0x800114 <seven+0x4>
     10d4:	50 91 15 01 	lds	r21, 0x0115	; 0x800115 <seven+0x5>
@@ -2182,17 +1711,10 @@ void writeChar(char ch, int pos){
     10e2:	98 23       	and	r25, r24
     10e4:	49 2b       	or	r20, r25
     10e6:	40 93 f7 00 	sts	0x00F7, r20	; 0x8000f7 <__TEXT_REGION_LENGTH__+0x7fc0f7>
-			LCDDR16= (LCDDR16 & (0b1111<<rbitshift)) | seven[3]<<bitshift;
     10ea:	90 91 fc 00 	lds	r25, 0x00FC	; 0x8000fc <__TEXT_REGION_LENGTH__+0x7fc0fc>
     10ee:	40 91 16 01 	lds	r20, 0x0116	; 0x800116 <seven+0x6>
     10f2:	50 91 17 01 	lds	r21, 0x0117	; 0x800117 <seven+0x7>
     10f6:	3a cc       	rjmp	.-1932   	; 0x96c <__stack+0x46d>
-			LCDDR6 = (LCDDR6 & (0b1111<<rbitshift))  | five[1]<<bitshift;
-			LCDDR11= (LCDDR11 & (0b1111<<rbitshift)) | five[2]<<bitshift;
-			LCDDR16= (LCDDR16 & (0b1111<<rbitshift)) | five[3]<<bitshift;
-			break;
-			case '6':
-			LCDDR1 = (LCDDR1 & (0b1111<<rbitshift))  | six[0]<<bitshift;
     10f8:	40 91 18 01 	lds	r20, 0x0118	; 0x800118 <six>
     10fc:	50 91 19 01 	lds	r21, 0x0119	; 0x800119 <six+0x1>
     1100:	02 2e       	mov	r0, r18
@@ -2204,7 +1726,6 @@ void writeChar(char ch, int pos){
     110c:	98 23       	and	r25, r24
     110e:	49 2b       	or	r20, r25
     1110:	40 93 ed 00 	sts	0x00ED, r20	; 0x8000ed <__TEXT_REGION_LENGTH__+0x7fc0ed>
-			LCDDR6 = (LCDDR6 & (0b1111<<rbitshift))  | six[1]<<bitshift;
     1114:	90 91 f2 00 	lds	r25, 0x00F2	; 0x8000f2 <__TEXT_REGION_LENGTH__+0x7fc0f2>
     1118:	40 91 1a 01 	lds	r20, 0x011A	; 0x80011a <six+0x2>
     111c:	50 91 1b 01 	lds	r21, 0x011B	; 0x80011b <six+0x3>
@@ -2216,7 +1737,6 @@ void writeChar(char ch, int pos){
     112a:	98 23       	and	r25, r24
     112c:	49 2b       	or	r20, r25
     112e:	40 93 f2 00 	sts	0x00F2, r20	; 0x8000f2 <__TEXT_REGION_LENGTH__+0x7fc0f2>
-			LCDDR11= (LCDDR11 & (0b1111<<rbitshift)) | six[2]<<bitshift;
     1132:	90 91 f7 00 	lds	r25, 0x00F7	; 0x8000f7 <__TEXT_REGION_LENGTH__+0x7fc0f7>
     1136:	40 91 1c 01 	lds	r20, 0x011C	; 0x80011c <six+0x4>
     113a:	50 91 1d 01 	lds	r21, 0x011D	; 0x80011d <six+0x5>
@@ -2228,17 +1748,10 @@ void writeChar(char ch, int pos){
     1148:	98 23       	and	r25, r24
     114a:	49 2b       	or	r20, r25
     114c:	40 93 f7 00 	sts	0x00F7, r20	; 0x8000f7 <__TEXT_REGION_LENGTH__+0x7fc0f7>
-			LCDDR16= (LCDDR16 & (0b1111<<rbitshift)) | six[3]<<bitshift;
     1150:	90 91 fc 00 	lds	r25, 0x00FC	; 0x8000fc <__TEXT_REGION_LENGTH__+0x7fc0fc>
     1154:	40 91 1e 01 	lds	r20, 0x011E	; 0x80011e <six+0x6>
     1158:	50 91 1f 01 	lds	r21, 0x011F	; 0x80011f <six+0x7>
     115c:	ca cb       	rjmp	.-2156   	; 0x8f2 <__stack+0x3f3>
-			LCDDR6 = (LCDDR6 & (0b1111<<rbitshift))  | four[1]<<bitshift;
-			LCDDR11= (LCDDR11 & (0b1111<<rbitshift)) | four[2]<<bitshift;
-			LCDDR16= (LCDDR16 & (0b1111<<rbitshift)) | four[3]<<bitshift;
-			break;
-			case '5':
-			LCDDR1 = (LCDDR1 & (0b1111<<rbitshift))  | five[0]<<bitshift;
     115e:	40 91 20 01 	lds	r20, 0x0120	; 0x800120 <five>
     1162:	50 91 21 01 	lds	r21, 0x0121	; 0x800121 <five+0x1>
     1166:	02 2e       	mov	r0, r18
@@ -2250,7 +1763,6 @@ void writeChar(char ch, int pos){
     1172:	98 23       	and	r25, r24
     1174:	49 2b       	or	r20, r25
     1176:	40 93 ed 00 	sts	0x00ED, r20	; 0x8000ed <__TEXT_REGION_LENGTH__+0x7fc0ed>
-			LCDDR6 = (LCDDR6 & (0b1111<<rbitshift))  | five[1]<<bitshift;
     117a:	90 91 f2 00 	lds	r25, 0x00F2	; 0x8000f2 <__TEXT_REGION_LENGTH__+0x7fc0f2>
     117e:	40 91 22 01 	lds	r20, 0x0122	; 0x800122 <five+0x2>
     1182:	50 91 23 01 	lds	r21, 0x0123	; 0x800123 <five+0x3>
@@ -2262,7 +1774,6 @@ void writeChar(char ch, int pos){
     1190:	98 23       	and	r25, r24
     1192:	49 2b       	or	r20, r25
     1194:	40 93 f2 00 	sts	0x00F2, r20	; 0x8000f2 <__TEXT_REGION_LENGTH__+0x7fc0f2>
-			LCDDR11= (LCDDR11 & (0b1111<<rbitshift)) | five[2]<<bitshift;
     1198:	90 91 f7 00 	lds	r25, 0x00F7	; 0x8000f7 <__TEXT_REGION_LENGTH__+0x7fc0f7>
     119c:	40 91 24 01 	lds	r20, 0x0124	; 0x800124 <five+0x4>
     11a0:	50 91 25 01 	lds	r21, 0x0125	; 0x800125 <five+0x5>
@@ -2274,17 +1785,10 @@ void writeChar(char ch, int pos){
     11ae:	98 23       	and	r25, r24
     11b0:	49 2b       	or	r20, r25
     11b2:	40 93 f7 00 	sts	0x00F7, r20	; 0x8000f7 <__TEXT_REGION_LENGTH__+0x7fc0f7>
-			LCDDR16= (LCDDR16 & (0b1111<<rbitshift)) | five[3]<<bitshift;
     11b6:	90 91 fc 00 	lds	r25, 0x00FC	; 0x8000fc <__TEXT_REGION_LENGTH__+0x7fc0fc>
     11ba:	40 91 26 01 	lds	r20, 0x0126	; 0x800126 <five+0x6>
     11be:	50 91 27 01 	lds	r21, 0x0127	; 0x800127 <five+0x7>
     11c2:	d4 cb       	rjmp	.-2136   	; 0x96c <__stack+0x46d>
-			LCDDR6 = (LCDDR6 & (0b1111<<rbitshift))  | three[1]<<bitshift;
-			LCDDR11= (LCDDR11 & (0b1111<<rbitshift)) | three[2]<<bitshift;
-			LCDDR16= (LCDDR16 & (0b1111<<rbitshift)) | three[3]<<bitshift;
-			break;
-			case '4':
-			LCDDR1 = (LCDDR1 & (0b1111<<rbitshift))  | four[0]<<bitshift;
     11c4:	40 91 28 01 	lds	r20, 0x0128	; 0x800128 <four>
     11c8:	50 91 29 01 	lds	r21, 0x0129	; 0x800129 <four+0x1>
     11cc:	02 2e       	mov	r0, r18
@@ -2296,7 +1800,6 @@ void writeChar(char ch, int pos){
     11d8:	98 23       	and	r25, r24
     11da:	49 2b       	or	r20, r25
     11dc:	40 93 ed 00 	sts	0x00ED, r20	; 0x8000ed <__TEXT_REGION_LENGTH__+0x7fc0ed>
-			LCDDR6 = (LCDDR6 & (0b1111<<rbitshift))  | four[1]<<bitshift;
     11e0:	90 91 f2 00 	lds	r25, 0x00F2	; 0x8000f2 <__TEXT_REGION_LENGTH__+0x7fc0f2>
     11e4:	40 91 2a 01 	lds	r20, 0x012A	; 0x80012a <four+0x2>
     11e8:	50 91 2b 01 	lds	r21, 0x012B	; 0x80012b <four+0x3>
@@ -2308,7 +1811,6 @@ void writeChar(char ch, int pos){
     11f6:	98 23       	and	r25, r24
     11f8:	49 2b       	or	r20, r25
     11fa:	40 93 f2 00 	sts	0x00F2, r20	; 0x8000f2 <__TEXT_REGION_LENGTH__+0x7fc0f2>
-			LCDDR11= (LCDDR11 & (0b1111<<rbitshift)) | four[2]<<bitshift;
     11fe:	90 91 f7 00 	lds	r25, 0x00F7	; 0x8000f7 <__TEXT_REGION_LENGTH__+0x7fc0f7>
     1202:	40 91 2c 01 	lds	r20, 0x012C	; 0x80012c <four+0x4>
     1206:	50 91 2d 01 	lds	r21, 0x012D	; 0x80012d <four+0x5>
@@ -2320,17 +1822,10 @@ void writeChar(char ch, int pos){
     1214:	98 23       	and	r25, r24
     1216:	49 2b       	or	r20, r25
     1218:	40 93 f7 00 	sts	0x00F7, r20	; 0x8000f7 <__TEXT_REGION_LENGTH__+0x7fc0f7>
-			LCDDR16= (LCDDR16 & (0b1111<<rbitshift)) | four[3]<<bitshift;
     121c:	90 91 fc 00 	lds	r25, 0x00FC	; 0x8000fc <__TEXT_REGION_LENGTH__+0x7fc0fc>
     1220:	40 91 2e 01 	lds	r20, 0x012E	; 0x80012e <four+0x6>
     1224:	50 91 2f 01 	lds	r21, 0x012F	; 0x80012f <four+0x7>
     1228:	64 cb       	rjmp	.-2360   	; 0x8f2 <__stack+0x3f3>
-			LCDDR6 = (LCDDR6 & (0b1111<<rbitshift))  | two[1]<<bitshift;
-			LCDDR11= (LCDDR11 & (0b1111<<rbitshift)) | two[2]<<bitshift;
-			LCDDR16= (LCDDR16 & (0b1111<<rbitshift)) | two[3]<<bitshift;
-			break;
-			case '3':
-			LCDDR1 = (LCDDR1 & (0b1111<<rbitshift))  | three[0]<<bitshift;
     122a:	40 91 30 01 	lds	r20, 0x0130	; 0x800130 <three>
     122e:	50 91 31 01 	lds	r21, 0x0131	; 0x800131 <three+0x1>
     1232:	02 2e       	mov	r0, r18
@@ -2342,7 +1837,6 @@ void writeChar(char ch, int pos){
     123e:	98 23       	and	r25, r24
     1240:	49 2b       	or	r20, r25
     1242:	40 93 ed 00 	sts	0x00ED, r20	; 0x8000ed <__TEXT_REGION_LENGTH__+0x7fc0ed>
-			LCDDR6 = (LCDDR6 & (0b1111<<rbitshift))  | three[1]<<bitshift;
     1246:	90 91 f2 00 	lds	r25, 0x00F2	; 0x8000f2 <__TEXT_REGION_LENGTH__+0x7fc0f2>
     124a:	40 91 32 01 	lds	r20, 0x0132	; 0x800132 <three+0x2>
     124e:	50 91 33 01 	lds	r21, 0x0133	; 0x800133 <three+0x3>
@@ -2354,7 +1848,6 @@ void writeChar(char ch, int pos){
     125c:	98 23       	and	r25, r24
     125e:	49 2b       	or	r20, r25
     1260:	40 93 f2 00 	sts	0x00F2, r20	; 0x8000f2 <__TEXT_REGION_LENGTH__+0x7fc0f2>
-			LCDDR11= (LCDDR11 & (0b1111<<rbitshift)) | three[2]<<bitshift;
     1264:	90 91 f7 00 	lds	r25, 0x00F7	; 0x8000f7 <__TEXT_REGION_LENGTH__+0x7fc0f7>
     1268:	40 91 34 01 	lds	r20, 0x0134	; 0x800134 <three+0x4>
     126c:	50 91 35 01 	lds	r21, 0x0135	; 0x800135 <three+0x5>
@@ -2366,26 +1859,18 @@ void writeChar(char ch, int pos){
     127a:	98 23       	and	r25, r24
     127c:	49 2b       	or	r20, r25
     127e:	40 93 f7 00 	sts	0x00F7, r20	; 0x8000f7 <__TEXT_REGION_LENGTH__+0x7fc0f7>
-			LCDDR16= (LCDDR16 & (0b1111<<rbitshift)) | three[3]<<bitshift;
     1282:	90 91 fc 00 	lds	r25, 0x00FC	; 0x8000fc <__TEXT_REGION_LENGTH__+0x7fc0fc>
     1286:	40 91 36 01 	lds	r20, 0x0136	; 0x800136 <three+0x6>
     128a:	50 91 37 01 	lds	r21, 0x0137	; 0x800137 <three+0x7>
     128e:	6e cb       	rjmp	.-2340   	; 0x96c <__stack+0x46d>
 
 00001290 <printAt>:
-		LCDDR17= LCDDR17& none[3]<<bitshift;
-	}
-}
-
-
-void printAt(unsigned int num, int pos) {
     1290:	0f 93       	push	r16
     1292:	1f 93       	push	r17
     1294:	cf 93       	push	r28
     1296:	df 93       	push	r29
     1298:	ec 01       	movw	r28, r24
     129a:	8b 01       	movw	r16, r22
-	writeChar((num % 100) / 10 + '0', pos);
     129c:	9c 01       	movw	r18, r24
     129e:	36 95       	lsr	r19
     12a0:	27 95       	ror	r18
@@ -2418,8 +1903,6 @@ void printAt(unsigned int num, int pos) {
     12da:	b8 01       	movw	r22, r16
     12dc:	80 5d       	subi	r24, 0xD0	; 208
     12de:	0e 94 7f 01 	call	0x2fe	; 0x2fe <writeChar>
-	pos++;
-	writeChar( num % 10 + '0', pos);
     12e2:	0f 5f       	subi	r16, 0xFF	; 255
     12e4:	1f 4f       	sbci	r17, 0xFF	; 255
     12e6:	9e 01       	movw	r18, r28
@@ -2449,27 +1932,16 @@ void printAt(unsigned int num, int pos) {
     1318:	c9 01       	movw	r24, r18
     131a:	b8 01       	movw	r22, r16
     131c:	80 5d       	subi	r24, 0xD0	; 208
-}
     131e:	df 91       	pop	r29
     1320:	cf 91       	pop	r28
     1322:	1f 91       	pop	r17
     1324:	0f 91       	pop	r16
-
-
-void printAt(unsigned int num, int pos) {
-	writeChar((num % 100) / 10 + '0', pos);
-	pos++;
-	writeChar( num % 10 + '0', pos);
     1326:	0c 94 7f 01 	jmp	0x2fe	; 0x2fe <writeChar>
 
 0000132a <update>:
-}
-
-void update(GUI *self){
     132a:	cf 93       	push	r28
     132c:	df 93       	push	r29
     132e:	ec 01       	movw	r28, r24
-	printAt(SYNC(self->road, getNorthBound, 0), 0);
     1330:	40 e0       	ldi	r20, 0x00	; 0
     1332:	50 e0       	ldi	r21, 0x00	; 0
     1334:	6a e0       	ldi	r22, 0x0A	; 10
@@ -2480,7 +1952,6 @@ void update(GUI *self){
     1340:	60 e0       	ldi	r22, 0x00	; 0
     1342:	70 e0       	ldi	r23, 0x00	; 0
     1344:	0e 94 48 09 	call	0x1290	; 0x1290 <printAt>
-	printAt(SYNC(self->road, getOnBridge, 0), 2);
     1348:	40 e0       	ldi	r20, 0x00	; 0
     134a:	50 e0       	ldi	r21, 0x00	; 0
     134c:	6a e2       	ldi	r22, 0x2A	; 42
@@ -2491,7 +1962,6 @@ void update(GUI *self){
     1358:	62 e0       	ldi	r22, 0x02	; 2
     135a:	70 e0       	ldi	r23, 0x00	; 0
     135c:	0e 94 48 09 	call	0x1290	; 0x1290 <printAt>
-	printAt(SYNC(self->road, getSouthBound, 0), 4);
     1360:	40 e0       	ldi	r20, 0x00	; 0
     1362:	50 e0       	ldi	r21, 0x00	; 0
     1364:	6e e0       	ldi	r22, 0x0E	; 14
@@ -2503,21 +1973,9 @@ void update(GUI *self){
     1372:	70 e0       	ldi	r23, 0x00	; 0
     1374:	df 91       	pop	r29
     1376:	cf 91       	pop	r28
-}
-
-void update(GUI *self){
-	printAt(SYNC(self->road, getNorthBound, 0), 0);
-	printAt(SYNC(self->road, getOnBridge, 0), 2);
-	printAt(SYNC(self->road, getSouthBound, 0), 4);
     1378:	0c 94 48 09 	jmp	0x1290	; 0x1290 <printAt>
 
 0000137c <receiveInterrupt>:
- */ 
-#include "InterruptHandler.h"
-
-
-
-void receiveInterrupt(InterruptHandler *self){
     137c:	cf 92       	push	r12
     137e:	df 92       	push	r13
     1380:	ef 92       	push	r14
@@ -2525,25 +1983,15 @@ void receiveInterrupt(InterruptHandler *self){
     1384:	0f 93       	push	r16
     1386:	1f 93       	push	r17
     1388:	fc 01       	movw	r30, r24
-	
-	unsigned int input = UDR0;
     138a:	90 91 c6 00 	lds	r25, 0x00C6	; 0x8000c6 <__TEXT_REGION_LENGTH__+0x7fc0c6>
-	if(input & 0b0001){
     138e:	90 fd       	sbrc	r25, 0
     1390:	1d c0       	rjmp	.+58     	; 0x13cc <receiveInterrupt+0x50>
-		ASYNC(self->backend, receiveN, 0);
-	}else if(input & 0b0100) {
     1392:	92 fd       	sbrc	r25, 2
     1394:	49 c0       	rjmp	.+146    	; 0x1428 <receiveInterrupt+0xac>
-		ASYNC(self->backend, receiveS, 0);
-	}else if(input & 0b0010){
     1396:	91 fd       	sbrc	r25, 1
     1398:	30 c0       	rjmp	.+96     	; 0x13fa <receiveInterrupt+0x7e>
-		ASYNC(self->backend, receiveNtoB, 0);
-	}else if(input & 0b1000){
     139a:	93 ff       	sbrs	r25, 3
     139c:	10 c0       	rjmp	.+32     	; 0x13be <receiveInterrupt+0x42>
-		ASYNC(self->backend, receiveStoB, 0);
     139e:	04 81       	ldd	r16, Z+4	; 0x04
     13a0:	15 81       	ldd	r17, Z+5	; 0x05
     13a2:	c1 2c       	mov	r12, r1
@@ -2559,9 +2007,6 @@ void receiveInterrupt(InterruptHandler *self){
     13b6:	70 e0       	ldi	r23, 0x00	; 0
     13b8:	cb 01       	movw	r24, r22
     13ba:	0e 94 e7 15 	call	0x2bce	; 0x2bce <async>
-	}
-
-}
     13be:	1f 91       	pop	r17
     13c0:	0f 91       	pop	r16
     13c2:	ff 90       	pop	r15
@@ -2569,12 +2014,6 @@ void receiveInterrupt(InterruptHandler *self){
     13c6:	df 90       	pop	r13
     13c8:	cf 90       	pop	r12
     13ca:	08 95       	ret
-
-void receiveInterrupt(InterruptHandler *self){
-	
-	unsigned int input = UDR0;
-	if(input & 0b0001){
-		ASYNC(self->backend, receiveN, 0);
     13cc:	04 81       	ldd	r16, Z+4	; 0x04
     13ce:	15 81       	ldd	r17, Z+5	; 0x05
     13d0:	c1 2c       	mov	r12, r1
@@ -2590,12 +2029,6 @@ void receiveInterrupt(InterruptHandler *self){
     13e4:	70 e0       	ldi	r23, 0x00	; 0
     13e6:	cb 01       	movw	r24, r22
     13e8:	0e 94 e7 15 	call	0x2bce	; 0x2bce <async>
-		ASYNC(self->backend, receiveNtoB, 0);
-	}else if(input & 0b1000){
-		ASYNC(self->backend, receiveStoB, 0);
-	}
-
-}
     13ec:	1f 91       	pop	r17
     13ee:	0f 91       	pop	r16
     13f0:	ff 90       	pop	r15
@@ -2603,12 +2036,6 @@ void receiveInterrupt(InterruptHandler *self){
     13f4:	df 90       	pop	r13
     13f6:	cf 90       	pop	r12
     13f8:	08 95       	ret
-	if(input & 0b0001){
-		ASYNC(self->backend, receiveN, 0);
-	}else if(input & 0b0100) {
-		ASYNC(self->backend, receiveS, 0);
-	}else if(input & 0b0010){
-		ASYNC(self->backend, receiveNtoB, 0);
     13fa:	04 81       	ldd	r16, Z+4	; 0x04
     13fc:	15 81       	ldd	r17, Z+5	; 0x05
     13fe:	c1 2c       	mov	r12, r1
@@ -2624,11 +2051,6 @@ void receiveInterrupt(InterruptHandler *self){
     1412:	70 e0       	ldi	r23, 0x00	; 0
     1414:	cb 01       	movw	r24, r22
     1416:	0e 94 e7 15 	call	0x2bce	; 0x2bce <async>
-	}else if(input & 0b1000){
-		ASYNC(self->backend, receiveStoB, 0);
-	}
-
-}
     141a:	1f 91       	pop	r17
     141c:	0f 91       	pop	r16
     141e:	ff 90       	pop	r15
@@ -2636,12 +2058,6 @@ void receiveInterrupt(InterruptHandler *self){
     1422:	df 90       	pop	r13
     1424:	cf 90       	pop	r12
     1426:	08 95       	ret
-	
-	unsigned int input = UDR0;
-	if(input & 0b0001){
-		ASYNC(self->backend, receiveN, 0);
-	}else if(input & 0b0100) {
-		ASYNC(self->backend, receiveS, 0);
     1428:	04 81       	ldd	r16, Z+4	; 0x04
     142a:	15 81       	ldd	r17, Z+5	; 0x05
     142c:	c1 2c       	mov	r12, r1
@@ -2657,12 +2073,6 @@ void receiveInterrupt(InterruptHandler *self){
     1440:	70 e0       	ldi	r23, 0x00	; 0
     1442:	cb 01       	movw	r24, r22
     1444:	0e 94 e7 15 	call	0x2bce	; 0x2bce <async>
-		ASYNC(self->backend, receiveNtoB, 0);
-	}else if(input & 0b1000){
-		ASYNC(self->backend, receiveStoB, 0);
-	}
-
-}
     1448:	1f 91       	pop	r17
     144a:	0f 91       	pop	r16
     144c:	ff 90       	pop	r15
@@ -2672,19 +2082,10 @@ void receiveInterrupt(InterruptHandler *self){
     1454:	08 95       	ret
 
 00001456 <transmitInterrupt>:
-
-void transmitInterrupt(InterruptHandler *self){
-	char yeet = UDR0;
     1456:	80 91 c6 00 	lds	r24, 0x00C6	; 0x8000c6 <__TEXT_REGION_LENGTH__+0x7fc0c6>
     145a:	08 95       	ret
 
 0000145c <greenSouthBound>:
-	UDR0 = 0b0001 | (self->southStatus == 1 ? 0b0100 : 0b1000);
-}
-
-void redNorthBound(Lights *self){
-	self->northStatus = 0;
-	UDR0 = 0b0010 | (self->southStatus == 1 ? 0b0100 : 0b1000);
     145c:	21 e0       	ldi	r18, 0x01	; 1
     145e:	30 e0       	ldi	r19, 0x00	; 0
     1460:	fc 01       	movw	r30, r24
@@ -2719,84 +2120,50 @@ void redNorthBound(Lights *self){
     149e:	08 95       	ret
 
 000014a0 <redBothDirections>:
-}
-
-void redBothDirections(Lights *self) {
-	self->northStatus = 0;
     14a0:	fc 01       	movw	r30, r24
     14a2:	15 82       	std	Z+5, r1	; 0x05
     14a4:	14 82       	std	Z+4, r1	; 0x04
-	self->southStatus = 0;
     14a6:	17 82       	std	Z+7, r1	; 0x07
     14a8:	16 82       	std	Z+6, r1	; 0x06
-	UDR0 = 0b1010;
     14aa:	8a e0       	ldi	r24, 0x0A	; 10
     14ac:	80 93 c6 00 	sts	0x00C6, r24	; 0x8000c6 <__TEXT_REGION_LENGTH__+0x7fc0c6>
     14b0:	08 95       	ret
 
 000014b2 <main>:
-Backend backend = initBackend(&gui, &road);
-InterruptHandler handler = initHandler(&backend);
-
-
-void init(){
-	CLKPR = 0x80;
     14b2:	e1 e6       	ldi	r30, 0x61	; 97
     14b4:	f0 e0       	ldi	r31, 0x00	; 0
     14b6:	80 e8       	ldi	r24, 0x80	; 128
     14b8:	80 83       	st	Z, r24
-	CLKPR = 0x00;
     14ba:	10 82       	st	Z, r1
-	LCDCRB = (1<<LCDCS) | (1<<LCDMUX1) | (1<<LCDMUX0) | (1<<LCDPM2) | (1<<LCDPM1) | (1<<LCDPM0);
     14bc:	87 eb       	ldi	r24, 0xB7	; 183
     14be:	80 93 e5 00 	sts	0x00E5, r24	; 0x8000e5 <__TEXT_REGION_LENGTH__+0x7fc0e5>
-	LCDFRR = (1<<LCDCD2) | (1<<LCDCD1) | (1<<LCDCD0);
     14c2:	87 e0       	ldi	r24, 0x07	; 7
     14c4:	80 93 e6 00 	sts	0x00E6, r24	; 0x8000e6 <__TEXT_REGION_LENGTH__+0x7fc0e6>
-	LCDCCR = (1<<LCDDC1) | (1<<LCDCC3) | (1<<LCDCC2) | (1<<LCDCC1);
     14c8:	8e e4       	ldi	r24, 0x4E	; 78
     14ca:	80 93 e7 00 	sts	0x00E7, r24	; 0x8000e7 <__TEXT_REGION_LENGTH__+0x7fc0e7>
-	TCCR1A = (1<<WGM13) | (1<<WGM12) | (1<<COM1A1) | (1<<COM1A0);
     14ce:	88 ed       	ldi	r24, 0xD8	; 216
     14d0:	80 93 80 00 	sts	0x0080, r24	; 0x800080 <__TEXT_REGION_LENGTH__+0x7fc080>
-	LCDCRA = (1<<LCDEN) | (1<<LCDAB);
     14d4:	90 ec       	ldi	r25, 0xC0	; 192
     14d6:	90 93 e4 00 	sts	0x00E4, r25	; 0x8000e4 <__TEXT_REGION_LENGTH__+0x7fc0e4>
-	
-	cli();
     14da:	f8 94       	cli
-	//USART init
-	UBRR0L = 51; // set baud rate to 9600 bps for f=8 MHz, u2x=0, see p.176
     14dc:	93 e3       	ldi	r25, 0x33	; 51
     14de:	90 93 c4 00 	sts	0x00C4, r25	; 0x8000c4 <__TEXT_REGION_LENGTH__+0x7fc0c4>
-	UCSR0B = (1<<RXEN0) | (1<<TXEN0) | (1<<RXCIE0) | (1<<TXCIE0) /*| (1<<UDRIE0)*/; //enable receiver and transmitter, enable reciever and transmitter interrupt
     14e2:	80 93 c1 00 	sts	0x00C1, r24	; 0x8000c1 <__TEXT_REGION_LENGTH__+0x7fc0c1>
-	UCSR0C = (1<<UCSZ00) | (1<<UCSZ01); // set 8-bit word
     14e6:	86 e0       	ldi	r24, 0x06	; 6
     14e8:	80 93 c2 00 	sts	0x00C2, r24	; 0x8000c2 <__TEXT_REGION_LENGTH__+0x7fc0c2>
-	sei();
     14ec:	78 94       	sei
-
-int main(void)
-{
-	init();
-	// install interrupt
-	INSTALL(&handler, receiveInterrupt, IRQ_USART0_RX);
     14ee:	48 e0       	ldi	r20, 0x08	; 8
     14f0:	6e eb       	ldi	r22, 0xBE	; 190
     14f2:	79 e0       	ldi	r23, 0x09	; 9
     14f4:	8d e5       	ldi	r24, 0x5D	; 93
     14f6:	91 e0       	ldi	r25, 0x01	; 1
     14f8:	0e 94 da 18 	call	0x31b4	; 0x31b4 <install>
-	INSTALL(&handler, transmitInterrupt, IRQ_USART0_TX);
     14fc:	4a e0       	ldi	r20, 0x0A	; 10
     14fe:	6b e2       	ldi	r22, 0x2B	; 43
     1500:	7a e0       	ldi	r23, 0x0A	; 10
     1502:	8d e5       	ldi	r24, 0x5D	; 93
     1504:	91 e0       	ldi	r25, 0x01	; 1
     1506:	0e 94 da 18 	call	0x31b4	; 0x31b4 <install>
-	//INSTALL(&handler, regEmptyInterrupt, IRQ_USART0_UDRE);
-	return TINYTIMBER(&backend, start, 0);
     150a:	40 e0       	ldi	r20, 0x00	; 0
     150c:	50 e0       	ldi	r21, 0x00	; 0
     150e:	6b e6       	ldi	r22, 0x6B	; 107
@@ -2806,12 +2173,6 @@ int main(void)
     1516:	0c 94 f4 18 	jmp	0x31e8	; 0x31e8 <tinytimber>
 
 0000151a <updateSignal>:
-
-void redBoth(Road *self) {
-	SYNC(self->lights, redBothDirections, 0);
-	if(self->northBound == 0 && self->southBound == 0) {
-		self->paused = 1;
-		return;
     151a:	cf 92       	push	r12
     151c:	df 92       	push	r13
     151e:	ef 92       	push	r14
@@ -3107,12 +2468,6 @@ void redBoth(Road *self) {
     176a:	05 cf       	rjmp	.-502    	; 0x1576 <updateSignal+0x5c>
 
 0000176c <newNorthBound>:
-			AFTER(SEC(5), self, driveNorth, 0);
-		}
-	}
-}
-
-void newNorthBound(Road *self){
     176c:	cf 92       	push	r12
     176e:	df 92       	push	r13
     1770:	ef 92       	push	r14
@@ -3122,24 +2477,14 @@ void newNorthBound(Road *self){
     1778:	cf 93       	push	r28
     177a:	df 93       	push	r29
     177c:	ec 01       	movw	r28, r24
-	}else {
-		self->northBound++;
-	]
-	
-	*/
-	if(self->direction == 'p'){
     177e:	8c 85       	ldd	r24, Y+12	; 0x0c
     1780:	80 37       	cpi	r24, 0x70	; 112
     1782:	71 f0       	breq	.+28     	; 0x17a0 <newNorthBound+0x34>
-		ASYNC(self, updateSignal, 0);
-	}
-	self->northBound++;
     1784:	8e 81       	ldd	r24, Y+6	; 0x06
     1786:	9f 81       	ldd	r25, Y+7	; 0x07
     1788:	01 96       	adiw	r24, 0x01	; 1
     178a:	9f 83       	std	Y+7, r25	; 0x07
     178c:	8e 83       	std	Y+6, r24	; 0x06
-}
     178e:	df 91       	pop	r29
     1790:	cf 91       	pop	r28
     1792:	1f 91       	pop	r17
@@ -3149,12 +2494,6 @@ void newNorthBound(Road *self){
     179a:	df 90       	pop	r13
     179c:	cf 90       	pop	r12
     179e:	08 95       	ret
-		self->northBound++;
-	]
-	
-	*/
-	if(self->direction == 'p'){
-		ASYNC(self, updateSignal, 0);
     17a0:	c1 2c       	mov	r12, r1
     17a2:	d1 2c       	mov	r13, r1
     17a4:	8d e8       	ldi	r24, 0x8D	; 141
@@ -3172,10 +2511,6 @@ void newNorthBound(Road *self){
     17be:	e2 cf       	rjmp	.-60     	; 0x1784 <newNorthBound+0x18>
 
 000017c0 <newSouthBound>:
-	}
-	self->northBound++;
-}
-void newSouthBound(Road *self){
     17c0:	cf 92       	push	r12
     17c2:	df 92       	push	r13
     17c4:	ef 92       	push	r14
@@ -3185,24 +2520,14 @@ void newSouthBound(Road *self){
     17cc:	cf 93       	push	r28
     17ce:	df 93       	push	r29
     17d0:	ec 01       	movw	r28, r24
-		if(self->northBound == 0 && self->southBound == 0  && !(self->onBridge > 0 && self->direction == 'n')) {
-			//ASYNC(self, cycle, 0);
-			ASYNC(self, driveSouth, 0);
-		}
-	}*/
-	if(self->direction == 'p'){
     17d2:	8c 85       	ldd	r24, Y+12	; 0x0c
     17d4:	80 37       	cpi	r24, 0x70	; 112
     17d6:	71 f0       	breq	.+28     	; 0x17f4 <newSouthBound+0x34>
-		ASYNC(self, updateSignal, 0);
-	}
-	self->southBound++;
     17d8:	88 85       	ldd	r24, Y+8	; 0x08
     17da:	99 85       	ldd	r25, Y+9	; 0x09
     17dc:	01 96       	adiw	r24, 0x01	; 1
     17de:	99 87       	std	Y+9, r25	; 0x09
     17e0:	88 87       	std	Y+8, r24	; 0x08
-}
     17e2:	df 91       	pop	r29
     17e4:	cf 91       	pop	r28
     17e6:	1f 91       	pop	r17
@@ -3212,12 +2537,6 @@ void newSouthBound(Road *self){
     17ee:	df 90       	pop	r13
     17f0:	cf 90       	pop	r12
     17f2:	08 95       	ret
-			//ASYNC(self, cycle, 0);
-			ASYNC(self, driveSouth, 0);
-		}
-	}*/
-	if(self->direction == 'p'){
-		ASYNC(self, updateSignal, 0);
     17f4:	c1 2c       	mov	r12, r1
     17f6:	d1 2c       	mov	r13, r1
     17f8:	8d e8       	ldi	r24, 0x8D	; 141
@@ -3235,36 +2554,24 @@ void newSouthBound(Road *self){
     1812:	e2 cf       	rjmp	.-60     	; 0x17d8 <newSouthBound+0x18>
 
 00001814 <getNorthBound>:
-	}
-	self->southBound++;
-}
-int getNorthBound(Road *self){
-	return self->northBound;
-}
     1814:	fc 01       	movw	r30, r24
     1816:	86 81       	ldd	r24, Z+6	; 0x06
     1818:	97 81       	ldd	r25, Z+7	; 0x07
     181a:	08 95       	ret
 
 0000181c <getSouthBound>:
-int getSouthBound(Road *self){
-	return self->southBound;
-}
     181c:	fc 01       	movw	r30, r24
     181e:	80 85       	ldd	r24, Z+8	; 0x08
     1820:	91 85       	ldd	r25, Z+9	; 0x09
     1822:	08 95       	ret
 
 00001824 <northToBridge>:
-void northToBridge(Road *self){
     1824:	fc 01       	movw	r30, r24
-	self->northBound--;
     1826:	86 81       	ldd	r24, Z+6	; 0x06
     1828:	97 81       	ldd	r25, Z+7	; 0x07
     182a:	01 97       	sbiw	r24, 0x01	; 1
     182c:	97 83       	std	Z+7, r25	; 0x07
     182e:	86 83       	std	Z+6, r24	; 0x06
-	self->onBridge++;
     1830:	82 85       	ldd	r24, Z+10	; 0x0a
     1832:	93 85       	ldd	r25, Z+11	; 0x0b
     1834:	01 96       	adiw	r24, 0x01	; 1
@@ -3273,17 +2580,12 @@ void northToBridge(Road *self){
     183a:	08 95       	ret
 
 0000183c <southToBridge>:
-	//AFTER(SEC(5), self, exitBridge, 0);
-}
-void southToBridge(Road *self){
     183c:	fc 01       	movw	r30, r24
-	self->southBound--;
     183e:	80 85       	ldd	r24, Z+8	; 0x08
     1840:	91 85       	ldd	r25, Z+9	; 0x09
     1842:	01 97       	sbiw	r24, 0x01	; 1
     1844:	91 87       	std	Z+9, r25	; 0x09
     1846:	80 87       	std	Z+8, r24	; 0x08
-	self->onBridge++;
     1848:	82 85       	ldd	r24, Z+10	; 0x0a
     184a:	93 85       	ldd	r25, Z+11	; 0x0b
     184c:	01 96       	adiw	r24, 0x01	; 1
@@ -3292,19 +2594,12 @@ void southToBridge(Road *self){
     1852:	08 95       	ret
 
 00001854 <getOnBridge>:
-	//AFTER(SEC(5), self, exitBridge, 0);
-}
-int getOnBridge(Road* self){
-	return self->onBridge;
-}
     1854:	fc 01       	movw	r30, r24
     1856:	82 85       	ldd	r24, Z+10	; 0x0a
     1858:	93 85       	ldd	r25, Z+11	; 0x0b
     185a:	08 95       	ret
 
 0000185c <exitBridge>:
-void exitBridge(Road *self){
-	self->onBridge--;
     185c:	fc 01       	movw	r30, r24
     185e:	22 85       	ldd	r18, Z+10	; 0x0a
     1860:	33 85       	ldd	r19, Z+11	; 0x0b
@@ -3315,12 +2610,6 @@ void exitBridge(Road *self){
     186a:	08 95       	ret
 
 0000186c <initialize>:
-    char status;
-    Time now;
-    DISABLE(status);
-    TIMERGET(now);
-    ENABLE(status);
-    return now - (status ? current->msg->baseline : timestamp);
     186c:	cf 93       	push	r28
     186e:	df 93       	push	r29
     1870:	00 d0       	rcall	.+0      	; 0x1872 <initialize+0x6>
@@ -6098,19 +5387,10 @@ void exitBridge(Road *self){
     31b2:	ef cf       	rjmp	.-34     	; 0x3192 <ABORT+0xea>
 
 000031b4 <install>:
-    
-    TIMER_INIT();
-}
-
-void install(Object *obj, Method m, enum Vector i) {
-    if (i >= 0 && i < N_VECTORS) {
     31b4:	42 31       	cpi	r20, 0x12	; 18
     31b6:	b8 f4       	brcc	.+46     	; 0x31e6 <install+0x32>
-        char status;
-        DISABLE(status);
     31b8:	2f b7       	in	r18, 0x3f	; 63
     31ba:	f8 94       	cli
-        otable[i] = obj;
     31bc:	50 e0       	ldi	r21, 0x00	; 0
     31be:	44 0f       	add	r20, r20
     31c0:	55 1f       	adc	r21, r21
@@ -6119,46 +5399,32 @@ void install(Object *obj, Method m, enum Vector i) {
     31c6:	fe 4f       	sbci	r31, 0xFE	; 254
     31c8:	91 83       	std	Z+1, r25	; 0x01
     31ca:	80 83       	st	Z, r24
-        mtable[i] = m;
     31cc:	fa 01       	movw	r30, r20
     31ce:	e4 5c       	subi	r30, 0xC4	; 196
     31d0:	fd 4f       	sbci	r31, 0xFD	; 253
     31d2:	71 83       	std	Z+1, r23	; 0x01
     31d4:	60 83       	st	Z, r22
-        obj->wantedBy = INSTALLED_TAG;  // Mark object as subject to synchronization by interrupt disabling
     31d6:	41 e0       	ldi	r20, 0x01	; 1
     31d8:	50 e0       	ldi	r21, 0x00	; 0
     31da:	fc 01       	movw	r30, r24
     31dc:	53 83       	std	Z+3, r21	; 0x03
     31de:	42 83       	std	Z+2, r20	; 0x02
-        ENABLE(status);
     31e0:	27 ff       	sbrs	r18, 7
     31e2:	01 c0       	rjmp	.+2      	; 0x31e6 <install+0x32>
     31e4:	78 94       	sei
     31e6:	08 95       	ret
 
 000031e8 <tinytimber>:
-    }
-}
-
-int tinytimber(Object *obj, Method m, int arg) {
     31e8:	8c 01       	movw	r16, r24
     31ea:	7b 01       	movw	r14, r22
     31ec:	6a 01       	movw	r12, r20
-    char status;
-    DISABLE(status);
     31ee:	8f b7       	in	r24, 0x3f	; 63
     31f0:	f8 94       	cli
-    initialize();
     31f2:	0e 94 36 0c 	call	0x186c	; 0x186c <initialize>
-    ENABLE(1);
     31f6:	78 94       	sei
-    if (m != NULL)
     31f8:	e1 14       	cp	r14, r1
     31fa:	f1 04       	cpc	r15, r1
     31fc:	41 f0       	breq	.+16     	; 0x320e <tinytimber+0x26>
-        //m(obj, arg);
-		ASYNC(obj,m,arg);
     31fe:	20 e0       	ldi	r18, 0x00	; 0
     3200:	30 e0       	ldi	r19, 0x00	; 0
     3202:	a9 01       	movw	r20, r18
@@ -6166,20 +5432,10 @@ int tinytimber(Object *obj, Method m, int arg) {
     3206:	70 e0       	ldi	r23, 0x00	; 0
     3208:	cb 01       	movw	r24, r22
     320a:	0e 94 e7 15 	call	0x2bce	; 0x2bce <async>
-    DISABLE(status);
     320e:	8f b7       	in	r24, 0x3f	; 63
     3210:	f8 94       	cli
-        }
-    }
-}
-
-static void idle(void) {
-    schedule();
     3212:	0e 94 c1 0c 	call	0x1982	; 0x1982 <schedule>
-    ENABLE(1);
     3216:	78 94       	sei
-    while (1) {
-        SLEEP();
     3218:	81 e0       	ldi	r24, 0x01	; 1
     321a:	83 bf       	out	0x33, r24	; 51
     321c:	88 95       	sleep

@@ -36,13 +36,9 @@ void backend_handleSensor(Backend *self, uint8_t sensor) {
 }
 
 void backend_calculatePriority(Backend *self) {
-	int north_time = (self->south_queue == 0) ?
-	self->north_queue :
-	(self->north_queue / (self->south_queue + 1));
+	int north_time = (self->south_queue == 0) ? self->north_queue : (self->north_queue / (self->south_queue + 1));
 	
-	int south_time = (self->north_queue == 0) ?
-	self->south_queue :
-	(self->south_queue / (self->north_queue + 1));
+	int south_time = (self->north_queue == 0) ? self->south_queue : (self->south_queue / (self->north_queue + 1));
 
 	if (self->cars_on_bridge == 0) {
 		if (north_time > south_time) {
