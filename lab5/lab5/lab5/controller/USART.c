@@ -52,6 +52,7 @@ void mainUSARTLoop(USART *self) {
 			default:
 				break;
 		}
+		addsouthQ(self->backRef);
 		mainSimulation(self->backRef);
 	}	
 }

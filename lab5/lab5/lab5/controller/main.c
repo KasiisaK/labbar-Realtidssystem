@@ -18,5 +18,5 @@ int main() {
 	LCD_init();	
 	sei();
 	
-	//return TINYTIMBER(&usart, usart_init, NULL);
+	return TINYTIMBER(&usart, usart_init, NULL);
 }
