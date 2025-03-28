@@ -10,7 +10,7 @@
 GUI gui = initGUI(); 
 Backend backend;
 USART usart = initUSART(&backend);
-TrafficLight trafficLight = initTrafficLight(&gui, &backend);
+TrafficLight trafficLight = initTrafficLight(&backend);
 
 int main() {
 	LCD_init();
@@ -19,8 +19,5 @@ int main() {
 	
 	sei();
 	
-	TINYTIMBER(&trafficLight, start, NULL);
-	TINYTIMBER(&usart, start, NULL);
-	
-	return 0;
+	return TINYTIMBER(&backend, start, NULL);
 }

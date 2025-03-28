@@ -14,6 +14,7 @@
 
 
 typedef struct {
+	Object super;
 	uint8_t north_queue;
 	uint8_t south_queue;
 	uint8_t cars_on_bridge;
@@ -22,6 +23,8 @@ typedef struct {
 	uint8_t batch_count;
 	uint8_t cars_served;
 } Backend;
+
+#define backendInit() {initObject(), 0, 0, 0, 0, 0, 0, 0}
 
 void backend_init(Backend *self);
 void backend_handleSensor(Backend *self, uint8_t sensor);
