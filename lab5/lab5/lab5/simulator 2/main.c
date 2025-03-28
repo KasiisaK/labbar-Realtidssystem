@@ -65,7 +65,7 @@ void simulation();
 void* mainProgramLoop(void* arg);
 
 void terminosInit() {
-    serialPort = open("/dev/terS0", O_RDWR);
+    serialPort = open("/dev/terS2", O_RDWR);
     struct termios ter;
 
     if (tcgetattr(serialPort, &ter) != 0) {
