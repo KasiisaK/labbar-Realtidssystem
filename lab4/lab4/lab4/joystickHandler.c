@@ -1,46 +1,53 @@
-#include "TinyTimber.h"
 #include "joystickHandler.h"
-#include "PulseGen.h"
+#include <util/delay.h>
 
 
 void joystickInit() {
-    //sätter på upp, ner och inåt som input
-    PORTB = PORTB | 0b11010000;
-    //sätter på höger och vänster  som input
-    PORTE = PORTE | 0b00001100;
-    //DDRE = 0b01010000;
-    //sätter på upp,ner,in (15) hög,ven (14) //sida 53 AVr..169 nånitng
-    EIMSK = EIMSK | (1<<PCINT15) | (1<<PCINT14);
+    // Input for: Down, Up, Click
+    PORTB |= (1 << PB7) | (1 << PB6) | (1 << PB4);
+    // Input for; Left, Right
+    PORTE |= (1 << PE3) | (1 << PE2);
+    // Turn on interrupts
+    EIMSK |= (1 << PCINT15) | (1 << PCINT14);
 
-    //sätter på upp, ner och inåt på joystick (som interrupt)
-    PCMSK1 = PCMSK1 | (1<<PCINT15) | (1<<PCINT14) | (1<<PCINT12);
-    //sätter på höger och vänster på joystick (som interrupt)
-    PCMSK0 = PCMSK0 | (1<<PCINT3) | (1<<PCINT2);
+    // Define interrupts from PB7,6,4
+    PCMSK1 |= (1 << PCINT15) | (1 << PCINT14) | (1 << PCINT12);
+    // Define interrupts from PE3,2
+    PCMSK0 |= (1 << PCINT3) | (1 << PCINT2);
 }
 
 
 // Joystick input handler
-void interruptPinB(JoystickHandler *self) { 
-    if((PINB & 0b10000000) >> 7 == 0){ //down press on joystick
-        printAt(5, 1);
-    }
-
-    if((PINB & 0b01000000) >> 6 == 0){ //up press on joystick
-        printAt(6, 1);
-    }
-
-    if((PINB & 0b00010000) >> 4 == 0){ //middle press
-        printAt(7, 1);
-    }
-}
-
-void interruptPinE(JoystickHandler *self) {  
-    if((PINE & 0b00000100) >> 2 == 0){ //left press
-        printAt(2, 2);
-    }
-
-    if((PINE & 0b00001000) >> 3 == 0){  //right press
-        //LCDDR2 = 0xF;
-        printAt(4, 2);
-    }
+void joystickInteruptHandler(JoystickHandler *self) { 
+	
+	_delay_ms(100);
+	
+	// In
+	if (!(PINB & (1 << PB4))) {
+		ASYNC(self->BE, saveRestore, 0);
+	}
+	
+	// Right
+	if (!(PINE & (1 << PB3))) {
+		ASYNC(self->BE, swithToRightGen, 0);
+	}
+	
+	// Left
+	if (!(PINE & (1 << PB2))) {
+		ASYNC(self->BE, swithToLeftGen, 0);
+	}
+	
+	_delay_ms(900);
+	
+	// Down
+	if (!(PINB & (1 << PB7))) {
+		ASYNC(self->BE, adjustFrequency, -1);	
+		ASYNC(self, joystickInteruptHandler, 0);
+	}
+	
+	// Up
+	if (!(PINB & (1 << PB6))) {
+		ASYNC(self->BE, adjustFrequency, 1);
+		ASYNC(self, joystickInteruptHandler, 0);
+	}	
 }

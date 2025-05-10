@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 #include "GUI.h"
 #include "PulseGen.h"
@@ -18,20 +19,21 @@ void LCD_init() {
 	LCDCRA = (1 << LCDEN) | (1 << LCDAB);
 }
 
+// LUT
+int zero[] = {0b0001, 0b0101, 0b0101, 0b0001};
+int one[] = {0b0000, 0b0001, 0b0001, 0b0000};
+int two[] = {0b0001, 0b0001, 0b1110, 0b0001};
+int three[] = {0b0001, 0b0001, 0b1011, 0b0001};
+int four[] = {0b0000, 0b0101, 0b1011, 0b0000};
+int five[] = {0b0001, 0b0100, 0b1011, 0b0001};
+int six[] = {0b0001, 0b0100, 0b1111, 0b0001};
+int seven[] = {0b0001, 0b0001, 0b0001, 0b0000};
+int eight[] = {0b0001, 0b0101, 0b1111, 0b0001};
+int nine[] = {0b0001, 0b0101, 0b1011, 0b0001};
+int none[] = {0b0000, 0b0000, 0b0000, 0b0000};
+
 // Returns wall of data based on char input ('0' = 48 (char))
 int* getSegmentForChar(char ch) {
-    // LUT
-    int zero[] = {0b0001, 0b0101, 0b0101, 0b0001};
-    int one[] = {0b0000, 0b0001, 0b0001, 0b0000};
-    int two[] = {0b0001, 0b0001, 0b1110, 0b0001};
-    int three[] = {0b0001, 0b0001, 0b1011, 0b0001};
-    int four[] = {0b0000, 0b0101, 0b1011, 0b0000};
-    int five[] = {0b0001, 0b0100, 0b1011, 0b0001};
-    int six[] = {0b0001, 0b0100, 0b1111, 0b0001};
-    int seven[] = {0b0001, 0b0001, 0b0001, 0b0000};
-    int eight[] = {0b0001, 0b0101, 0b1111, 0b0001};
-    int nine[] = {0b0001, 0b0101, 0b1011, 0b0001};
-    int none[] = {0b0000, 0b0000, 0b0000, 0b0000};
 
 	switch (ch) {
 		case '0': return zero;
@@ -51,7 +53,7 @@ int* getSegmentForChar(char ch) {
 // Write a char ch at position pos
 void writeChar(char ch, uint8_t pos) {
 	// Check if outside range
-	if (pos > 4 || pos < 0) return;	
+	if (pos > 5 || pos < 0) return;	
 
 	// Get correct char data
 	int* segment = getSegmentForChar(ch);
@@ -100,48 +102,24 @@ void printAt(long num, int pos) {
 	writeChar(num % 10 + '0', pos);
 }
 
-void switchFocus(GUI *self, int newActive) {
-    self->activeGen = newActive;
-    ASYNC(self, updateDisplay, 0);
-}
-
-void adjustFrequency(GUI *self, int delta) {
-	// Get right target gen
-    PulseGen *target = self->activeGen ? self->gen2 : self->gen1;
-    int newFreq = target->frequency + delta;
-    if (newFreq < 0) newFreq = 0;
-	
-	// Update right savedFreqx
-	switch (self->activeGen)
-	{
-	// 0 is gen1 (left)
-	case 0:
-		self->savedFreq1 = newFreq;
-		break;
-	// 1 is gen2 (right)
-	case 1:
-		self->savedFreq2 = newFreq;
-		break;	
-	default:
-		break;
+void activeGenIndicator(GUI *self, int activeGen) {
+	LCDDR0 &= ~(0b01000100);
+	if (self->leftActive) {
+		LCDDR0 |= 0b00000100;
+	} 
+	if (!self->leftActive) {
+		LCDDR0 |= 0b01000000;
 	}
-	// Update everything
-    ASYNC(target, setFrequency, newFreq);
-    ASYNC(self, updateDisplay, 0);
 }
 
-void saveRestore(GUI *self) {
-    PulseGen *target = self->activeGen ? self->gen2 : self->gen1;
-    if (target->frequency == 0) {
-        ASYNC(target, restore, 0);
-    } else {
-        ASYNC(target, save, 0);
-        ASYNC(target, setFrequency, 0);
-    }
-    ASYNC(self, updateDisplay, 0);
+void setActive(GUI *self, bool status) {
+	self->leftActive = status;
 }
 
-void updateDisplay(GUI *self) {
-    printAt(self->savedFreq1, 0); //gen1 hz at pos 0-1
-    printAt(self->savedFreq2, 3); //gen2 hz at pos 3-4
+void updateDisplay(GUI *self, int activeGen) {
+	int gen1Freq = SYNC(self->gen1, getFrequency, 0);
+	int gen2Freq = SYNC(self->gen2, getFrequency, 0);
+	printAt(gen1Freq, 0); //gen1 hz at pos 0-1
+	printAt(gen2Freq, 3); //gen2 hz at pos 3-4
+	activeGenIndicator(self, activeGen);
 }

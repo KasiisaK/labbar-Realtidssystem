@@ -1,27 +1,25 @@
 #ifndef GUI_H
 #define GUI_H
 
+#include <stdbool.h>
 #include "TinyTimber.h"
 #include "PulseGen.h"
 
 typedef struct {
     Object super;
-    PulseGen *gen1;
-    PulseGen *gen2;
-    int activeGen;  // 0 = gen1, 1 = gen2
-    int savedFreq1;
-    int savedFreq2;
+	bool leftActive;
+	PulseGen *gen1;
+	PulseGen *gen2;
 } GUI;
 
-#define initGUI(g1, g2) { initObject(), g1, g2, 0, 0, 0 }
+#define initGUI(gen1, gen2, status) { initObject(), status, gen1, gen2 }
 
-// Public methods
-void switchFocus(GUI *self, int newActive);
-void adjustFrequency(GUI *self, int delta);
-void saveRestore(GUI *self);
-void updateDisplay(GUI *self);
-void LCD_init(void);
+// Print stuff
+void LCD_init();
+int* getSegmentForChar(char ch);
 void printAt(long num, int pos);
-void updateDisplay(GUI *self);
+void activeGenIndicator(GUI *self, int activeGen);
+void updateDisplay(GUI *self, int activeGen);
+void setActive(GUI *self, bool status);
 
 #endif

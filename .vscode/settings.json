@@ -3,6 +3,15 @@
         "gui.h": "c",
         "portwrite.h": "c",
         "joystickhandler.h": "c",
-        "pulsegen.h": "c"
+        "pulsegen.h": "c",
+        "tinytimber.h": "c",
+        "simulation.h": "c",
+        "stdbool.h": "c",
+        "pcreader.h": "c",
+        "pcwriter.h": "c",
+        "bridge.h": "c",
+        "pthread.h": "c",
+        "stdio.h": "c",
+        "userinput.h": "c"
     }
 }

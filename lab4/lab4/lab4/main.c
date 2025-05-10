@@ -1,14 +1,11 @@
 #include <avr/io.h>
+#include <stdbool.h>
+#include <util/delay.h>
+
 #include "gui.h"
 #include "joystickHandler.h"
-
-
-// Initialize objects
-PortWrite portWriter = initPortWrite();
-PulseGen gen1 = initPulseGen(4, &portWriter);
-PulseGen gen2 = initPulseGen(6, &portWriter);
-GUI gui = initGUI(&gen1, &gen2);
-JoystickHandler joystick = initJoystickHandler(&gui);
+#include "TinyTimber.h"
+#include "Backend.h"
 
 void sysInit(){
     // Clock Prescale Register "maximum speed"
@@ -21,21 +18,27 @@ void pinOutputInit(){
 	DDRE |= (1 << PE4) | (1 << PE6);
 }
 
-
 int main() {
+	// Initialize objects
+	PortWrite portWriter = initPortWrite();
+	PulseGen gen1 = initPulseGen(4, &portWriter);
+	PulseGen gen2 = initPulseGen(6, &portWriter);
+	GUI gui = initGUI(&gen1, &gen2, true);
+	Backend BE = initBackend(&gen1, &gen2, &gui);
+	JoystickHandler joystick = initJoystickHandler(&BE);
+	
     sysInit();
-    pinOutputInit();
+    pinOutputInit(); // Is this needed
     joystickInit();
-    LCD_init();
-    
-    // Instal interupt handler
-    //when the joystick's vertical state changes
-    INSTALL(&joystick, interruptPinB, IRQ_PCINT1);
-    //when the joystick's horizontal (minus middle) state changes
-    INSTALL(&joystick, interruptPinE, IRQ_PCINT0);
+    LCD_init();	
+	
+	
+    // Install interrupt handler
+    INSTALL(&joystick, joystickInteruptHandler, IRQ_PCINT0);
+	INSTALL(&joystick, joystickInteruptHandler, IRQ_PCINT1);
     
     // Start kernel
-    return TINYTIMBER(&gui, NULL, NULL);
+    return TINYTIMBER(&BE, startProgram, NULL);	
 }
 
 
